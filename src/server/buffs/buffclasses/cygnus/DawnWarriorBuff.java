@@ -68,6 +68,8 @@ public class DawnWarriorBuff extends AbstractBuffClass {
                        eff.statups.put(MapleBuffStat.INDIE_DAM_R, eff.info.get(MapleStatInfo.indieDamR));
                        eff.statups.put(MapleBuffStat.INDIE_BOOSTER, eff.info.get(MapleStatInfo.indieBooster));
                        break;
+                case 11111023:
+                    break;
 //                case 11111007: // rad charge
 //                       eff.statups.put(MapleBuffStat.WK_CHARGE, eff.info.get(MapleStatInfo.x));
 //                       eff.statups.put(MapleBuffStat.DAMAGE_BUFF, eff.info.get(MapleStatInfo.z));

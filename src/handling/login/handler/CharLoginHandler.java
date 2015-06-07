@@ -469,7 +469,7 @@ public class CharLoginHandler {
                     maxLevel = s.getMasterLevel();
                 }
                 ss.put(s, new SkillEntry((byte) 1, (byte) maxLevel, -1));
-            }
+            }            
             if (job == JobType.神之子) {
                 ss.put(SkillFactory.getSkill(101000103), new SkillEntry((byte) 8, (byte) 10, -1));
                 ss.put(SkillFactory.getSkill(101000203), new SkillEntry((byte) 8, (byte) 10, -1));
@@ -511,6 +511,12 @@ public class CharLoginHandler {
             newchar.getStat().mp = 100;
             newchar.setRemainingSp(3, 0); //alpha
             newchar.setRemainingSp(3, 1); //beta
+            newchar.forceCompleteQuest(40900);
+            newchar.forceCompleteQuest(40901);
+            newchar.forceCompleteQuest(40902);
+            newchar.forceCompleteQuest(40903);
+            newchar.forceCompleteQuest(40904);
+            newchar.forceCompleteQuest(40905);
         }
 
         if (job == JobType.幻獸師) {
@@ -545,6 +551,19 @@ public class CharLoginHandler {
                     + "\r\n盾牌: " + shield
                     + "\r\n\r\n"
             );
+        }
+        
+        // 修正進階按鍵不完全
+        if (keymapType == 1) {
+            int[] keyValue = new int[] {0x10, 0x11, 0x12, 0x13, 0x1E, 0x1F, 0x20, 0x21, 0x02, 0x03, 
+                                        0x04, 0x05, 0x1D, 0x38, 0x2C, 0x2D, 0x06, 0x07, 0x08, 0x09, 
+                                        0x2E, 0x16, 0x17, 0x24, 0x0A, 0x0B, 0x25, 0x31};
+            StringBuilder ret = new StringBuilder();
+            for (int i = 0; i < 28; i++) {
+                ret.append(keyValue[i]).append(",");
+            }
+            ret.deleteCharAt(ret.length() - 1);
+            newchar.getQuestNAdd(MapleQuest.getInstance(123000)).setCustomData(ret.toString());
         }
 
         if (MapleCharacterUtil.canCreateChar(name, c.isGM()) && (!LoginInformationProvider.getInstance().isForbiddenName(name) || c.isGM()) && (c.isGM() || c.canMakeCharacter(c.getWorld()))) {
