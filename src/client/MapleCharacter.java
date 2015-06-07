@@ -4792,47 +4792,66 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         int maxhp = stats.getMaxHp();
         int maxmp = stats.getMaxMp();
 
-        if (MapleJob.isBeginner(job)) { // Beginner
+        if (job == 3001 || job == 10000) {// 惡魔殺手,神之子 的新手
+            maxhp += Randomizer.rand(52, 56);
+        } else if (MapleJob.isBeginner(job)) { // 新手 (無惡魔,神之子)
             maxhp += Randomizer.rand(12, 16);
             maxmp += Randomizer.rand(10, 12);
-        } else if (job >= 3100 && job <= 3112) { // 惡魔殺手
-            maxhp += Randomizer.rand(48, 52);
-        } else if ((job >= 100 && job <= 132) || (job >= 1100 && job <= 1111)) { // 劍士、聖魂劍士
+        } else if (MapleJob.is劍士(job) && (MapleJob.is冒險家(job) || MapleJob.is皇家騎士團(job))) { // 劍士、聖魂劍士
             maxhp += Randomizer.rand(48, 52);
             maxmp += Randomizer.rand(4, 6);
-        } else if ((job >= 200 && job <= 232) || (job >= 1200 && job <= 1211)) { // 法師、烈焰巫師
-            maxhp += Randomizer.rand(10, 14);
-            maxmp += Randomizer.rand(48, 52);
-        } else if ((job >= 2700 && job <= 2712)) { // 夜光
-            maxhp += Randomizer.rand(40, 56);
-            maxmp += Randomizer.rand(210, 230);
-        } else if (job >= 3200 && job <= 3212) { // 煉獄巫師
-            maxhp += Randomizer.rand(20, 24);
-            maxmp += Randomizer.rand(42, 44);
-        } else if ((job >= 300 && job <= 322) || (job >= 400 && job <= 434) || (job >= 1300 && job <= 1311) || (job >= 1400 && job <= 1411) || (job >= 3300 && job <= 3312) || (job >= 2300 && job <= 2312)) { // 弓箭手, 盜賊, 破風使者, 暗夜行者, 狂豹獵人, 精靈遊俠
-            maxhp += Randomizer.rand(20, 24);
-            maxmp += Randomizer.rand(14, 16);
-        } else if ((job >= 510 && job <= 512) || (job >= 1510 && job <= 1512)) { // 海盜、閃雷悍將(1轉~4轉)
-            maxhp += Randomizer.rand(37, 41);
-            maxmp += Randomizer.rand(18, 22);
-        } else if ((job >= 500 && job <= 532) || (job >= 3500 && job <= 3512) || job == 1500) { // 海盜、機甲戰神、閃雷悍將(0轉)
-            maxhp += Randomizer.rand(20, 24);
-            maxmp += Randomizer.rand(18, 22);
-        } else if (job >= 2100 && job <= 2112) { // 狂狼勇士
+        } else if (MapleJob.is狂狼勇士(job)) { // 狂狼勇士
             maxhp += Randomizer.rand(50, 52);
             maxmp += Randomizer.rand(4, 6);
-        } else if (job >= 2200 && job <= 2218) { // 龍魔導士
-            maxhp += Randomizer.rand(12, 16);
-            maxmp += Randomizer.rand(50, 52);
-        } else if (job >= 5100 && job <= 5112) { // 米哈逸
+        } else if (MapleJob.is惡魔殺手(job)) { // 惡魔殺手
+            maxhp += Randomizer.rand(48, 52);
+        } else if (MapleJob.is惡魔復仇者(job)) { // 惡魔復仇者
+            maxhp += Randomizer.rand(70, 105);
+        } else if (MapleJob.is米哈逸(job)) { // 米哈逸
             maxhp += Randomizer.rand(48, 52);
             maxmp += Randomizer.rand(4, 6);
-        } else if (job == 800 || job == 900) { // 管理員
-            maxhp += Randomizer.rand(50, 100);//its already there lol
-            maxmp += Randomizer.rand(50, 100);
+        } else if (MapleJob.is凱撒(job)) { // 凱薩
+            maxhp += Randomizer.rand(70, 105);
+            maxmp += Randomizer.rand(10, 20);
+        } else if (MapleJob.is神之子(job)) { // 神之子
+            maxhp += Randomizer.rand(70, 105);
+        } else if (MapleJob.is法師(job) && (MapleJob.is冒險家(job) || MapleJob.is皇家騎士團(job))) { // 法師、烈焰巫師
+            maxhp += Randomizer.rand(10, 14);
+            maxmp += Randomizer.rand(48, 52);
+        } else if (MapleJob.is龍魔導士(job)) { // 龍魔導士
+            maxhp += Randomizer.rand(12, 16);
+            maxmp += Randomizer.rand(50, 52);
+        } else if (MapleJob.is夜光(job)) { // 夜光
+            maxhp += Randomizer.rand(25, 40);
+            maxmp += Randomizer.rand(60, 100);
+        } else if (MapleJob.is煉獄巫師(job)) { // 煉獄巫師
+            maxhp += Randomizer.rand(20, 24);
+            maxmp += Randomizer.rand(42, 44);
+        } else if (MapleJob.is弓箭手(job) || (MapleJob.is盜賊(job) && (MapleJob.is冒險家(job) || MapleJob.is皇家騎士團(job)))) {
+            maxhp += Randomizer.rand(20, 24);
+            maxmp += Randomizer.rand(14, 16);
+        } else if (MapleJob.is幻影俠盜(job)) { // 幻影
+            maxhp += Randomizer.rand(56, 67);
+            maxmp += Randomizer.rand(74, 100);
+        } else if (MapleJob.is拳霸(job)) { // 拳霸
+            maxhp += Randomizer.rand(37, 41);
+            maxmp += Randomizer.rand(18, 22);
+        } else if (MapleJob.is海盜(job) && MapleJob.is冒險家(job)) { // 除了拳霸的冒險家海盜
+            maxhp += Randomizer.rand(20, 24);
+            maxmp += Randomizer.rand(18, 22);
+        } else if (MapleJob.is閃雷悍將(job) || MapleJob.is機甲戰神(job)) { // 閃雷悍將 機甲戰神
+            maxhp += Randomizer.rand(56, 67);
+            maxmp += Randomizer.rand(34, 47);
+        } else if (MapleJob.is隱月(job)) { // 隱月
+            maxhp += Randomizer.rand(66, 77);
+            maxmp += Randomizer.rand(44, 57);
+        } else if (MapleJob.is傑諾(job)) { // 傑諾
+            maxhp += Randomizer.rand(100, 130);
+            maxmp += Randomizer.rand(10, 15);
+        } else if (MapleJob.is天使破壞者(job)) { // 天使破壞者
+            maxhp += Randomizer.rand(56, 67);
         } else {
-            maxhp += Randomizer.rand(50, 100);//its already there lol
-            maxmp += Randomizer.rand(50, 100);
+            System.err.println("職業 " + MapleJob.getById(job).name() + " 未處理升級HPMP增加");
         }
         maxmp += stats.getTotalInt() / 10;
 

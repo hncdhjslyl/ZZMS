@@ -180,6 +180,7 @@ public enum MapleJob {
     幻獸師2轉(11210),
     幻獸師3轉(11211),
     幻獸師4轉(11212),
+    未知(999999),
     ;
     private final int jobid;
 
@@ -201,7 +202,7 @@ public enum MapleJob {
                 return l;
             }
         }
-        return null;
+        return 未知;
     }
 
     public static boolean isExist(int id) {
@@ -401,6 +402,26 @@ public enum MapleJob {
         return job / 100 == 112 || job == 11000;
     }
 
+    public static boolean is劍士(final int job) {
+        return getTrueJobGrade(job) == 1;
+    }
+
+    public static boolean is法師(final int job) {
+        return getTrueJobGrade(job) == 2;
+    }
+
+    public static boolean is弓箭手(final int job) {
+        return getTrueJobGrade(job) == 3;
+    }
+
+    public static boolean is盜賊(final int job) {
+        return getTrueJobGrade(job) == 4 || getTrueJobGrade(job) == 6;
+    }
+
+    public static boolean is海盜(final int job) {
+        return getTrueJobGrade(job) == 5 || getTrueJobGrade(job) == 6;
+    }
+
     public static short getBeginner(final short job) {
         if (job % 1000 < 10) {
             return job;
@@ -489,7 +510,7 @@ public enum MapleJob {
         if (job / 100 == 27) {
             return 2;
         } else if (job / 100 == 36) {
-            return 4;
+            return 6;
         } else {
             return job % 1000 / 100;
         }
