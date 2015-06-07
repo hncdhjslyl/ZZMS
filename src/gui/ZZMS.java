@@ -187,61 +187,6 @@ public class ZZMS extends javax.swing.JFrame {
         scrollingMessage.setText(String.valueOf(world.getScrollMessage()));
     }
 
-    public static boolean runExe(String processName) {
-        if (findProcess(processName)) {
-            return false;
-        }
-        try {
-            Runtime.getRuntime().exec(processName);
-        } catch (IOException ex) {
-            Logger.getLogger(ZZMS.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return true;
-    }
-
-    public static boolean killProcess(String processName) {
-        if (processName.split("/").length > 1) {
-            processName = processName.split("/")[processName.split("/").length - 1];
-        }
-        if (findProcess(processName)) {
-            try {
-                Runtime.getRuntime().exec("taskkill /F /IM " + processName);
-            } catch (IOException ex) {
-                Logger.getLogger(ZZMS.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean findProcess(String processName) {
-        if (processName.split("/").length > 1) {
-            processName = processName.split("/")[processName.split("/").length - 1];
-        }
-        BufferedReader bufferedReader = null;
-        try {
-            Process proc = Runtime.getRuntime().exec("cmd /c tasklist");
-            bufferedReader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            String line = null;
-            while ((line = bufferedReader.readLine()) != null) {
-                if (line.contains(processName)) {
-                    return true;
-                }
-            }
-            return false;
-        } catch (IOException ex) {
-            Logger.getLogger(ZZMS.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        } finally {
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (Exception ex) {
-                }
-            }
-        }
-    }
-
     private void initCharacterPannel() {
         if (charInitFinished) {
             return;
@@ -792,8 +737,6 @@ public class ZZMS extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
         jButton42 = new javax.swing.JButton();
         jButton43 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -1397,20 +1340,6 @@ public class ZZMS extends javax.swing.JFrame {
             }
         });
 
-        jButton7.setText("啟用附帶數據庫");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-
-        jButton9.setText("關閉附帶數據庫");
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
-            }
-        });
-
         jButton42.setText("加載包頭檔案");
         jButton42.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1434,25 +1363,21 @@ public class ZZMS extends javax.swing.JFrame {
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addGroup(jPanel15Layout.createSequentialGroup()
-                        .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton7))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel15Layout.createSequentialGroup()
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jButton2))
                             .addGroup(jPanel15Layout.createSequentialGroup()
-                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton43, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton43, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton42, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                            .addComponent(jButton42, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel15Layout.setVerticalGroup(
@@ -1465,14 +1390,12 @@ public class ZZMS extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(jButton3)
                     .addComponent(jButton2)
-                    .addComponent(jButton4)
-                    .addComponent(jButton42))
+                    .addComponent(jButton5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton9)
-                    .addComponent(jButton7)
-                    .addComponent(jButton5)
-                    .addComponent(jButton43))
+                    .addComponent(jButton43)
+                    .addComponent(jButton4)
+                    .addComponent(jButton42))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -2951,19 +2874,6 @@ public class ZZMS extends javax.swing.JFrame {
         openWindow(Windows.BuffStatusCalculator);
     }//GEN-LAST:event_jButton6ActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        if (!runExe("MySQL/bin/mysqld.exe")) {
-            JOptionPane.showMessageDialog(null, "已有數據庫在運行。");
-        }
-        initCharacterPannel();
-    }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        if (!killProcess("MySQL/bin/mysqld.exe")) {
-            JOptionPane.showMessageDialog(null, "未有數據庫在運行。");
-        }
-    }//GEN-LAST:event_jButton9ActionPerformed
-
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         modifyServer(ServerModifyType.WORLD_TIP);
     }//GEN-LAST:event_jButton10ActionPerformed
@@ -3063,8 +2973,10 @@ public class ZZMS extends javax.swing.JFrame {
         super.setVisible(bln);
         System.setOut(out);
         System.setErr(err);
-        if (findProcess("mysqld.exe") && bln) {
+        try {
             initCharacterPannel();
+        } catch (Exception ex) {
+            System.out.println("初始化角色訊息錯誤:" + ex);
         }
     }
 
@@ -3121,9 +3033,7 @@ public class ZZMS extends javax.swing.JFrame {
     private javax.swing.JButton jButton43;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox10;
     private javax.swing.JCheckBox jCheckBox11;
