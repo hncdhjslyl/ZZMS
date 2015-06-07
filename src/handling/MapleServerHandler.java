@@ -1290,6 +1290,23 @@ public class MapleServerHandler extends IoHandlerAdapter {
             case SYSTEM_PROCESS_LIST:
                 SystemProcess.SystemProcess(slea, c, c.getPlayer());
                 break;
+            case ZERO_SCROLL_START:
+                PlayerHandler.ZeroHandler.ZeroScrollStart(slea, c.getPlayer(), c);
+                break;
+            case ZERO_WEAPON_UI:
+                PlayerHandler.ZeroHandler.openWeaponUI(slea, c);
+                break;
+            case ZERO_NPC_TALK:
+                PlayerHandler.ZeroHandler.talkZeroNpc(slea, c);
+                break;
+            case ZERO_WEAPON_SCROLL:
+                PlayerHandler.ZeroHandler.useZeroScroll(slea, c);
+                break;
+            case ZERO_WEAPON_UPGRADE:
+                PlayerHandler.ZeroHandler.openZeroUpgrade(slea, c);
+                break;
+            case ZERO_WEAPON_ABILITY:
+                break;
             case LOAD_PLAYER_SCCUCESS:
                 PlayerHandler.LoadPlayerSuccess(c, c.getPlayer());
                 break;

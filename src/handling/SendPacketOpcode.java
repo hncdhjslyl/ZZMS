@@ -2223,11 +2223,15 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     // CField::OnZeroScroll 開始(179-完成)
     //==================================
     
-    ZERO_SCROLL_START((short) 0x4E3),
-    ZERO_SCROLL((short) 0x4E4),
-    ZERO_RESULT((short) 0x4E5),
+    // 0x4E3
     
-    // 0x4E6
+    //神之子使用卷軸[完成]
+    ZERO_SCROLL_START((short) 0x4E4),
+    //神之子武器介面[完成]
+    ZERO_RESULT((short) 0x4E5),
+    //神之子卷軸[完成]
+    ZERO_SCROLL((short) 0x4E6),    
+    
     // 0x4E7
     // 0x4E8
     
@@ -2235,9 +2239,9 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     // CField::OnZeroWeapon 開始(179-完成)
     //==================================
     
-    // 武器資訊
+    //武器資訊
     ZERO_WEAPONINFO((short) 0x4E9),    
-    // 武器成長[完成]
+    //武器成長[完成]
     ZERO_UPGRADE((short) 0x4EA),
      
     //==================================

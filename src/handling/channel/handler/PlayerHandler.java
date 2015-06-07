@@ -2,6 +2,7 @@ package handling.channel.handler;
 
 import client.*;
 import client.anticheat.CheatingOffense;
+import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
@@ -2197,5 +2198,103 @@ public class PlayerHandler {
                 c.getSession().write(CWvsContext.enableActions());
                 break;
         }
+    }
+    
+    public static class ZeroHandler {
+        
+        private static int posz;
+        private static int typez;
+        private static int posz1;
+        
+        public static void ZeroScrollStart(final LittleEndianAccessor slea, final MapleCharacter chr, final MapleClient c) {
+            c.getSession().write(CField.ZeroPacket.UseWeaponScrollStart());
+            Equip equip1;
+            Equip equip2;
+            equip1 = (Equip) chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -10);
+            equip2 = (Equip) chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -11);
+            Equip nEquip2 = (Equip) equip2;
+            if (typez == 2) {
+                if (equip1.getItemId() == 1560000) {
+                } else if (equip2.getItemId() % 1572000 >= 0 && equip2.getItemId() % 1572000 <= 7) {
+                    c.getSession().write(CWvsContext.enableActions());
+                    c.getSession().write(CField.enchantResult(posz, nEquip2.getItemId()));
+                    chr.dropMessage(5, "" + equip1.getItemId() + equip2.getItemId());
+                }
+            }
+        }
+        
+        public static void openWeaponUI(final LittleEndianAccessor slea, final MapleClient c) {
+            int type = slea.readInt();
+            byte type2 = slea.readByte();
+            if (type2 == 0) {
+                c.getSession().write(CField.ZeroPacket.OpenWeaponUI(type));
+            } else {
+                
+            }
+        }
+        
+        public static void talkZeroNpc(final LittleEndianAccessor slea, final MapleClient c) {
+            c.getSession().write(CField.ZeroPacket.NPCTalk());
+            c.getSession().write(CWvsContext.enableActions());
+        }
+        
+        public static void useZeroScroll(final LittleEndianAccessor slea, final MapleClient c) {
+            int type = slea.readInt();
+            typez = type;
+            int pos = slea.readInt();
+            posz = pos;
+            slea.skip(8);
+            int Success = slea.readInt();
+            
+            c.getSession().write(CField.ZeroPacket.UseWeaponScroll(Success));
+        }
+        
+        public static void openZeroUpgrade(final LittleEndianAccessor slea, final MapleClient c) {
+            MapleCharacter player = c.getPlayer();
+            Equip alpha;
+            alpha = (Equip) c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).getItem((short) -10);
+            Equip ep = (Equip) alpha;
+            int action = 1, level = 0, type = 0;
+            switch (ep.getItemId()) {
+                case 1562000:
+                    type = 1;
+                    level = 100;
+                    break;
+                case 1562001:
+                    type = 2;
+                    level = 110;
+                    break;
+                case 1562002:
+                    type = 2;
+                    level = 120;
+                    break;
+                case 1562003:
+                    type = 2;
+                    level = 130;
+                    break;
+                case 1562004:
+                    type = 4;
+                    level = 140;
+                    break;
+                case 1562005:
+                    type = 5;
+                    level = 150;
+                    break;
+                case 15602006:
+                    type = 6;
+                    level = 160;
+                    break;
+                case 1562007:
+                    action = 0;
+                    type = 0;
+                    level = 0;
+                    break;
+            }
+            if (player.getLevel() < level) {
+                action = 0;
+            }
+            c.getSession().write(CField.ZeroPacket.OpenZeroUpgrade(type, level, action, ep.getItemId()));
+        }
+        
     }
 }

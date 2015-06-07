@@ -570,7 +570,9 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     // 幸運怪物(完成)
     LUCKY_LUCKY_MONSTORY(true, (short) 0x191),
     // 快速移動(非打開NPC)
-    QUICK_MOVE_SPECIAL(true, (short) 0x197), 
+    QUICK_MOVE_SPECIAL(true, (short) 0x197),
+    // 神之子鏡子世界地圖傳送[完成-180]
+    ZERO_QUICK_MOVE(true, (short) 0x198),
     // 活動卡片[完成]
     EVENT_CARD(true, (short) 0x1A2), //0x19C+6(or 5 ?) 178 未知
     // 凱撒快速鍵(176-Done)
@@ -647,6 +649,22 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     DIRECTION_COMPLETE(true, (short) 0x1ED),
     //進程列表
     SYSTEM_PROCESS_LIST(true, (short) 0x1F0),
+    
+    //神之子-開始強化[完成-180]
+    ZERO_SCROLL_START(true, (short) 0x1F2),
+    
+    // 0x1F3
+    
+    //神之子-武器介面[完成-180]
+    ZERO_WEAPON_UI(true, (short) 0x1F4),
+    //神之子-與精靈對話[完成-180]
+    ZERO_NPC_TALK(true, (short) 0x1F5),
+    //神之子-使用卷軸[完成-180]
+    ZERO_WEAPON_SCROLL(true, (short) 0x1F6),
+    //神之子-武器成長[完成-180]
+    ZERO_WEAPON_UPGRADE(true, (short) 0x1F7),
+    //神之子-武器潛在能力[完成-180]
+    ZERO_WEAPON_ABILITY(true, (short) 0x1F8),
 
     //加載角色成功
     LOAD_PLAYER_SCCUCESS(true, (short) 0x1FC),

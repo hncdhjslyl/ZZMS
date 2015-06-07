@@ -5031,6 +5031,71 @@ public class CField {
             return mplew.getPacket();
         }
     }
+    
+    public static class ZeroPacket {
+        public static byte[] UseWeaponScroll(int Success) {
+            MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+            
+            mplew.writeShort(SendPacketOpcode.ZERO_SCROLL.getValue());
+            mplew.writeShort(1);
+            mplew.write(0);
+            mplew.writeInt(Success);
+            
+            return mplew.getPacket();
+        }
+
+        public static byte[] UseWeaponScrollStart() {
+            MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+            
+            mplew.writeShort(SendPacketOpcode.ZERO_SCROLL_START.getValue());
+            
+            return mplew.getPacket();
+        }
+
+        public static byte[] OpenWeaponUI(int type) {
+            MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+            
+            mplew.writeShort(SendPacketOpcode.ZERO_RESULT.getValue());
+            mplew.writeInt(type);
+            mplew.writeInt((type == 1) ? 100000 : 50000);
+            mplew.writeInt((type == 1) ? 600 : 500);
+            mplew.write(0);
+            mplew.write(0);
+            
+            return mplew.getPacket();
+        }
+
+
+        public static byte[] OpenZeroUpgrade(int type, int level, int action, int weapon) {
+            MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+            
+            mplew.writeShort(SendPacketOpcode.ZERO_UPGRADE.getValue());
+            mplew.write(0);
+            mplew.write(action);
+            mplew.writeInt(type);
+            mplew.writeInt(level);
+            mplew.writeInt(weapon + 10001);
+            mplew.writeInt(weapon + 1);
+            
+            return mplew.getPacket();
+        }
+
+        public static byte[] NPCTalk() {
+            MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+            
+            mplew.writeShort(SendPacketOpcode.NPC_TALK.getValue());
+            mplew.write(3);
+            mplew.writeInt(0);
+            mplew.writeShort(0);
+            mplew.writeShort(0x24);
+            mplew.writeInt(2400010); // 2400009 남자, 2400010 여자
+            mplew.writeMapleAsciiString("#face1#滾開！");
+            mplew.write(HexTool.getByteArrayFromHexString("01 01"));
+            mplew.writeInt(0);
+            
+            return mplew.getPacket();
+        }
+    }
 
     public static class EffectPacket {
 

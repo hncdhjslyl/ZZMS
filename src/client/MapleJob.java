@@ -1,4 +1,4 @@
-package client;
+﻿package client;
 
 public enum MapleJob {
 
@@ -483,7 +483,7 @@ public enum MapleJob {
                 return (short) 天使破壞者.getId();
             case 100:
             case 101:
-                return (short) 神之子.getId();
+                return (short) 神之子JR.getId();
             case 110:
             case 112:
                 return (short) 幻獸師.getId();
