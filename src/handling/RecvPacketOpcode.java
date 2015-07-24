@@ -569,6 +569,7 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     BACK_TO_CHARLIST(true, (short) 0x187),
     // 幸運怪物(完成)
     LUCKY_LUCKY_MONSTORY(true, (short) 0x191),
+    // 0x196 創建角色跟刪除角色輸入的驗證碼
     // 快速移動(非打開NPC)
     QUICK_MOVE_SPECIAL(true, (short) 0x197),
     // 神之子鏡子世界地圖傳送[完成-180]

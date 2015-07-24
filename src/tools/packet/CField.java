@@ -505,6 +505,7 @@ public class CField {
         UnkFunction3(mplew);
         UnkFunction4(mplew);
         UnkFunction5(mplew);
+        mplew.write(150); //181+
 
         return mplew.getPacket();
     }
