@@ -11077,4 +11077,8 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         skipOnceChat = !skipOnceChat;
         return skipOnceChat;
     }
+
+    public Collection<MapleMonster> getControlledMonsters() {
+        return Collections.unmodifiableCollection(controlled);
+    }
 }

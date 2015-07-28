@@ -72,7 +72,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private WeakReference<MapleMonster> sponge = new WeakReference<>(null);
     private int linkoid = 0, lastNode = -1, highestDamageChar = 0, linkCID = 0; // Just a reference for monster EXP distribution after dead
     private WeakReference<MapleCharacter> controller = new WeakReference<>(null);
-    private boolean fake = false, dropsDisabled = false, controllerHasAggro = false;
+    private boolean fake = false, dropsDisabled = false, controllerHasAggro = false, controllerKnowsAboutAggro;
     private final Collection<AttackerEntry> attackers = new LinkedList<>();
     private EventInstanceManager eventInstance;
     private MonsterListener listener = null;
@@ -637,6 +637,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         if (immediateAggro) {
             setControllerHasAggro(true);
         }
+        setControllerKnowsAboutAggro(false);
     }
 
     public final void addListener(final MonsterListener listener) {
@@ -874,13 +875,13 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         long aniTime = duration;
         if (skilz != null) {
             aniTime += skilz.getAnimationTime();
-        }        
+        }
         status.setCancelTask(aniTime);
         if (poison && getHp() > 1) { // 中毒[POISON]
             status.setValue(status.getStati(), (int) ((eff.getDOT() + from.getStat().dot + from.getStat().getDamageIncrease(eff.getSourceId())) * from.getStat().getCurrentMaxBaseDamage() / 100.0));
             //int dam = (int) (aniTime / 1000 * status.getX() / 2);
             // 設定中毒持續傷害，如果status.getX()跟這裡傷害不一樣就會有顯示跟實際不同的問題
-            status.setPoisonSchedule(status.getX(), from); 
+            status.setPoisonSchedule(status.getX(), from);
         } else if (statusSkill == 4111003 || statusSkill == 14111001) { // shadow web
             status.setValue(status.getStati(), (int) (getMobMaxHp() / 50.0 + 0.999));
             status.setPoisonSchedule(Integer.valueOf(status.getX()), from);
@@ -898,7 +899,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                 //damage(from, dam, false);
             }
         }
-        
+
         final BuffTimer applyEffectTimer = Timer.BuffTimer.getInstance();
         final Runnable applyEffectTask = new Runnable() {
             @Override
@@ -911,13 +912,13 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                     if (dam >= hp) {
                         dam = (int) (hp - 1);
                     }
-                    damage(from, dam, false);        
+                    damage(from, dam, false);
                 } else {
                     // 其他
                 }
             }
         };
-        
+
         final BuffTimer BuffTimer = Timer.BuffTimer.getInstance();
         final Runnable cancelTask = new Runnable() {
             @Override
@@ -931,11 +932,11 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                 }
                 status.cancelPoisonSchedule(MapleMonster.this);
                 if (from.isShowInfo()) {
-                        from.showMessage(10, "結束 => 持續傷害: 結束時間[" + System.currentTimeMillis() + "]");
+                    from.showMessage(10, "結束 => 持續傷害: 結束時間[" + System.currentTimeMillis() + "]");
                 }
             }
         };
-        
+
         final MapleCharacter con = getController();
         if (stat == MonsterStatus.POISON || stat == MonsterStatus.VENOMOUS_WEAPON) {
             poisonsLock.writeLock().lock();
@@ -985,8 +986,8 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             cancelStatus(stat);
         }
     }
-    
-    public void applyMonsterBuff(final Map<MonsterStatus, Integer> effect, final int x,final int skillId, final long duration, final MobSkill skill, final List<Integer> reflection) {
+
+    public void applyMonsterBuff(final Map<MonsterStatus, Integer> effect, final int x, final int skillId, final long duration, final MobSkill skill, final List<Integer> reflection) {
         final MapleCharacter con = getController();
         BuffTimer BuffTimer = Timer.BuffTimer.getInstance();
         final Runnable cancelTask = new Runnable() {
@@ -1018,7 +1019,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             final MonsterStatusEffect effectz = new MonsterStatusEffect(z.getKey(), z.getValue(), 0, skill, true, reflection.size() > 0);
             effectz.setCancelTask(duration);
             stati.put(z.getKey(), effectz);
-        }        
+        }
         if (reflection.size() > 0) {
             List<MonsterStatusEffect> mse = new ArrayList<>();
             for (Entry<MonsterStatus, Integer> z : effect.entrySet()) {
@@ -1698,4 +1699,22 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         endBelong = System.currentTimeMillis() + (stats.isBoss() ? 300000 : 30000); //30 seconds for the person to kill it.
     }
     /* Anti KS */
+
+    public boolean isAttackedBy(MapleCharacter chr) {
+        for (AttackerEntry aentry : attackers) {
+            if (aentry.contains(chr)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isControllerKnowsAboutAggro() {
+        return controllerKnowsAboutAggro;
+    }
+
+    public void setControllerKnowsAboutAggro(boolean controllerKnowsAboutAggro) {
+        this.controllerKnowsAboutAggro = controllerKnowsAboutAggro;
+    }
+
 }
