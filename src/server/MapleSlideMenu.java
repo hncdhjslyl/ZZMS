@@ -1,24 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package server;
 
 import client.MapleCharacter;
-import constants.ServerConstants;
 
 /**
  *
  * @author Itzik
  */
-public class MapleSlideMenu {//UI.wz\UIWindow2.img\SlideMenu\
+public class MapleSlideMenu { // UI.wz\UIWindow2.img\SlideMenu\
 
     public static class SlideMenu0 {
 
-        public static final int version = ServerConstants.MAPLE_VERSION; //Change as you wish
         public static final int above = 0xFF;
 
-        public static enum 異次元的門 { //Updated to V120 without quests
+        public static enum 異次元的門 {
             //TODO: Order by levels
 
             PQ0(0, "阿里安特競技場", 682020000, 3, 20, 30, 0, 0, false),
@@ -76,8 +70,8 @@ public class MapleSlideMenu {//UI.wz\UIWindow2.img\SlideMenu\
             PQ804(804, "尖耳狐狸村", 410000000, 0, 0, above, 0, 0, true),
             PQ805(805, "Jett&俠客", 743050000, 3, 0, above, 0, 0, true),
             PQ806(806, "幸福山", 0, 3, 0, above, 0, 0, true),
-            PQ807(807, "阿里山", 0, 3, 0, above, 0, 0, true),
-            PQ808(808, "虛幻之森", 0, 3, 0, above, 0, 0, true),
+            PQ807(807, "阿里山", 749080900, 0, 0, above, 0, 0, true),
+            PQ808(808, "虛幻之森", 749081200, 0, 0, above, 0, 0, true),
             PQ908(908, "比叡山本堂", 811000999, 0, 0, above, 0, 0, true),
             PQ993(993, "進擊的巨人", 814000000, 0, 0, above, 0, 0, true),
             DEFAULT(Integer.MAX_VALUE, "Default Map", 999999999, 0, 0, 0, 0, 0, false);
@@ -614,7 +608,7 @@ public class MapleSlideMenu {//UI.wz\UIWindow2.img\SlideMenu\
             TOWN_20(20, "埃德爾斯坦", 310000000, 0),
             TOWN_21(21, "櫻花處", 101050000, 0),
             TOWN_22(22, "萬神殿", 400000000, 0),
-//            TOWN_23(23, "未知", 0, 0),
+            //            TOWN_23(23, "未知", 0, 0),
             TOWN_24(24, "天堂", 31007000, 0);
             private final int id, map, portal;
             private final String name;
