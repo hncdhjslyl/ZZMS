@@ -805,6 +805,13 @@ public class MapleServerHandler extends IoHandlerAdapter {
                 slea.skip(4);
                 c.getSession().write(CSPacket.GoldenHammer((byte) 2, slea.readInt()));
                 break;
+            case USE_PLATINUM_HAMMER:
+                InventoryHandler.UsePlatinumHammer(slea, c);
+                break;
+            case PLATINUM_HAMMER:
+                slea.skip(4);
+                c.getSession().write(CSPacket.PlatinumHammer((byte) 2, slea.readInt()));
+                break;
             case USE_NEBULITE_FUSION:
                 InventoryHandler.UseNebuliteFusion(slea, c);
                 break;
@@ -972,6 +979,9 @@ public class MapleServerHandler extends IoHandlerAdapter {
                 break;
             case QUICK_MOVE_SPECIAL:
                 NPCHandler.OpenQuickMoveSpecial(slea, c);
+                break;
+            case ZERO_QUICK_MOVE:
+                NPCHandler.OpenZeroQuickMoveSpecial(slea, c);
                 break;
             case BBS_OPERATION:
                 BBSHandler.BBSOperation(slea, c);
@@ -1229,6 +1239,9 @@ public class MapleServerHandler extends IoHandlerAdapter {
             case CHOOSE_SKILL:
                 PlayersHandler.ChooseSkill(slea, c);
                 break;
+            case RELEASE_TEMPEST_BLADES:
+                PlayerHandler.releaseTempestBlades(slea, c.getPlayer());
+                break;
             case MAGIC_WHEEL:
                 System.out.println("[MAGIC_WHEEL] [" + slea.toString() + "]");
                 PlayersHandler.magicWheel(slea, c);
@@ -1304,6 +1317,8 @@ public class MapleServerHandler extends IoHandlerAdapter {
                 break;
             case ZERO_WEAPON_UPGRADE:
                 PlayerHandler.ZeroHandler.openZeroUpgrade(slea, c);
+                break;
+	    case ZERO_WEAPON_UPGRADE_START:
                 break;
             case ZERO_WEAPON_ABILITY:
                 break;

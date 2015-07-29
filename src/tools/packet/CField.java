@@ -8,13 +8,11 @@ import constants.ServerConfig;
 import constants.ServerConstants;
 import handling.SendPacketOpcode;
 import handling.channel.handler.PlayerInteractionHandler;
-import handling.world.PlayerBuffValueHolder;
 import handling.world.World;
 import handling.world.guild.MapleGuild;
 import handling.world.guild.MapleGuildAlliance;
 import java.awt.Point;
 import java.util.*;
-import java.util.Map.Entry;
 import server.MaplePackageActions;
 import server.MapleTrade;
 import server.Randomizer;
@@ -438,8 +436,10 @@ public class CField {
         mplew.writeInt(chr.getClient().getChannel() - 1);
         mplew.write(0);
         mplew.writeInt(0);
-        mplew.write(1);
+        mplew.write(CharInfo ? 1 : 2);
         mplew.writeInt(0);
+        mplew.writeInt(1298);
+        mplew.writeInt(330);
         mplew.write(CharInfo);
 
         int v104 = 0;
@@ -481,6 +481,11 @@ public class CField {
         mplew.writeBoolean(false);
         mplew.write(0);
         mplew.write(GameConstants.isSeparatedSp(chr.getJob()) ? 1 : 0); // v109
+        boolean v88 = false;
+        mplew.writeBoolean(v88);
+        if (v88) {
+            mplew.writeInt(0);
+        }
         if (false) {
             int v18 = 0;
             mplew.write(v18);
@@ -493,11 +498,11 @@ public class CField {
             }
         }
 
-        UnkFunction2(mplew, 45564);
+        UnkFunction2(mplew, 48140);
 
         boolean v116 = false;
         mplew.writeBoolean(v116);
-        if (v116) {
+        if (v116) { // Function
             mplew.writeInt(0);
             mplew.write(0);
             mplew.writeLong(0);
@@ -505,7 +510,13 @@ public class CField {
         UnkFunction3(mplew);
         UnkFunction4(mplew);
         UnkFunction5(mplew);
-        mplew.write(150); //181+
+        mplew.write(150);
+        mplew.writeInt(0);
+        int v5 = 0;
+        mplew.writeInt(v5);
+        for (int i = 0; i < v5; i++) {
+            mplew.writeInt(0);
+        }
 
         return mplew.getPacket();
     }
@@ -1590,6 +1601,12 @@ public class CField {
                 mplew.write(true);
                 mplew.write(i);
                 mplew.writeInt(skills[i]);
+                int x = 0;
+                mplew.write(x);
+                if (x != 0) {
+                    mplew.write(0);
+                    mplew.writeInt(0);
+                }
             }
         }
 
@@ -4217,7 +4234,6 @@ public class CField {
 
         public static byte[] getLuminousSelection() {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
             mplew.writeShort(SendPacketOpcode.NPC_TALK.getValue());
             mplew.write(3);
             mplew.writeInt(0);
@@ -4228,7 +4244,6 @@ public class CField {
             mplew.write(0);
             mplew.writeShort(0);
             mplew.writeZeroBytes(8);
-
             return mplew.getPacket();
         }
 
@@ -4288,7 +4303,7 @@ public class CField {
             }
             return mplew.getPacket();
         }
-
+        
         public static byte[] getArisanNPCTalk(int npc, boolean read, byte msgType, byte type, byte result, String talk) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
@@ -5076,44 +5091,64 @@ public class CField {
             return mplew.getPacket();
         }
     }
-
+    
     public static class ZeroPacket {
+        
+        public static byte[] gainWeaponPoint(int gain) {
+            MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+            
+            mplew.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
+            mplew.write(0x20);
+            mplew.writeInt(gain);
+            
+            return mplew.getPacket();
+        }
 
+        public static byte[] updateWeaponPoint(int wp) {
+            MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+            
+            mplew.writeShort(SendPacketOpcode.ZERO_UPDATE.getValue());
+            mplew.writeInt(wp);
+            
+            return mplew.getPacket();
+        }
+    
         public static byte[] UseWeaponScroll(int Success) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
+            
             mplew.writeShort(SendPacketOpcode.ZERO_SCROLL.getValue());
             mplew.writeShort(1);
             mplew.write(0);
             mplew.writeInt(Success);
-
+            
             return mplew.getPacket();
         }
 
         public static byte[] UseWeaponScrollStart() {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
+            
             mplew.writeShort(SendPacketOpcode.ZERO_SCROLL_START.getValue());
-
+            
             return mplew.getPacket();
         }
 
         public static byte[] OpenWeaponUI(int type) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
+            
             mplew.writeShort(SendPacketOpcode.ZERO_RESULT.getValue());
             mplew.writeInt(type);
             mplew.writeInt((type == 1) ? 100000 : 50000);
             mplew.writeInt((type == 1) ? 600 : 500);
             mplew.write(0);
             mplew.write(0);
-
+            
             return mplew.getPacket();
         }
 
+
         public static byte[] OpenZeroUpgrade(int type, int level, int action, int weapon) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
+            
             mplew.writeShort(SendPacketOpcode.ZERO_UPGRADE.getValue());
             mplew.write(0);
             mplew.write(action);
@@ -5121,13 +5156,13 @@ public class CField {
             mplew.writeInt(level);
             mplew.writeInt(weapon + 10001);
             mplew.writeInt(weapon + 1);
-
+            
             return mplew.getPacket();
         }
 
         public static byte[] NPCTalk() {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
+            
             mplew.writeShort(SendPacketOpcode.NPC_TALK.getValue());
             mplew.write(3);
             mplew.writeInt(0);
@@ -5137,7 +5172,7 @@ public class CField {
             mplew.writeMapleAsciiString("#face1#滾開！");
             mplew.write(HexTool.getByteArrayFromHexString("01 01"));
             mplew.writeInt(0);
-
+            
             return mplew.getPacket();
         }
     }

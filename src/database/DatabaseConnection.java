@@ -1,8 +1,8 @@
 package database;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.apache.tomcat.jdbc.pool.DataSource;
+import org.apache.tomcat.jdbc.pool.PoolProperties;
 import constants.ServerConfig;
-import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -18,7 +18,8 @@ import java.util.LinkedList;
 public class DatabaseConnection {
 
     private static final ThreadLocal<Connection> con = new DatabaseConnection.ThreadLocalConnection();
-    private static final ComboPooledDataSource dataSource = new ComboPooledDataSource();
+    private static final PoolProperties poolProps = new PoolProperties();
+    private static final DataSource dataSource = new DataSource();
     public static final int CLOSE_CURRENT_RESULT = 1;
     /**
      * The constant indicating that the current <code>ResultSet</code> object
@@ -102,25 +103,18 @@ public class DatabaseConnection {
 
     static {
         try {
-            dataSource.setDriverClass("com.mysql.jdbc.Driver");
-            dataSource.setJdbcUrl("jdbc:mysql://" + ServerConfig.SQL_IP + ":" + ServerConfig.SQL_PORT + "/" + ServerConfig.SQL_DATABASE + "?autoReconnect=true&characterEncoding=UTF8");
-            dataSource.setUser(ServerConfig.SQL_USER);
-            dataSource.setPassword(ServerConfig.SQL_PASSWORD);
-            dataSource.setMinPoolSize(20);
-            dataSource.setInitialPoolSize(30);
-            dataSource.setMaxPoolSize(400);
-            dataSource.setAcquireIncrement(10);
-            dataSource.setCheckoutTimeout(300);
-            dataSource.setAutoCommitOnClose(true);
-//            dataSource.setMaxIdleTime(120);
-//            dataSource.setIdleConnectionTestPeriod(120);
-            dataSource.setAutomaticTestTable("c3p0testtable");
-            dataSource.setTestConnectionOnCheckin(true);
-            dataSource.setTestConnectionOnCheckout(true);
-//            dataSource.setUnreturnedConnectionTimeout(1800);
-            dataSource.setMaxStatementsPerConnection(100);
-//            dataSource.setNumHelperThreads(3);
-        } catch (PropertyVetoException e) {
+            poolProps.setUrl("jdbc:mysql://" + ServerConfig.SQL_IP + ":" + ServerConfig.SQL_PORT + "/" + ServerConfig.SQL_DATABASE + "?autoReconnect=true&characterEncoding=UTF8");
+            poolProps.setDriverClassName("com.mysql.jdbc.Driver");
+            poolProps.setUsername(ServerConfig.SQL_USER);
+            poolProps.setPassword(ServerConfig.SQL_PASSWORD);
+
+            poolProps.setMinIdle(20);
+            poolProps.setInitialSize(30);
+            poolProps.setMaxIdle(100);
+
+            dataSource.setPoolProperties(poolProps);
+
+        } catch (Exception e) {
             System.out.println("[數據庫訊息] 找不到JDBC驅動.");
             System.exit(0);
         }

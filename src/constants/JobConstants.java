@@ -9,32 +9,32 @@ public class JobConstants {
 
     public enum LoginJob {
 
-        末日反抗軍(0, JobFlag.開啟),
-        冒險家(1, JobFlag.開啟),
-        皇家騎士團(2, JobFlag.開啟),
-        狂狼勇士(3, JobFlag.開啟),
-        龍魔導士(4, JobFlag.開啟),
-        精靈遊俠(5, JobFlag.開啟),
-        惡魔(6, JobFlag.開啟),
-        幻影俠盜(7, JobFlag.開啟),
-        影武者(8, JobFlag.開啟),
-        米哈逸(9, JobFlag.開啟),
-        夜光(10, JobFlag.開啟),
-        凱撒(11, JobFlag.開啟),
-        天使破壞者(12, JobFlag.開啟),
-        重砲指揮官(13, JobFlag.開啟),
-        傑諾(14, JobFlag.開啟),
-        神之子(15, JobFlag.開啟),
-        隱月(16, JobFlag.開啟),
-        蒼龍俠客(17, JobFlag.開啟),
-        劍豪(18, JobFlag.開啟),
-        陰陽師(19, JobFlag.開啟),
-        幻獸師(20, JobFlag.開啟);
-        private final int jobType, flag;
+        末日反抗軍(0),
+        冒險家(1),
+        皇家騎士團(2),
+        狂狼勇士(3),
+        龍魔導士(4),
+        精靈遊俠(5),
+        惡魔(6),
+        幻影俠盜(7),
+        影武者(8),
+        米哈逸(9),
+        夜光(10),
+        凱撒(11),
+        天使破壞者(12),
+        重砲指揮官(13),
+        傑諾(14),
+        神之子(15),
+        隱月(16),
+        皮卡啾(17),
+        蒼龍俠客(18),
+        劍豪(19),
+        陰陽師(20),
+        幻獸師(21),;
+        private final int jobType, flag = JobFlag.開啟.getFlag();
 
-        private LoginJob(int jobType, JobFlag flag) {
+        private LoginJob(int jobType) {
             this.jobType = jobType;
-            this.flag = flag.getFlag();
         }
 
         public int getJobType() {

@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : MySQL
+Source Server         : localhost_3306
 Source Server Version : 50536
 Source Host           : localhost:3306
 Source Database       : test
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50536
 File Encoding         : 65001
 
-Date: 2015-06-07 00:08:11
+Date: 2015-07-29 16:04:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -371,6 +371,7 @@ CREATE TABLE `characters` (
   `tail` int(11) NOT NULL DEFAULT '0',
   `ears` int(11) NOT NULL DEFAULT '0',
   `ap` int(11) NOT NULL DEFAULT '0',
+  `weaponPoint` int(11) NOT NULL DEFAULT '0',
   `map` int(11) NOT NULL DEFAULT '0',
   `spawnpoint` int(3) NOT NULL DEFAULT '0',
   `gm` int(3) NOT NULL DEFAULT '0',
@@ -1215,6 +1216,7 @@ DROP TABLE IF EXISTS `inventoryequipment`;
 CREATE TABLE `inventoryequipment` (
   `inventoryequipmentid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `inventoryitemid` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `PlatinumHammer` tinyint(2) NOT NULL DEFAULT '0',
   `upgradeslots` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `level` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `str` int(6) NOT NULL DEFAULT '0',

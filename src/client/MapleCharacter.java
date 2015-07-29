@@ -77,7 +77,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             guildid = 0, fallcounter, maplepoints, acash, nxcredit, chair, itemEffect, titleEffect, points, vpoints, dpoints, epoints,
             rank = 1, rankMove = 0, jobRank = 1, jobRankMove = 0, marriageId, marriageItemId, dotHP,
             currentrep, totalrep, coconutteam, followid, battleshipHP, gachexp, challenge, guildContribution = 0,
-            remainingAp, honourExp, honorLevel, runningLight, runningLightSlot, runningDark, runningDarkSlot, luminousState, touchedrune;
+            remainingAp, honourExp, honorLevel, runningLight, runningLightSlot, runningDark, runningDarkSlot, luminousState, touchedrune, weaponPoint;
     private byte lastWorld = -3;
     private Point old;
     private MonsterFamiliar summonedFamiliar;
@@ -405,6 +405,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         ret.accountid = ct.accountid;
         ret.totalWins = ct.totalWins;
         ret.totalLosses = ct.totalLosses;
+        ret.weaponPoint = ct.weaponPoint;
         client.setAccID(ct.accountid);
         ret.mapid = ct.mapid;
         ret.initialSpawnPoint = ct.initialSpawnPoint;
@@ -597,6 +598,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             ret.elf = rs.getInt("elf");
             ret.accountid = rs.getInt("accountid");
             client.setAccID(ret.accountid);
+            ret.weaponPoint = rs.getInt("weaponPoint");
             ret.mapid = rs.getInt("map");
             ret.initialSpawnPoint = rs.getByte("spawnpoint");
             ret.world = rs.getByte("world");
@@ -1181,8 +1183,8 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
             con.setAutoCommit(false);
 
-            ps = con.prepareStatement("INSERT INTO characters (level, str, dex, luk, `int`, hp, mp, maxhp, maxmp, sp, hsp, ap, skincolor, gender, job, hair, face, faceMarking, ears, tail, map, meso, party, buddyCapacity, pets, subcategory, elf, friendshippoints, chatcolour, gm, accountid, name, world, position)"
-                    + "                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", DatabaseConnection.RETURN_GENERATED_KEYS);
+            ps = con.prepareStatement("INSERT INTO characters (level, str, dex, luk, `int`, hp, mp, maxhp, maxmp, sp, hsp, ap, skincolor, gender, job, hair, face, faceMarking, ears, tail, weaponPoint, map, meso, party, buddyCapacity, pets, subcategory, elf, friendshippoints, chatcolour, gm, accountid, name, world, position)"
+                    + "                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", DatabaseConnection.RETURN_GENERATED_KEYS);
             int index = 0;
 //            if (GameConstants.isZero(chr.getJob())) {
 //               chr.level = 100;
@@ -1226,6 +1228,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             if (db < 0 || db > 10) {
                 db = 0;
             }
+            ps.setLong(++index, chr.weaponPoint); // WeaponPoint
             ps.setInt(++index, db == 2 ? 3000600 : type.map); //TODO fix jett, db tutorials
             ps.setLong(++index, chr.meso); // Meso
             ps.setInt(++index, -1); // Party
@@ -1399,7 +1402,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
             con.setAutoCommit(false);
 
-            ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, hsp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, faceMarking = ?, ears = ?, tail = ?, map = ?, meso = ?, hpApUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, pets = ?, subcategory = ?, currentrep = ?, totalrep = ?, gachexp = ?, fatigue = ?, charm = ?, charisma = ?, craft = ?, insight = ?, sense = ?, will = ?, totalwins = ?, totallosses = ?, pvpExp = ?, pvpPoints = ?, reborns = ?, apstorage = ?, elf = ?, honourExp = ?, honourLevel = ?, friendshippoints = ?, friendshiptoadd = ?, chatcolour = ?, name = ? WHERE id = ?", DatabaseConnection.RETURN_GENERATED_KEYS);
+            ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, hsp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, faceMarking = ?, ears = ?, tail = ?, weaponPoint = ?, map = ?, meso = ?, hpApUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, pets = ?, subcategory = ?, currentrep = ?, totalrep = ?, gachexp = ?, fatigue = ?, charm = ?, charisma = ?, craft = ?, insight = ?, sense = ?, will = ?, totalwins = ?, totallosses = ?, pvpExp = ?, pvpPoints = ?, reborns = ?, apstorage = ?, elf = ?, honourExp = ?, honourLevel = ?, friendshippoints = ?, friendshiptoadd = ?, chatcolour = ?, name = ? WHERE id = ?", DatabaseConnection.RETURN_GENERATED_KEYS);
             int index = 0;
             ps.setInt(++index, level);
             ps.setInt(++index, fame);
@@ -1436,6 +1439,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             ps.setInt(++index, faceMarking);
             ps.setInt(++index, ears);
             ps.setInt(++index, tail);
+            ps.setInt(++index, weaponPoint);
             if (!fromcs && map != null) {
                 if (map.getForcedReturnId() != 999999999 && map.getForcedReturnMap() != null) {
                     ps.setInt(++index, map.getForcedReturnId());
@@ -2812,28 +2816,28 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
     public void handleShadowBat(int mobid, int skill) {
         if (this.kaiserCombo > 3) {
-//                List<Integer> mobsid = new ArrayList<>();
-//                mobsid.add(mobid);
+                List<Integer> mobsid = new ArrayList<>();
+                mobsid.add(mobid);
 
-//                List<Pair<Integer, Integer>> forceinfo = new ArrayList<>();
-//                forceinfo.add(new Pair<>(3, 1));
-//                client.getSession().write(CField.gainForce(false, this, mobsid, 15, 14000028, forceinfo)); // 到處飛的
+                List<Pair<Integer, Integer>> forceinfo = new ArrayList<>();
+                forceinfo.add(new Pair<>(3, 1));
+                client.getSession().write(CField.gainForce(false, this, mobsid, 15, 14000028, forceinfo)); // 到處飛的
 //                client.getSession().write(CField.gainForce(true, this, mobsid, 16, 14000029, forceinfo)); // 在身邊的
         }
         if (getBuffedValue(MapleBuffStat.SHADOW_BAT) != null && skill != 0) {
             if (this.kaiserCombo >= 7) {
-                System.out.println("暗影蝙蝠::[" + kaiserCombo + "]");
+//                System.out.println("暗影蝙蝠::[" + kaiserCombo + "]");
                 return;
             }
             if (this.kaiserCombo % 3 == 0 && this.kaiserCombo != 0) {
-                System.out.println("暗影蝙蝠::[" + kaiserCombo + "]");
+//                System.out.println("暗影蝙蝠::[" + kaiserCombo + "]");
                 this.kaiserCombo += 1;
                 final MapleSummon tosummon = new MapleSummon(this, 14000027, 1, new Point(this.getTruePosition()), SummonMovementType.CIRCLE_FOLLOW);
                 getMap().spawnSummon(tosummon);
                 addSummon(tosummon);
             } else {
                 this.kaiserCombo += 1;
-                System.out.println("暗影蝙蝠::[" + kaiserCombo + "]");
+//                System.out.println("暗影蝙蝠::[" + kaiserCombo + "]");
             }
         }
     }
@@ -11042,6 +11046,20 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         MapleStatEffect skill = SkillFactory.getSkill(skillid).getEffect(getSkillLevel(skillid));
         return skill.getSoulMPCon();
     }
+    
+    public int getWeaponPoint() {
+        return weaponPoint;
+    }
+
+    public void gainWeaponPoint(int wp) {
+        this.weaponPoint += wp;
+    }
+
+    public void addWeaponPoint(int wp) {
+        gainWeaponPoint(wp);
+        getClient().getSession().write(CField.ZeroPacket.gainWeaponPoint(wp));
+        getClient().getSession().write(CField.ZeroPacket.updateWeaponPoint(getWeaponPoint()));
+    }
 
     public long getCooldownLimit(int skillid) {
         for (MapleCoolDownValueHolder mcdvh : getAllCooldowns()) {
@@ -11077,7 +11095,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         skipOnceChat = !skipOnceChat;
         return skipOnceChat;
     }
-
+    
     public Collection<MapleMonster> getControlledMonsters() {
         return Collections.unmodifiableCollection(controlled);
     }

@@ -314,7 +314,7 @@ public class CharLoginHandler {
         }
         for (JobConstants.LoginJob j : JobConstants.LoginJob.values()) {
             if (j.getJobType() == job_type) {
-                if (j.getFlag() != JobConstants.LoginJob.JobFlag.開啟.getFlag()) {
+                if (j.getFlag() == JobConstants.LoginJob.JobFlag.關閉.getFlag()) {
                     System.out.println("未開放的職業被嘗試創建");
                     return;
                 }
@@ -500,6 +500,11 @@ public class CharLoginHandler {
             newchar.getStat().hp = 140;
             newchar.getStat().maxmp = 805;
             newchar.getStat().mp = 38;
+        }
+        
+        if (job == JobType.天使破壞者) {
+            newchar.setQuestAdd(MapleQuest.getInstance(25835), (byte) 2, ""); //任務：愛斯卡達的真面目
+            newchar.setQuestAdd(MapleQuest.getInstance(25829), (byte) 2, ""); //任務：這個技能是什麼？
         }
 
         if (job == JobType.神之子) {

@@ -1,6 +1,11 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package server;
 
 import client.MapleCharacter;
+import constants.ServerConstants;
 
 /**
  *
@@ -10,9 +15,10 @@ public class MapleSlideMenu { // UI.wz\UIWindow2.img\SlideMenu\
 
     public static class SlideMenu0 {
 
+        public static final int version = ServerConstants.MAPLE_VERSION; //Change as you wish
         public static final int above = 0xFF;
 
-        public static enum 異次元的門 {
+        public static enum 異次元的門 { //Updated to V120 without quests
             //TODO: Order by levels
 
             PQ0(0, "阿里安特競技場", 682020000, 3, 20, 30, 0, 0, false),
@@ -608,7 +614,7 @@ public class MapleSlideMenu { // UI.wz\UIWindow2.img\SlideMenu\
             TOWN_20(20, "埃德爾斯坦", 310000000, 0),
             TOWN_21(21, "櫻花處", 101050000, 0),
             TOWN_22(22, "萬神殿", 400000000, 0),
-            //            TOWN_23(23, "未知", 0, 0),
+//            TOWN_23(23, "未知", 0, 0),
             TOWN_24(24, "天堂", 31007000, 0);
             private final int id, map, portal;
             private final String name;
