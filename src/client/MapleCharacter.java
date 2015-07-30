@@ -3462,7 +3462,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             characterCard.recalcLocalStats(this);
             stats.recalcLocalStats(this);
             client.getSession().write(CWvsContext.updatePlayerStats(statup, this));
-            map.broadcastMessage(this, EffectPacket.showJobChangeEffect(this), false);
+            map.broadcastMessage(this, EffectPacket.showJobChangeEffect(this.getId()), false);
             this.map.broadcastMessage(this, CField.updateCharLook(this, false), false);
             silentPartyUpdate();
             guildUpdate();

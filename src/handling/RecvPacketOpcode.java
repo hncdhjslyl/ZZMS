@@ -19,6 +19,12 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     CHARACTER_CARD(true, (short) 0x35),
     // 未知[未知]
     ENABLE_LV50_CHAR(true, (short) 0x36),
+
+    // 選擇性別[完成]
+    SET_GENDER(false, (short) 0x4B),
+    // 0x4C 【回到登入介面】[String(帳號)]
+    // 伺服器狀態[未知]
+    SERVERSTATUS_REQUEST(false, (short) 0x4D),
     
     // 客戶端驗證[完成-182]
     CLIENT_HELLO(false, (short) 0x67),
@@ -63,18 +69,56 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     // 客戶端開始(顯示視窗)[完成-182]
     CLIENT_START(false, (short) 0xA5), 
     
+    // 變更地圖[完成-182]
+    CHANGE_MAP(true, (short) 0xA8),
     
+    // 玩家移動[完成-182]
+    MOVE_PLAYER(true, (short) 0xB7),
     
-    // 選擇性別[完成]
-    SET_GENDER(false, (short) 0x4B),
-    // 0x4C 【回到登入介面】[String(帳號)]
-    // 伺服器狀態[未知]
-    SERVERSTATUS_REQUEST(false, (short) 0x4D),
+    // 取消椅子[完成-182]
+    CANCEL_CHAIR(true, (short) 0xB8),
+    // 使用椅子[完成-182]
+    USE_CHAIR(true, (short) 0xB9),
+
+    // 普通聊天[完成-182]
+    GENERAL_CHAT(true, (short) 0xC3),
+
+    // Npc詳細交談[完成-182]
+    NPC_TALK_MORE(true, (short) 0xD5),
+
+    // 腳本地圖[完成-182]
+    CHANGE_MAP_SPECIAL(true, (short) 0x132),
+
+    // 任務操作[完成-182]
+    QUEST_ACTION(true, (short) 0x13B),
+
+    // 能力值信息[完成-182]
+    PROFESSION_INFO(true, (short) 0x153),
+
+    // 變更鍵盤設置[完成]
+    CHANGE_KEYMAP(true, (short) 0x190),
+
+    // 返回選角界面[完成-182]
+    BACK_TO_CHARLIST(true, (short) 0x1D8),
+
+    // 創建角色跟刪除角色輸入的驗證碼[完成-182]
+    SECURITY_CODE(true, (short) 0x1E7),
+    
+    // 燃燒計畫[完成-182]
+    COMBUSTION_PROJECT(true, (short) 0x217),    
+    // 變更角色順序[完成-182]
+    CHANGE_CHAR_POSITION(true, (short) 0x218),
+    // 創角進入遊戲[完成-182]
+    CREACTE_CHAR_SELECT(true, (short) 0x219),
+
+    // Npc動作(包括說話)[完成-182]
+    NPC_ACTION(true, (short) 0x303),
+    
+    // 創建角色二次密碼認證[完成-182]
+    CREATE_CHAR_2PW(true, (short) 0x3C3),
     
     ////////////////////////////////////////////////
     
-    // 變更地圖[完成-179]
-    CHANGE_MAP(true, (short) 0x7FFE),
     // 變更頻道[完成-179]
     CHANGE_CHANNEL(true, (short) 0x7FFE),
     // 0x58
@@ -95,15 +139,8 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     ENTER_PVP_PARTY(true, (short) 0x7FFE),
     // 離開PvP[完成]
     LEAVE_PVP(true, (short) 0x7FFE),
-    // 玩家移動[完成-179]
-    MOVE_PLAYER(true, (short) 0x7FFE),
     
     // 0x66
-    
-    // 取消椅子[完成-179]
-    CANCEL_CHAIR(true, (short) 0x7FFE),
-    // 使用椅子[完成-179]
-    USE_CHAIR(true, (short) 0x7FFE),
     
     // 0x69
     
@@ -123,8 +160,6 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     TAKE_DAMAGE(true, (short) 0x7FFE),
     // PvP攻擊[推測]
     PVP_ATTACK(true, (short) 0x7FFE),
-    // 普通聊天[完成-179]
-    GENERAL_CHAT(true, (short) 0x7FFE),
     // 關閉黑板[完成-179]
     CLOSE_CHALKBOARD(true, (short) 0x7FFE),
     // 臉部情緒[完成-179]
@@ -156,8 +191,6 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     
     // 0x83
     
-    // Npc詳細交談[完成-179]
-    NPC_TALK_MORE(true, (short) 0x7FFE),
     // Npc商店[完成-179]
     NPC_SHOP(true, (short) 0x7FFE),
     // 倉庫[完成]
@@ -340,8 +373,6 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     
     // 取消異常效果
     CANCEL_DEBUFF(true, (short) 0x7FFE),
-    // 腳本地圖[完成]
-    CHANGE_MAP_SPECIAL(true, (short) 0x7FFE),
     // 使用時空門
     USE_INNER_PORTAL(true, (short) 0x7FFE),
     
@@ -359,8 +390,6 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     LIE_DETECTOR_REFRESH(true, (short) 0x7FFE),
     // 舉報玩家
     REPORT(true, (short) 0x7FFE),
-    // 任務操作[完成-179]
-    QUEST_ACTION(true, (short) 0x7FFE),
     // 重新領取勳章
     REISSUE_MEDAL(true, (short) 0x7FFE),
     // 輔助效果回應
@@ -405,8 +434,6 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     FOLLOW_REPLY(true, (short) 0x7FFE),
     // 自動跟隨回覆()
     AUTO_FOLLOW_REPLY(true, (short) 0x7FFE),
-    // 能力值信息[完成-182]
-    PROFESSION_INFO(true, (short) 0x153),
     // 使用培養皿[完成]
     USE_POT(true, (short) 0x7FFE),
     // 清理培養皿[完成]
@@ -502,8 +529,6 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     
     // 0x13E
     
-    // 變更鍵盤設置[完成]
-    CHANGE_KEYMAP(true, (short) 0x7FFE),
     // 猜拳遊戲[完成]
     RPS_GAME(true, (short) 0x7FFE),
     
@@ -549,13 +574,9 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     UPDATE_HYPER(true, (short) 0x7FFE),
     // 重置超級技能(Done)
     RESET_HYPER(true, (short) 0x7FFE),
-    // 返回選角界面[完成-179]
-    BACK_TO_CHARLIST(true, (short) 0x7FFE),
     // 幸運怪物(完成)
     LUCKY_LUCKY_MONSTORY(true, (short) 0x7FFE),
     
-    // 創建角色跟刪除角色輸入的驗證碼[完成-182]
-    SECURITY_CODE(true, (short) 0x1E7),
     
     // 快速移動(非打開NPC)
     QUICK_MOVE_SPECIAL(true, (short) 0x7FFE),
@@ -581,13 +602,6 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     // 0x1BD
     // 0x1BE
     // 0x1BF
-    
-    // 燃燒計畫[完成-182]
-    COMBUSTION_PROJECT(true, (short) 0x217),    
-    // 變更角色順序[完成-182]
-    CHANGE_CHAR_POSITION(true, (short) 0x218),
-    // 創角進入遊戲[完成-182]
-    CREACTE_CHAR_SELECT(true, (short) 0x219),
     
     // 0x1C3
     
@@ -715,8 +729,6 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     AUTO_AGGRO(true, (short) 0x7FFE),
     // 怪物自爆
     MONSTER_BOMB(true, (short) 0x7FFE),
-    // Npc動作(包括說話)[完成-179]
-    NPC_ACTION(true, (short) 0x7FFE),
     // 拾取物品[完成-179]
     ITEM_PICKUP(true, (short) 0x7FFE),
     // 攻擊箱子
@@ -775,9 +787,6 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     // 0x354
     // 0x355
     // 0x356
-    
-    // 創建角色二次密碼認證[完成-182]
-    CREATE_CHAR_2PW(true, (short) 0x3C3),
     // 使用黃金鐵鎚[完成-179]
     GOLDEN_HAMMER(true, (short) 0x7FFE),
     // 黃金鐵鎚使用完成
@@ -856,7 +865,7 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     PINKBEAN_CHOCO_OPEN(true, (short) 0x171),//165
     PINKBEAN_CHOCO_SUMMON(true, (short) 0x172),//166
     BUY_SILENT_CRUSADE(true, (short) 0x127),
-    CASSANDRAS_COLLECTION(true, (short) 0x178),//new v145
+    CASSANDRAS_COLLECTION(true, (short) 0x7FFE),//new v145
     BUDDY_ADD(true, (short) 0x1A2),
     //
 
@@ -864,7 +873,7 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     //HAKU_1D9(true, (short) 0x1D9),//test
     PVP_SUMMON(true, (short) 0x1CE),//1BE
 
-    MOVE_FAMILIAR(true, (short) 0x1DC),//1DC
+    MOVE_FAMILIAR(true, (short) 0x7FFE),//1DC
     TOUCH_FAMILIAR(true, (short) 0x1DD),//1DD
     ATTACK_FAMILIAR(true, (short) 0x1DE),//1DE
     REVEAL_FAMILIAR(true, (short) 0x1DF),//1DF

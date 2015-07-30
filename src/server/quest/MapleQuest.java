@@ -335,7 +335,7 @@ public class MapleQuest implements Serializable {
             // completion time is set by the constructor
 
             c.getClient().getSession().write(EffectPacket.showQuetCompleteEffect());
-            c.getMap().broadcastMessage(c, EffectPacket.showQuetCompleteEffect(c), false);
+            c.getMap().broadcastMessage(c, EffectPacket.showQuetCompleteEffect(c.getId()), false);
         }
     }
 
@@ -373,7 +373,7 @@ public class MapleQuest implements Serializable {
         newStatus.setForfeited(c.getQuest(this).getForfeited());
         c.updateQuest(newStatus);
         c.getClient().getSession().write(EffectPacket.showQuetCompleteEffect());
-        c.getMap().broadcastMessage(c, EffectPacket.showQuetCompleteEffect(c), false);
+        c.getMap().broadcastMessage(c, EffectPacket.showQuetCompleteEffect(c.getId()), false);
     }
 
     public int getId() {

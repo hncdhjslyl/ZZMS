@@ -5179,67 +5179,25 @@ public class CField {
 
     public static class EffectPacket {
 
-        public static byte[] showEffect(MapleCharacter chr, SpecialEffectType effect, int value) {
-            MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-            if (chr == null) {
-                mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
-            } else {
-                mplew.writeShort(SendPacketOpcode.SHOW_FOREIGN_EFFECT.getValue());
-                mplew.writeInt(chr.getId());
-            }
-            mplew.write((int) effect.getValue());
-
-            switch (effect) {
-                case ITEM_OPERATION_EFFECT:
-                    int size = 0;
-                    mplew.write(size);
-                    for (int i = 0; i < size; i++) {
-                        mplew.writeInt(0);
-                        mplew.writeInt(0);
-                    }
-                    mplew.writeMapleAsciiString("");
-                    mplew.writeInt(0);
-                    break;
-                case SKILL_FLYING_OBJECT:
-                    mplew.writeInt(value);
-                    if (value == 11121013 || value == 12100029 || value == 13121009 || value == 36110005 || value == 65101006) {
-                        mplew.writeInt(0);
-                        mplew.writeInt(0);
-                        mplew.writeInt(0);
-                    }
-                    if (value == 32111016) {
-                        mplew.write(0);
-                        mplew.write(0);
-                        mplew.writeInt(0);
-                        mplew.writeInt(0);
-                        mplew.writeInt(0);
-                        mplew.writeInt(0);
-                    }
-                    break;
-                case FIRE_EFFECT:
-                    mplew.writeInt(0);
-                    mplew.writeInt(0);
-                    break;
-            }
-            return mplew.getPacket();
+        public static byte[] showEffect(SpecialEffectType effect) {
+            return showEffect(-1, effect);
         }
 
-        public static byte[] showEffect(int cid, int effect) {
+        public static byte[] showEffect(int cid, SpecialEffectType effect) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
             if (cid == -1) {
                 mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
             } else {
                 mplew.writeShort(SendPacketOpcode.SHOW_FOREIGN_EFFECT.getValue());
                 mplew.writeInt(cid);
             }
-            mplew.write(effect);
+            mplew.write((int) effect.getValue());
 
             return mplew.getPacket();
         }
 
         public static byte[] showLevelupEffect(int cid) {
-            return EffectPacket.showEffect(null, SpecialEffectType.LEVEL_UP, 0);
+            return EffectPacket.showEffect(cid, SpecialEffectType.LEVEL_UP);
         }
 
         public static byte[] showDiceEffect(int skillid, int effectid, int effectid2, int level) {
@@ -5255,7 +5213,7 @@ public class CField {
                 mplew.writeShort(SendPacketOpcode.SHOW_FOREIGN_EFFECT.getValue());
                 mplew.writeInt(cid);
             }
-            mplew.write(0x4);
+            mplew.write(SpecialEffectType.MECHANIC.getValue());
             mplew.writeInt(effectid);
             mplew.writeInt(effectid2);
             mplew.writeInt(skillid);
@@ -5265,14 +5223,19 @@ public class CField {
             return mplew.getPacket();
         }
 
-        public static byte[] getShowItemGain(int itemId, short quantity) {
+        public static byte[] getShowItemGain(Map<Integer, Integer> items) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
             mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
-            mplew.write(0x7);
-            mplew.write(1);
-            mplew.writeInt(itemId);
-            mplew.writeInt(quantity);
+            mplew.write(SpecialEffectType.ITEM_OPERATION.getValue());
+
+            mplew.write(items.size());
+            items.entrySet().forEach((item) -> {
+                mplew.writeInt(item.getKey());
+                mplew.writeInt(item.getValue());
+            });
+            mplew.writeMapleAsciiString("");
+            mplew.writeInt(0);
 
             return mplew.getPacket();
         }
@@ -5290,10 +5253,33 @@ public class CField {
                 mplew.writeShort(SendPacketOpcode.SHOW_FOREIGN_EFFECT.getValue());
                 mplew.writeInt(cid);
             }
-            mplew.write(0x8);
+            mplew.write(SpecialEffectType.PET_LEVEL_UP.getValue());
             mplew.write(0);
             mplew.writeInt(index);
             if (cid != -1) {
+                mplew.writeInt(0);
+            }
+
+            return mplew.getPacket();
+        }
+
+        public static byte[] showBlackBlessingEffect(MapleCharacter chr, int value) {
+            MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+
+            mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
+            mplew.write((int) SpecialEffectType.SKILL_FLYING_OBJECT.getValue());
+            mplew.writeInt(value);
+            if (value == 11121013 || value == 12100029 || value == 13121009 || value == 36110005 || value == 65101006) {
+                mplew.writeInt(0);
+                mplew.writeInt(0);
+                mplew.writeInt(0);
+            }
+            if (value == 32111016) {
+                mplew.write(0);
+                mplew.write(0);
+                mplew.writeInt(0);
+                mplew.writeInt(0);
+                mplew.writeInt(0);
                 mplew.writeInt(0);
             }
 
@@ -5304,7 +5290,7 @@ public class CField {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
             mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
-            mplew.write(0xB);
+            mplew.write(SpecialEffectType.USE_CHARM.getValue());
             mplew.write(safetyCharm ? 1 : 0);
             mplew.write(charmsleft);
             mplew.write(daysleft);
@@ -5319,13 +5305,13 @@ public class CField {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
             mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
-            mplew.write(0xD);
+            mplew.write(SpecialEffectType.MULUNG_DOJO_UP.getValue());
 
             return mplew.getPacket();
         }
 
-        public static byte[] showJobChangeEffect(MapleCharacter cid) {
-            return EffectPacket.showEffect(cid, SpecialEffectType.CHANGE_JOB, 0);
+        public static byte[] showJobChangeEffect(int cid) {
+            return EffectPacket.showEffect(cid, SpecialEffectType.CHANGE_JOB);
         }
 
         public static byte[] showRewardItemAnimation(int itemId, String effect) {
@@ -5333,11 +5319,11 @@ public class CField {
         }
 
         public static byte[] showQuetCompleteEffect() {
-            return showQuetCompleteEffect(null);
+            return showQuetCompleteEffect(-1);
         }
 
-        public static byte[] showQuetCompleteEffect(MapleCharacter cid) {
-            return EffectPacket.showEffect(cid, SpecialEffectType.QUET_COMPLETE, 0);
+        public static byte[] showQuetCompleteEffect(int cid) {
+            return EffectPacket.showEffect(cid, SpecialEffectType.QUET_COMPLETE);
         }
 
         public static byte[] showRewardItemAnimation(int itemId, String effect, int from_playerid) {
@@ -5349,7 +5335,7 @@ public class CField {
                 mplew.writeShort(SendPacketOpcode.SHOW_FOREIGN_EFFECT.getValue());
                 mplew.writeInt(from_playerid);
             }
-            mplew.write(0x14);
+            mplew.write(SpecialEffectType.REWARD_ITEM.getValue());
             mplew.writeInt(itemId);
             mplew.write((effect != null) && (effect.length() > 0) ? 1 : 0);
             if ((effect != null) && (effect.length() > 0)) {
@@ -5360,7 +5346,7 @@ public class CField {
         }
 
         public static byte[] showMonsterBookEffect() {
-            return showEffect(-1, 0x14);
+            return showEffect(SpecialEffectType.REWARD_ITEM);
         }
 
         public static byte[] showItemLevelupEffect() {
@@ -5368,7 +5354,7 @@ public class CField {
         }
 
         public static byte[] showItemLevelupEffect(int cid) {
-            return EffectPacket.showEffect(cid, 0x15);
+            return EffectPacket.showEffect(cid, SpecialEffectType.ITEM_LEVEL_UP);
         }
 
         public static byte[] ItemMaker_Success() {
@@ -5384,21 +5370,21 @@ public class CField {
                 mplew.writeShort(SendPacketOpcode.SHOW_FOREIGN_EFFECT.getValue());
                 mplew.writeInt(from_playerid);
             }
-            mplew.write(0x16);
+            mplew.write(SpecialEffectType.ItemMaker_Success_3rdParty.getValue());
             mplew.writeInt(0);
 
             return mplew.getPacket();
         }
 
         public static byte[] showDodgeChanceEffect() {
-            return showEffect(-1, 0x17);
+            return showEffect(SpecialEffectType.DODGE_CHANCE);
         }
 
         public static byte[] showWZEffect(String data) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
             mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
-            mplew.write(0x18);
+            mplew.write(SpecialEffectType.WZ.getValue());
             mplew.writeZeroBytes(9);
             mplew.writeMapleAsciiString(data);
 
@@ -5409,7 +5395,7 @@ public class CField {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
             mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
-            mplew.write(0x1B);
+            mplew.write(SpecialEffectType.WZ_NEW.getValue());
             mplew.writeMapleAsciiString(data);
 
             return mplew.getPacket();
@@ -5419,7 +5405,7 @@ public class CField {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
             mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
-            mplew.write(0x1B);//?
+            mplew.write(SpecialEffectType.WZ_NEW.getValue());//?
             mplew.write(charmsleft);
 
             return mplew.getPacket();
@@ -5429,7 +5415,7 @@ public class CField {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
             mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
-            mplew.write(0x1B);//?
+            mplew.write(SpecialEffectType.WZ_NEW.getValue());//?
             mplew.writeMapleAsciiString(data);
             mplew.writeInt(1);
 
@@ -5440,7 +5426,7 @@ public class CField {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
             mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
-            mplew.write(0x20);
+            mplew.write(SpecialEffectType.CASH_ITEM.getValue());
             mplew.writeInt(itemId);
 
             return mplew.getPacket();
@@ -5459,7 +5445,7 @@ public class CField {
                 mplew.writeShort(SendPacketOpcode.SHOW_FOREIGN_EFFECT.getValue());
                 mplew.writeInt(cid);
             }
-            mplew.write(0x21);
+            mplew.write(SpecialEffectType.HP_HEALED.getValue());
             mplew.writeInt(amount);
 
             return mplew.getPacket();
@@ -5478,7 +5464,7 @@ public class CField {
                 mplew.writeShort(SendPacketOpcode.SHOW_FOREIGN_EFFECT.getValue());
                 mplew.writeInt(from_playerid);
             }
-            mplew.write(0x23);
+            mplew.write(SpecialEffectType.CHAMPION.getValue());
             mplew.writeInt(30000);
 
             return mplew.getPacket();
@@ -5497,7 +5483,7 @@ public class CField {
                 mplew.writeShort(SendPacketOpcode.SHOW_FOREIGN_EFFECT.getValue());
                 mplew.writeInt(cid);
             }
-            mplew.write(0x2C);
+            mplew.write(SpecialEffectType.CRAFTING.getValue());
             mplew.writeMapleAsciiString(effect);
             mplew.write(direction);
             mplew.writeInt(time);
@@ -5522,7 +5508,7 @@ public class CField {
                 mplew.writeShort(SendPacketOpcode.SHOW_FOREIGN_EFFECT.getValue());
                 mplew.writeInt(chrId);
             }
-            mplew.write(0x2C);
+            mplew.write(SpecialEffectType.CRAFTING.getValue());
             mplew.writeMapleAsciiString(effect);
             mplew.write(1);
             mplew.writeInt(0);//weird high number is it will keep showing it lol
@@ -5536,7 +5522,7 @@ public class CField {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
             mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
-            mplew.write(0x34);
+            mplew.write(SpecialEffectType.UNSEAL_BOX.getValue());
             mplew.write(1);
             mplew.writeInt(reward);
             mplew.writeInt(1);
@@ -5548,14 +5534,30 @@ public class CField {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
             mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
-            mplew.write(0x35);
+            mplew.write(SpecialEffectType.DublStart.getValue());
             mplew.write(dark ? 1 : 0);
 
             return mplew.getPacket();
         }
 
         public static byte[] showRechargeEffect() {
-            return showEffect(-1, 0x37);
+            return showEffect(SpecialEffectType.RECHARGE);
+        }
+
+        public static byte[] showFireEffect(int cid) {
+            MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+            if (cid == -1) {
+                mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
+            } else {
+                mplew.writeShort(SendPacketOpcode.SHOW_FOREIGN_EFFECT.getValue());
+                mplew.writeInt(cid);
+            }
+
+            mplew.write(SpecialEffectType.FIRE.getValue());
+            mplew.writeInt(0);
+            mplew.writeInt(0);
+
+            return mplew.getPacket();
         }
 
         public static byte[] showBuffEffect(int skillid, int effectid, int playerLevel, int skillLevel) {

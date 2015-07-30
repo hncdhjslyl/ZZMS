@@ -83,7 +83,7 @@ public class LoginPacket {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.ACCOUNT_INFO.getValue());
-        getAuthSuccess(mplew, client, false);
+        getAuthSuccess(mplew, client, true);
 
         return mplew.getPacket();
     }

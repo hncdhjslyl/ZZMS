@@ -3453,14 +3453,6 @@ public class CWvsContext {
         }
 
         public static byte[] getShowItemGain(int itemId, short quantity) {
-            return getShowItemGain(itemId, quantity, false);
-        }
-
-        public static byte[] getShowItemGain(int itemId, short quantity, boolean inChat) {
-            if (inChat) {
-                return CField.EffectPacket.getShowItemGain(itemId, quantity);
-            }
-
             if (ServerConfig.LOG_PACKETS) {
                 System.out.println("調用位置: " + new java.lang.Throwable().getStackTrace()[0]);
             }
@@ -3472,6 +3464,16 @@ public class CWvsContext {
             mplew.writeInt(quantity);
 
             return mplew.getPacket();
+        }
+
+        public static byte[] getShowItemGain(int itemId, short quantity, boolean inChat) {
+            if (inChat) {
+                Map<Integer, Integer> items = new HashMap();
+                items.put(itemId, (int) quantity);
+                return CField.EffectPacket.getShowItemGain(items);
+            } else {
+                return getShowItemGain(itemId, quantity);
+            }
         }
 
         public static byte[] updateQuest(MapleQuestStatus quest) {

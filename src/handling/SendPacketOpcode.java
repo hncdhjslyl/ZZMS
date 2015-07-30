@@ -485,8 +485,7 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     UNLOCK_CHARGE_SKILL((short) 0xEF),
     // 上鎖充電技能
     LOCK_CHARGE_SKILL((short) 0xF0),
-    //自動登入
-    AUTO_LOGIN((short) 0xF1),
+    // 0xF1
     // 0xF2 【寵物名牌戒指?】【[BP:%02d] %d】【///////////////////////////////】
     
     // 進化系統[完成]
@@ -494,7 +493,8 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     // BossPvP技能【Recv => 0x16D】[完成]
     BOSSPVP_SKILL_UI((short) 0xF4),
     
-    // 0xF5
+    //自動登入
+    AUTO_LOGIN((short) 0xF5),
     
     // 公會搜索
     GUILD_SEARCH((short) 0xF6),
@@ -1686,15 +1686,15 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     //================================ 
     
     // 攻擊箱子[完成]
-    REACTOR_HIT((short) 0x36A),
+    REACTOR_HIT((short) 0x39B),
     // 箱子移動[完成]
-    REACTOR_MOVE((short) 0x36B),
+    REACTOR_MOVE((short) 0x39C),
     // 召喚箱子[完成]
-    REACTOR_SPAWN((short) 0x36C),
+    REACTOR_SPAWN((short) 0x39D),
     // 箱子未知[完成]
-    REACTOR_UNK((short) 0x36D),
+    REACTOR_UNK((short) 0x39E),
     // 重置箱子[完成]
-    REACTOR_DESTROY((short) 0x36E),
+    REACTOR_DESTROY((short) 0x39F),
     
     //================================
     // CReactorPool::OnExtractorPacket 開始(181-完成)
