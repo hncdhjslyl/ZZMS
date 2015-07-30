@@ -5,7 +5,8 @@ import server.ServerProperties;
 public class JobConstants {
 
     public static final boolean enableJobs = true;
-    public static final int jobOrder = 176;
+    // UI.wz/Login.img/RaceSelect_new/order
+    public static final int jobOrder = 182;
 
     public enum LoginJob {
 
@@ -31,7 +32,8 @@ public class JobConstants {
         劍豪(19),
         陰陽師(20),
         幻獸師(21),;
-        private final int jobType, flag = JobFlag.開啟.getFlag();
+        private final int jobType;
+        private final boolean enableCreate = true;
 
         private LoginJob(int jobType) {
             this.jobType = jobType;
@@ -41,40 +43,16 @@ public class JobConstants {
             return jobType;
         }
 
-        public int getFlag() {
-            return JobFlag.valueOf(ServerProperties.getProperty("Job" + jobType, JobFlag.getByValue(flag).name())).getFlag();
+        public boolean enableCreate() {
+            return Boolean.valueOf(ServerProperties.getProperty("JobEnableCreate" + jobType, String.valueOf(enableCreate)));
         }
 
-        public void setFlag(int info) {
-            if (info == flag) {
-                ServerProperties.removeProperty("Job" + jobType);
+        public void setEnableCreate(boolean info) {
+            if (info == enableCreate) {
+                ServerProperties.removeProperty("JobEnableCreate" + jobType);
                 return;
             }
-            ServerProperties.setProperty("Job" + jobType, JobFlag.getByValue(info).name());
-        }
-
-        public enum JobFlag {
-
-            關閉(0),
-            開啟(1);
-            private final int flag;
-
-            private JobFlag(int flag) {
-                this.flag = flag;
-            }
-
-            public int getFlag() {
-                return flag;
-            }
-
-            public static JobFlag getByValue(int g) {
-                for (JobFlag e : values()) {
-                    if (e.getFlag() == g) {
-                        return e;
-                    }
-                }
-                return null;
-            }
+            ServerProperties.setProperty("JobEnableCreate" + jobType, String.valueOf(info));
         }
     }
 }

@@ -113,7 +113,7 @@ public class LoginPacket {
         if (JobConstants.enableJobs) {
             mplew.write(JobConstants.jobOrder);
             for (LoginJob j : LoginJob.values()) {
-                mplew.write(j.getFlag());
+                mplew.write(j.enableCreate());
                 mplew.writeShort(1);
             }
         }
@@ -197,7 +197,7 @@ public class LoginPacket {
                 if (JobConstants.enableJobs) {
                     mplew.write(JobConstants.jobOrder);
                     for (LoginJob j : LoginJob.values()) {
-                        mplew.write(j.getFlag());
+                        mplew.write(j.enableCreate());
                         mplew.writeShort(1);
                     }
                 }
