@@ -1742,8 +1742,7 @@ public class CWvsContext {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.SYSTEM_PROCESS_LIST.getValue());
-        mplew.write(0);
-        mplew.writeInt(0);
+        mplew.write(1);
 
         return mplew.getPacket();
     }
@@ -5518,21 +5517,18 @@ public class CWvsContext {
             mplew.writeShort(SendPacketOpcode.EQUIPMENT_ENCHANT.getValue());
             mplew.write(0x32);
             mplew.write(feverTime ? 1 : 0);
-            mplew.write(/*scrolls.size()*/0);
-//            int num = 0;
-//            for (EchantScroll scroll : scrolls) {
-//                mplew.writeInt(num);
-//                mplew.writeMapleAsciiString(scroll.getName());
-//                mplew.writeInt(scroll.getMask());
-//                if (scroll.getMask() > 0) {
-//                    for (int i : scroll.getValues()) {
-//                        mplew.writeInt(i);
-//                    }
-//                }
-//                mplew.writeInt(scroll.getCost());
-//                mplew.writeInt(scroll.getViewType());
-//                num++;
-//            }
+            mplew.write(scrolls.size());
+            for (EchantScroll scroll : scrolls) {
+                mplew.writeInt(scroll.getViewType());
+                mplew.writeMapleAsciiString(scroll.getName());
+                mplew.writeInt(scroll.getMask());
+                if (scroll.getMask() > 0) {
+                    for (int i : scroll.getValues()) {
+                        mplew.writeInt(i);
+                    }
+                }
+                mplew.writeInt(scroll.getCost());
+            }
 
             return mplew.getPacket();
         }

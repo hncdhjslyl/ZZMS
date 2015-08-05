@@ -122,7 +122,7 @@ public class ItemMakerHandler {
                     MapleInventoryManipulator.addById(c, randGemGiven, (byte) (taken == randGemGiven ? 9 : 1), "Made by Gem " + toCreate + " on " + FileoutputUtil.CurrentReadable_Date()); // Gem is always 1
 
                     c.getSession().write(EffectPacket.ItemMaker_Success());
-                    c.getPlayer().getMap().broadcastMessage(c.getPlayer(), EffectPacket.ItemMaker_Success_3rdParty(c.getPlayer().getId()), false);
+                    c.getPlayer().getMap().broadcastMessage(c.getPlayer(), EffectPacket.ItemMaker_Success(c.getPlayer()), false);
                 } else if (GameConstants.isOtherGem(toCreate)) {
                     //non-gems that are gems
                     //stim and numEnchanter always 0
@@ -151,7 +151,7 @@ public class ItemMakerHandler {
                     }
 
                     c.getSession().write(EffectPacket.ItemMaker_Success());
-                    c.getPlayer().getMap().broadcastMessage(c.getPlayer(), EffectPacket.ItemMaker_Success_3rdParty(c.getPlayer().getId()), false);
+                    c.getPlayer().getMap().broadcastMessage(c.getPlayer(), EffectPacket.ItemMaker_Success(c.getPlayer()), false);
                 } else {
                     final boolean stimulator = slea.readByte() > 0;
                     final int numEnchanter = slea.readInt();
@@ -198,7 +198,7 @@ public class ItemMakerHandler {
                     }
                     if (!stimulator || Randomizer.nextInt(10) != 0) {
                         MapleInventoryManipulator.addbyItem(c, toGive);
-                        c.getPlayer().getMap().broadcastMessage(c.getPlayer(), EffectPacket.ItemMaker_Success_3rdParty(c.getPlayer().getId()), false);
+                        c.getPlayer().getMap().broadcastMessage(c.getPlayer(), EffectPacket.ItemMaker_Success(c.getPlayer()), false);
                     } else {
                         c.getPlayer().dropMessage(5, "The item was overwhelmed by the stimulator.");
                     }
@@ -214,7 +214,7 @@ public class ItemMakerHandler {
                     MapleInventoryManipulator.removeById(c, MapleInventoryType.ETC, etc, 100, false, false);
 
                     c.getSession().write(EffectPacket.ItemMaker_Success());
-                    c.getPlayer().getMap().broadcastMessage(c.getPlayer(), EffectPacket.ItemMaker_Success_3rdParty(c.getPlayer().getId()), false);
+                    c.getPlayer().getMap().broadcastMessage(c.getPlayer(), EffectPacket.ItemMaker_Success(c.getPlayer()), false);
                 }
                 break;
             }
@@ -235,7 +235,7 @@ public class ItemMakerHandler {
                     MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.EQUIP, slot, (byte) 1, false);
                 }
                 c.getSession().write(EffectPacket.ItemMaker_Success());
-                c.getPlayer().getMap().broadcastMessage(c.getPlayer(), EffectPacket.ItemMaker_Success_3rdParty(c.getPlayer().getId()), false);
+                c.getPlayer().getMap().broadcastMessage(c.getPlayer(), EffectPacket.ItemMaker_Success(c.getPlayer()), false);
                 break;
             }
         }
@@ -555,7 +555,7 @@ public class ItemMakerHandler {
                 time = 4000;
             }
             c.getSession().write(EffectPacket.showCraftingEffect(effect, (byte) chr.getDirection(), time, effect.endsWith("Extract") ? 1 : 0));
-            chr.getMap().broadcastMessage(chr, EffectPacket.showCraftingEffect(chr.getId(), effect, (byte) chr.getDirection(), time, effect.endsWith("Extract") ? 1 : 0), false);
+            chr.getMap().broadcastMessage(chr, EffectPacket.showCraftingEffect(chr, effect, (byte) chr.getDirection(), time, effect.endsWith("Extract") ? 1 : 0), false);
         }
     }
 

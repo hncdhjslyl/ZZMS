@@ -18,9 +18,11 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     LOGIN_STATUS((short) 0x00),
     // 伺服器選單[完成-182]
     SERVERLIST((short) 0x01),
+    // 推薦伺服器[完成]
+    ENABLE_RECOMMENDED((short) 0x02), 
+    // (null)[完成]
+    SEND_RECOMMENDED((short) 0x03),
     
-    // 0x02
-    // 0x03
     // 0x04
     
     // 選擇伺服器[完成-182] [Int(伺服器編號)](原本GMS118端為CHANNEL_SELECTED)
@@ -67,10 +69,6 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     // 0x16 [位置未知]
     // 0x17 CClientSocket::OnCheckCrcResult【外掛偵測】[Boolean]
 
-    // 推薦伺服器[完成]
-    ENABLE_RECOMMENDED((short) 0x18), 
-    // 推薦伺服器訊息[未知] [IDA => 0 Byte]
-    SEND_RECOMMENDED((short) 0x19),
     // 打工系統[完成-182]
     PART_TIME((short) 0x1C),
     
@@ -414,176 +412,177 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     // 更新潛在能力值
     UPDATE_INNER_ABILITY((short) 0xC8),
     
-    // 0xC5
+    // 0xC9
     
     // 使用/刪除技能[完成]
-    REPLACE_SKILLS((short) 0xC6),
+    REPLACE_SKILLS((short) 0xCA),
     // 內在能力值訊息[完成]
-    INNER_ABILITY_MSG((short) 0xC7),
+    INNER_ABILITY_MSG((short) 0xCB),
     // 地圖指引[完成] [Int]
-    MINIMAP_ARROW((short) 0xC8),
+    MINIMAP_ARROW((short) 0xCC),
     
-    // 0xC9 [Boolean][Int] true => [Int]
+    // 0xCD [Boolean][Int] true => [Int]
     
     // 角色潛在能力設定[完成]
-    ENABLE_INNER_ABILITY((short) 0xCA),
+    ENABLE_INNER_ABILITY((short) 0xCE),
     // 角色潛在能力重置
-    DISABLE_INNER_ABILITY((short) 0xCB),
+    DISABLE_INNER_ABILITY((short) 0xCF),
     // 獲得名聲值[完成]
-    UPDATE_HONOUR((short) 0xCC),
+    UPDATE_HONOUR((short) 0xD0),
     // 阿斯旺未知[未知]
-    AZWAN_UNKNOWN((short) 0xCD),
+    AZWAN_UNKNOWN((short) 0xD1),
     // 阿斯旺結果[完成] [Int][Int][Int][Int][Int][Int][Int][Int][Boolean]
-    AZWAN_RESULT((short) 0xCE),
+    AZWAN_RESULT((short) 0xD2),
     // 阿斯旺擊殺[完成]
-    AZWAN_KILLED((short) 0xCF),
+    AZWAN_KILLED((short) 0xD3),
     
-    // 0xD0 【point】
-    // 0xD1 阿斯旺復活[String(玩家名稱)][Int](復活時間)
+    // 0xD4 【point】
+    // 0xD5 阿斯旺復活[String(玩家名稱)][Int](復活時間)
     
     // 能力傳播者[完成]
-    CIRCULATOR_ON_LEVEL((short) 0xD2),
+    CIRCULATOR_ON_LEVEL((short) 0xD6),
     // 十字獵人訊息[完成]
-    SILENT_CRUSADE_MSG((short) 0xD3),
+    SILENT_CRUSADE_MSG((short) 0xD7),
     // 十字獵人商店[完成]
-    SILENT_CRUSADE_SHOP((short) 0xD4),
+    SILENT_CRUSADE_SHOP((short) 0xD8),
     
-    // 0xD5 幸運怪物【UI/UIWindow2.img/mapleMuseum】【UI/UIWindow2.img/mapleMuseum2)(UI/UIWindow2.img/luckyMonstery】
-    // 0xD6
-    // 0xD7 幸運怪物【UI/UIWindow2.img/mapleMuseum】【UI/UIWindow2.img/mapleMuseum2)(UI/UIWindow2.img/luckyMonstery】
-    // 0xD8 【state】
-    // 0xD9 【state】
+    // 0xD9 幸運怪物【UI/UIWindow2.img/mapleMuseum】【UI/UIWindow2.img/mapleMuseum2)(UI/UIWindow2.img/luckyMonstery】
     // 0xDA
+    // 0xDB 幸運怪物【UI/UIWindow2.img/mapleMuseum】【UI/UIWindow2.img/mapleMuseum2)(UI/UIWindow2.img/luckyMonstery】
+    // 0xDC 【state】
+    // 0xDD 【state】
+    // 0xDE
     // 自動飛行[完成] [Int]
-    AUTO_FLYING((short) 0xDB),
+    AUTO_FLYING((short) 0xDF),
     // 禁止完成任務
-    DISALLOW_DELIVERY_QUEST((short) 0xDC),
-    // 0xDD 【彈跳視窗】
-    // 0xDE 【賓果活動?】 [Byte] 【deck】【bingo】
-    // 0xDF 【賓果活動?】 [Byte] 【deck】【bingo】
-    // 0xE0
-    // 0xE1 【獲取物品?】【---】
+    DISALLOW_DELIVERY_QUEST((short) 0xE0),
+    // 0xE1 【彈跳視窗】
+    // 0xE2 【賓果活動?】 [Byte] 【deck】【bingo】
+    // 0xE3 【賓果活動?】 [Byte] 【deck】【bingo】
+    // 0xE4
+    // 0xE5 【獲取物品?】【---】
     
     // 楓葉點數(完成)
-    MAPLE_POINT((short) 0xE2),
+    MAPLE_POINT((short) 0xE6),
     
-    // 0xE3 [Long]
-    // 0xE4 【方塊洗洗樂?】
-    // 0xE5 【重置神聖SP】 [Byte][Int][Byte]
-    // 0xE6 【Debug信息?】 [Short](年)[Short](月)[Short](日)[Short](點)[Short](分)[Int]((DWORD)%u, (LONG)%d)【(DWORD)%u, (LONG)%d】
-    // 0xE7 【Debug信息?】 [Int][Long]
-    // 0xE8
-    // 0xE9 【沒有可以套用回復效果的對象。】【Recv => 0x176([Int][Byte])】
-    // 0xEA
-    // 0xEB 【Recv => 0xC9([Int][Short][Long])】
-    // 0xEC 【Recv => 0xC9([Int][Short][Long])】
-    // 0xED
+    // 0xE7 [Long]
+    // 0xE8 【方塊洗洗樂?】
+    // 0xE9 【重置神聖SP】 [Byte][Int][Byte]
+    // 0xEA 【Debug信息?】 [Short](年)[Short](月)[Short](日)[Short](點)[Short](分)[Int]((DWORD)%u, (LONG)%d)【(DWORD)%u, (LONG)%d】
+    // 0xEB 【Debug信息?】 [Int][Long]
+    // 0xEC
+    // 0xED 【沒有可以套用回復效果的對象。】【Recv => 0x176([Int][Byte])】
+    // 0xEE
+    // 0xEF 【Recv => 0xC9([Int][Short][Long])】
+    // 0xF0 【Recv => 0xC9([Int][Short][Long])】
+    // 0xF1
     
     // 變成破壞天使【Recv => 0x173([Byte])
-    CHANGE_ANGELIC((short) 0xEE),
+    CHANGE_ANGELIC((short) 0xF2),
     // 解鎖充電技能
-    UNLOCK_CHARGE_SKILL((short) 0xEF),
+    UNLOCK_CHARGE_SKILL((short) 0xF3),
     // 上鎖充電技能
-    LOCK_CHARGE_SKILL((short) 0xF0),
-    // 0xF1
-    // 0xF2 【寵物名牌戒指?】【[BP:%02d] %d】【///////////////////////////////】
-    
-    // 進化系統[完成]
-    EVOLVING_ACTION((short) 0xF3),
-    // BossPvP技能【Recv => 0x16D】[完成]
-    BOSSPVP_SKILL_UI((short) 0xF4),
-    
+    LOCK_CHARGE_SKILL((short) 0xF4),
     //自動登入
     AUTO_LOGIN((short) 0xF5),
     
-    // 公會搜索
-    GUILD_SEARCH((short) 0xF6),
+    // 0xF6 【寵物名牌戒指?】【[BP:%02d] %d】【///////////////////////////////】
     
-    // 0xF7
-    // 0xF8 【幸運怪物】【UI/UIWindow2.img/mapleMuseum】【UI/UIWindow2.img/mapleMuseum2】【UI/UIWindow2.img/luckyMonstery】【UI/UIWindow2.img/luckyMonResult】
-    // 0xF9 【獲取物品?】
-    // 0xFA 【10 00 00 00 00 00 00 00 00 00 00 00 00 00 00】
+    // 進化系統[完成]
+    EVOLVING_ACTION((short) 0xF7),
+    // BossPvP技能【Recv => 0x16D】[完成]
+    BOSSPVP_SKILL_UI((short) 0xF8),
+    
+    // 0xF9
+    
+    // 公會搜索
+    GUILD_SEARCH((short) 0xFA),
+    
     // 0xFB
+    // 0xFC 【幸運怪物】【UI/UIWindow2.img/mapleMuseum】【UI/UIWindow2.img/mapleMuseum2】【UI/UIWindow2.img/luckyMonstery】【UI/UIWindow2.img/luckyMonResult】
+    // 0xFD 【獲取物品?】
+    // 0xFE 【10 00 00 00 00 00 00 00 00 00 00 00 00 00 00】
+    // 0xFF
     
     // 請求進程列表[完成]
-    SYSTEM_PROCESS_LIST((short) 0xFC),
+    SYSTEM_PROCESS_LIST((short) 0x100),
     
-    // 0xFD
-    // 0xFE
-    // 0xFF
+    // 0x101
+    // 0x102
+    // 0x103
 
     // 情景喇叭訊息[完成]
-    AVATAR_MEGA_RESULT((short) 0x100),
+    AVATAR_MEGA_RESULT((short) 0x104),
     // 情景喇叭[完成]
-    AVATAR_MEGA((short) 0x101),
+    AVATAR_MEGA((short) 0x105),
     // 移除情景喇叭[完成]
-    AVATAR_MEGA_REMOVE((short) 0x102),
+    AVATAR_MEGA_REMOVE((short) 0x106),
     // 活動清單[完成]
-    EVENT_LIST((short) 0x103),
+    EVENT_LIST((short) 0x107),
     // 楓之谷聊天室
-    MESSENGER_OPEN((short) 0x104),
+    MESSENGER_OPEN((short) 0x108),
     
-    // 0x105 【簽名】
-    // 0x106 【問候玩家】
+    // 0x109 【簽名】
+    // 0x10A 【問候玩家】
     
     // 王冠活動[完成-182]
     EVENT_CROWN((short) 0x10B),
     
-    // 0x108 [Byte][Byte]
+    // 0x10C [Byte][Byte]
     
     // 自由轉職[完成]
-    FREE_CHANGE_JOB((short) 0x109),
+    FREE_CHANGE_JOB((short) 0x10D),
     
-    // 0x10A
-    // 0x10B
-    // 0x10C
-    // 0x10D
     // 0x10E
     // 0x10F
     // 0x110
     // 0x111
     // 0x112
-    // 0x113 【頂部訊息】
-    // 0x114 【IP驗證】
-    // 0x115 【Etc/CashPackage.img/%d/SN】
-    // 0x116 【獸魔激鬥擂台賽】
-    // 0x117 【UI/UIWindowBT.img/MonsterBattleSelection/num】
-    // 0x118 【任務抵達】
-    // 0x119
-    // 0x11A
-    // 0x11B
-    // 0x11C
+    // 0x113
+    // 0x114
+    // 0x115
+    // 0x116
+    // 0x117 【頂部訊息】
+    // 0x118 【IP驗證】
+    // 0x119 【Etc/CashPackage.img/%d/SN】
+    // 0x11A 【獸魔激鬥擂台賽】
+    // 0x11B 【UI/UIWindowBT.img/MonsterBattleSelection/num】
+    // 0x11C 【任務抵達】
     // 0x11D
+    // 0x11E
+    // 0x11F
+    // 0x120
+    // 0x121
 
     // 開啟墜飾欄(175+)
-    UPDATE_PENDANT_SLOT((short) 0x11E),
+    UPDATE_PENDANT_SLOT((short) 0x122),
     // 魔王競技場配對成功[完成]
-    BOSSPVP_FOUND((short) 0x11F),
+    BOSSPVP_FOUND((short) 0x123),
     // 魔王競技場配對失敗[完成]【Recv => 0x1FD ([Byte])】
-    BOSSPVP_FAIL((short) 0x120),
+    BOSSPVP_FAIL((short) 0x124),
     // 參加魔王競技場配對[完成]
-    BOSSPVP_SEARCH((short) 0x121),
-    // 0x122
-    // 0x123
-    // 0x124
-    // 0x125
-    // 0x126 【00】
-    // 0x127 【伺服器移民】
-    // 0x128 【擴充倉庫欄位】
+    BOSSPVP_SEARCH((short) 0x125),
+    // 0x126
+    // 0x127
+    // 0x128
+    // 0x129
+    // 0x12A 【00】
+    // 0x12B 【伺服器移民】
+    // 0x12C 【擴充倉庫欄位】
     
     // 菁英王訊息[完成]
-    ELITE_BOSS_NOTICE((short) 0x129),
+    ELITE_BOSS_NOTICE((short) 0x12D),
     
-    // 0x12A 【00 00 00 00 00 00 00 00 00】
+    // 0x12E 【00 00 00 00 00 00 00 00 00】
     
-    // 咒文的痕跡[完成]
-    EQUIPMENT_ENCHANT((short) 0x12B),
+    // 咒文的痕跡[完成-182]
+    EQUIPMENT_ENCHANT((short) 0x130),
     // The Seed 排行
-    TOWER_OF_OZ_RANKING((short) 0x12C),
+    TOWER_OF_OZ_RANKING((short) 0x131),
     // The Seed 好友排行
-    TOWER_OF_OZ_FRIEND_RANKING((short) 0x12D),
+    TOWER_OF_OZ_FRIEND_RANKING((short) 0x132),
     // The Seed 獎勵[完成] [Int](樓層)[Int](時間)[Int](The Seed點數)[Int](獲得經驗值)[Int][Int]
-    TOWER_OF_OZ_REWARD((short) 0x12E),
+    TOWER_OF_OZ_REWARD((short) 0x133),
     // 0x12F [Int][Int][Byte]
     // 0x130
     // 0x131
@@ -592,7 +591,7 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     // 0x134
 
     // 離開遊戲[完成]
-    EXIT_GAME((short) 0x135),
+    EXIT_GAME((short) 0x140),
     
     // 0x136
     // 0x137
@@ -612,8 +611,8 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     SELECT_SLEIGH((short) 0x143),
     // 潘姆音樂[完成]
     PAM_SONG((short) 0x144),
-    // 餽贈認證[完成]
-    MAPLE_FEED_AUTHEN((short) 0x145),
+    // 餽贈認證[完成-182]
+    MAPLE_FEED_AUTHEN((short) 0x14B),
     // 速配指數[完成]
     QUICK_PAIR_RESULT((short) 0x146),
     // 0x147
@@ -696,7 +695,7 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     FEVER_TIME((short) 0x7FFE), 
     
     // 技能組合[完成]
-    SKILL_MACRO((short) 0x180),
+    SKILL_MACRO((short) 0x18E),
     
     //================================
     // CStage::OnPacket 開始(182-完成)
@@ -1431,7 +1430,7 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     //================================ 
     
     //招喚招喚獸[完成]
-    SPAWN_SUMMON((short) 0x0326),
+    SPAWN_SUMMON((short) 0x326),
     //移除招喚獸[完成]
     REMOVE_SUMMON((short) 0x327),
     //招喚獸移動[完成]
@@ -1697,13 +1696,13 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     REACTOR_DESTROY((short) 0x39F),
     
     //================================
-    // CReactorPool::OnExtractorPacket 開始(181-完成)
+    // CReactorPool::OnExtractorPacket 開始(182-完成)
     //================================ 
     
     // 召喚分解機[完成]
-    SPAWN_EXTRACTOR((short) 0x36F),
+    SPAWN_EXTRACTOR((short) 0x3A0),
     // 移除分解機[完成]
-    REMOVE_EXTRACTOR((short) 0x370),
+    REMOVE_EXTRACTOR((short) 0x3A1),
     
     //================================
     // CEventsPool::OnPacket 开始
@@ -2181,66 +2180,66 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     // 0x48F
         
     // 宅配操作(完成)
-    PACKAGE_OPERATION((short) 0x495),
+    PACKAGE_OPERATION((short) 0x4DD),
 
-    // 0x496
+    // 0x4DE
     
-    // 購物商城更新[完成]
-    CS_UPDATE((short) 0x497),
+    // 購物商城更新[完成-182]
+    CS_UPDATE((short) 0x4DF),
     // 購物商城操作[完成]
-    CS_OPERATION((short) 0x498),
+    CS_OPERATION((short) 0x4E0),
     // CCashShop::OnPurchaseExpChanged[完成]
-    CS_EXP_PURCHASE((short) 0x499),
+    CS_EXP_PURCHASE((short) 0x4E1),
     
-    // 0x49A
-    // 0x49B 【00 00 04 00 00 00 00 00 84 11 06 00 00 00 00 00 FF 00 00】
-    // 0x49C
-    // 0x49D
+    // 0x4E2
+    // 0x4E3 【00 00 04 00 00 00 00 00 84 11 06 00 00 00 00 00 FF 00 00】
+    // 0x4E4
+    // 0x4E5
     
     // 購物商城未知[完成]
-    CASH_USE4((short) 0x49E),
+    CASH_USE4((short) 0x4E6),
     
-    // 0x49F
-    // 0x4A0
-    // 0x4A1
-    // 0x4A2
-    // 0x4A3
-    // 0x4A4
-    // 0x4A5
-    // 0x4A6
-    // 0x4A7
+    // 0x4E7
+    // 0x4E8
+    // 0x4E9
+    // 0x4EA
+    // 0x4EB
+    // 0x4EC
+    // 0x4ED
+    // 0x4EE
+    // 0x4EF
     
     // 購物商城帳號[完成]
-    CS_ACCOUNT((short) 0x4A8),
+    CS_ACCOUNT((short) 0x4F0),
     // 購物商城未知[完成]
-    CASH_USE3((short) 0x4A9),
+    CASH_USE3((short) 0x4F1),
+    // 購物商城未知[完成-182]
+    CASH_USE((short) 0x4F2),
+    
+    // 0x4F3
+    // 0x4F4
+    // 0x4F5
+    // 0x4F6
+    // 0x4F7
+    
     // 購物商城未知[完成]
-    CASH_USE((short) 0x4AA),
+    CASH_USE2((short) 0x4F8),
     
-    // 0x4AB
-    // 0x4AC
-    // 0x4AD
-    // 0x4AE
-    // 0x4AF
+    // 0x4F9 【CCashShop::OnMemberShopResult】
     
-    // 購物商城未知[完成]
-    CASH_USE2((short) 0x4B0),
+    // 0x4FA
+    // 0x4FB
+    // 0x4FC
     
-    // 0x4B1 【CCashShop::OnMemberShopResult】
-    
-    // 0x4B2
-    // 0x4B3
-    // 0x4B4
-    
-    // 0x4B5
-    // 0x4B6
-    // 0x4B7
-    // 0x4B8
-    // 0x4B9
-    // 0x4BA 神獸學院
-    // 0x4BB
-    // 0x4BC
-    // 0x4BD 羊群牧場[Boolean] 【true => [String][Long]「[String][Long]」* 3】【false => [Int](分數)[Int](排行)[Int](咒文的痕跡)】
+    // 0x4FD
+    // 0x4FE
+    // 0x4FF
+    // 0x500
+    // 0x501
+    // 0x502 神獸學院
+    // 0x503
+    // 0x504
+    // 0x505 羊群牧場[Boolean] 【true => [String][Long]「[String][Long]」* 3】【false => [Int](分數)[Int](排行)[Int](咒文的痕跡)】
 
     //==================================
     // CFuncKeyMappedMan::OnPacket 開始(182-完成)
@@ -2400,96 +2399,94 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     ALL_CHARLIST((short) 0x08),
     RELOG_RESPONSE((short) 0x17),
     REGISTER_PIC_RESPONSE((short) 0x1A),
-    EXTRA_CHAR_INFO((short) 0x22),//23
-    SPECIAL_CREATION((short) 0x23),//24
+    EXTRA_CHAR_INFO((short) 0x22),
+    SPECIAL_CREATION((short) 0x23),
 
     // Channel
 
     FULL_CLIENT_DOWNLOAD((short) 0x35),
     BOOK_INFO((short) 0x999),
-    REPORT_RESULT((short) 0x4E),//v145
-    TRADE_LIMIT((short) 0x50),//v145
-    UPDATE_GENDER((short) 0x51),//50
-    BBS_OPERATION((short) 0x52),//51
+    REPORT_RESULT((short) 0x4E),
+    TRADE_LIMIT((short) 0x50),
+    UPDATE_GENDER((short) 0x51),
+    BBS_OPERATION((short) 0x52),
 
-    CODEX_INFO_RESPONSE((short) 0x5B),//5C
+    CODEX_INFO_RESPONSE((short) 0x5B),
 
-    ECHO_MESSAGE((short) 0x63),//64
+    ECHO_MESSAGE((short) 0x63),
 
-    BOOK_STATS((short) 0x81),//7E
-    UPDATE_CODEX((short) 0x82),//7F
-    CARD_DROPS((short) 0x83),//80
-    FAMILIAR_INFO((short) 0x84),//81
+    BOOK_STATS((short) 0x81),
+    UPDATE_CODEX((short) 0x82),
+    CARD_DROPS((short) 0x83),
+    FAMILIAR_INFO((short) 0x84),
     POTION_BONUS((short) 0x7FFE),
     
     MAPLE_TV_MSG((short) 0x8D),
-    LUCKY_LUCKY_MONSTORY((short) 0x103),//new v147
+    LUCKY_LUCKY_MONSTORY((short) 0x103),
     POPUP2((short) 0x9D),
     CANCEL_NAME_CHANGE((short) 0x9E),
     CANCEL_WORLD_TRANSFER((short) 0x9F),
-    CLOSE_HIRED_MERCHANT((short) 0xA3),//A0
-    CANCEL_NAME_CHANGE_2((short) 0x999),//A9
+    CLOSE_HIRED_MERCHANT((short) 0xA3),
+    CANCEL_NAME_CHANGE_2((short) 0x999),
 
     GM_STORY_BOARD((short) 0xB7),
     FIND_FRIEND((short) 0xBA),
     VISITOR((short) 0xBB),
     PINKBEAN_CHOCO((short) 0xBC),
     
-    EQUIP_STOLEN_SKILL((short) 0xD5),//CE
+    EQUIP_STOLEN_SKILL((short) 0xD5),
 
     INNER_ABILITY_RESET_MSG((short) 0x999),
-    CASSANDRAS_COLLECTION((short) 0xEA),//new v145
+    CASSANDRAS_COLLECTION((short) 0xEA),
 
-    SET_OBJECT_STATE((short) 0xEF),//E8
-    POPUP((short) 0xF0),//E9
+    SET_OBJECT_STATE((short) 0xEF),
+    POPUP((short) 0xF0),
     YOUR_INFORMATION((short) 0x7FFE),
 
-    CANDY_RANKING((short) 0xFF),//F8
-    ATTENDANCE((short) 0x10A),//102
+    CANDY_RANKING((short) 0xFF),
+    ATTENDANCE((short) 0x10A),
 
     RANDOM_RESPONSE((short) 0x121),
-    MAGIC_WHEEL((short) 0x134),//125
+    MAGIC_WHEEL((short) 0x134),
 
     
 
-    MOVE_ENV((short) 0x14A),//13B
-    UPDATE_ENV((short) 0x14B),//13C
+    MOVE_ENV((short) 0x14A),
+    UPDATE_ENV((short) 0x14B),
 
-    CHATTEXT_1((short) 0x17B),//16A
+    CHATTEXT_1((short) 0x17B),
 
-    SPAWN_PET_2((short) 0x192),//16D
+    SPAWN_PET_2((short) 0x192),
 
-    SPAWN_FAMILIAR((short) 0x1A8),//183
-    MOVE_FAMILIAR((short) 0x1A9),//184
-    TOUCH_FAMILIAR((short) 0x1AA),//185
-    ATTACK_FAMILIAR((short) 0x1AB),//186
-    RENAME_FAMILIAR((short) 0x1AC),//187
-    SPAWN_FAMILIAR_2((short) 0x1AD),//188
-    UPDATE_FAMILIAR((short) 0x1AE),//189
+    SPAWN_FAMILIAR((short) 0x1A8),
+    MOVE_FAMILIAR((short) 0x1A9),
+    TOUCH_FAMILIAR((short) 0x1AA),
+    ATTACK_FAMILIAR((short) 0x1AB),
+    RENAME_FAMILIAR((short) 0x1AC),
+    SPAWN_FAMILIAR_2((short) 0x1AD),
+    UPDATE_FAMILIAR((short) 0x1AE),
 
-    //((short) 0x1B8),//193弹出奖励
+    R_MESOBAG_SUCCESS((short) 0x1EE),
+    R_MESOBAG_FAILURE((short) 0x1EF),
+    MAP_FADE((short) 0x201),
+    MAP_FADE_FORCE((short) 0x202),
 
-    R_MESOBAG_SUCCESS((short) 0x1EE),//1EB
-    R_MESOBAG_FAILURE((short) 0x1EF),//1EC
-    MAP_FADE((short) 0x201),//1F0
-    MAP_FADE_FORCE((short) 0x202),//1F1
+    RANDOM_EMOTION((short) 0x216),
+    RADIO_SCHEDULE((short) 0x999),
+    OPEN_SKILL_GUIDE((short) 0x218),
 
-    RANDOM_EMOTION((short) 0x216),//205
-    RADIO_SCHEDULE((short) 0x999),//206
-    OPEN_SKILL_GUIDE((short) 0x218),//207
-
-    AP_SP_EVENT((short) 0x999),//215
-    QUEST_GUIDE_NPC((short) 0x999),//214
-    REGISTER_FAMILIAR((short) 0x999),//218
-    FAMILIAR_MESSAGE((short) 0x999),//219
+    AP_SP_EVENT((short) 0x999),
+    QUEST_GUIDE_NPC((short) 0x999),
+    REGISTER_FAMILIAR((short) 0x999),
+    FAMILIAR_MESSAGE((short) 0x999),
 
     SHOW_MAP_NAME((short) 0x999),
-    CAKE_VS_PIE((short) 0x228),//225
+    CAKE_VS_PIE((short) 0x228),
 
-    MOVE_SCREEN_X((short) 0x199),//199
-    MOVE_SCREEN_DOWN((short) 0x19A),//19A
-    CAKE_PIE_INSTRUMENTS((short) 0x19B),//19B
-    SEALED_BOX((short) 0x218),//212
+    MOVE_SCREEN_X((short) 0x199),
+    MOVE_SCREEN_DOWN((short) 0x19A),
+    CAKE_PIE_INSTRUMENTS((short) 0x19B),
+    SEALED_BOX((short) 0x218),
 
     //怪物屬性
     MONSTER_PROPERTIES((short) 0x2DB),
@@ -2500,12 +2497,12 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     MONSTER_RESIST((short) 0x2E2),
 
     TELE_MONSTER((short) 0x999),
-    SHOW_MAGNET((short) 0x29E),//287
+    SHOW_MAGNET((short) 0x29E),
     
-    NPC_TOGGLE_VISIBLE((short) 0x2C2),//2AA
-    INITIAL_QUIZ((short) 0x2C4),//2AC
+    NPC_TOGGLE_VISIBLE((short) 0x2C2),
+    INITIAL_QUIZ((short) 0x2C4),
 
-    RED_LEAF_HIGH((short) 0x2C8),//2B0
+    RED_LEAF_HIGH((short) 0x2C8),
 
     LOGOUT_GIFT((short) 0x2FB),
     CS_CHARGE_CASH((short) 0x2CA),
@@ -2514,19 +2511,19 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     CHANGE_NAME_RESPONSE((short) 0x23E),
     //0x314 int itemid int sn
 
-    CASH_SHOP_UPDATE((short) 0x3A3),//373
+    CASH_SHOP_UPDATE((short) 0x3A3),
     GACHAPON_STAMPS((short) 0x253),
     FREE_CASH_ITEM((short) 0x254),
     CS_SURPRISE((short) 0x255),
     XMAS_SURPRISE((short) 0x256),
     ONE_A_DAY((short) 0x258),
     NX_SPEND_GIFT((short) 0x999),
-    RECEIVE_GIFT((short) 0x25A),//new v145
-    RANDOM_CHECK((short) 0x274),//25E
+    RECEIVE_GIFT((short) 0x25A),
+    RANDOM_CHECK((short) 0x274),
 
-    START_TV((short) 0x380),//37A
-    REMOVE_TV((short) 0x381),//37B
-    ENABLE_TV((short) 0x37C),//37C
+    START_TV((short) 0x380),
+    REMOVE_TV((short) 0x381),
+    ENABLE_TV((short) 0x37C),
     GM_ERROR((short) 0x26D),
     ALIEN_SOCKET_CREATOR((short) 0x341),
     BATTLE_RECORD_DAMAGE_INFO((short) 0x27A),
@@ -2553,7 +2550,7 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     FARM_MONSTER_INFO((short) 0x369),
     FARM_QUEST_DATA((short) 0x36A),
     FARM_QUEST_INFO((short) 0x36B),
-    FARM_MESSAGE((short) 0x999),//36C
+    FARM_MESSAGE((short) 0x999),
     UPDATE_MONSTER((short) 0x36D),
     AESTHETIC_POINT((short) 0x36E),
     UPDATE_WARU((short) 0x36F),
@@ -2563,13 +2560,13 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     FARM_PACKET8((short) 0x378),
     FARM_FRIENDS_BUDDY_REQUEST((short) 0x37B),
     FARM_FRIENDS((short) 0x37C),
-    FARM_USER_INFO((short) 0x3F0),//388
-    FARM_AVATAR((short) 0x3F2),//38A
-    FRIEND_INFO((short) 0x3F5),//38D
-    FARM_RANKING((short) 0x3F7),//38F
-    SPAWN_FARM_MONSTER1((short) 0x3FB),//393
-    SPAWN_FARM_MONSTER2((short) 0x3FC),//394
-    RENAME_MONSTER((short) 0x3FD),//395
+    FARM_USER_INFO((short) 0x3F0),
+    FARM_AVATAR((short) 0x3F2),
+    FRIEND_INFO((short) 0x3F5),
+    FARM_RANKING((short) 0x3F7),
+    SPAWN_FARM_MONSTER1((short) 0x3FB),
+    SPAWN_FARM_MONSTER2((short) 0x3FC),
+    RENAME_MONSTER((short) 0x3FD),
     //Unplaced:
     DEATH_COUNT((short) 0x206),
     REDIRECTOR_COMMAND((short) 0x1337),

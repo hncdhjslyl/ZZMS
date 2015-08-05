@@ -2726,7 +2726,7 @@ public class PlayerStats implements Serializable {
         if (changed) {
             chr.equipChanged();
             chr.getClient().getSession().write(EffectPacket.showItemLevelupEffect());
-            chr.getMap().broadcastMessage(chr, EffectPacket.showItemLevelupEffect(chr.getId()), false);
+            chr.getMap().broadcastMessage(chr, EffectPacket.showItemLevelupEffect(chr), false);
         }
         return changed;
     }

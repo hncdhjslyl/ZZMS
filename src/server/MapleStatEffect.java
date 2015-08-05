@@ -1445,7 +1445,7 @@ public class MapleStatEffect implements Serializable {
                     applyto.getMap().broadcastMessage(applyto, EffectPacket.showBuffeffect(applyto.getId(), sourceid, 13, applyto.getLevel(), level), false);
 
                     applyto.getClient().getSession().write(EffectPacket.showCraftingEffect("UI/UIWindow2.img/CTF/Effect", (byte) applyto.getDirection(), 0, 0));
-                    applyto.getMap().broadcastMessage(applyto, EffectPacket.showCraftingEffect(applyto.getId(), "UI/UIWindow2.img/CTF/Effect", (byte) applyto.getDirection(), 0, 0), false);
+                    applyto.getMap().broadcastMessage(applyto, EffectPacket.showCraftingEffect(applyto, "UI/UIWindow2.img/CTF/Effect", (byte) applyto.getDirection(), 0, 0), false);
                     if (applyto.getTeam() == (sourceid - 2910000)) { //restore duh flag
                         if (sourceid == 2910000) {
                             applyto.getEventInstance().broadcastPlayerMsg(-7, "The Red Team's flag has been restored.");
@@ -1459,12 +1459,12 @@ public class MapleStatEffect implements Serializable {
                             applyto.getEventInstance().setProperty("redflag", String.valueOf(applyto.getId()));
                             applyto.getEventInstance().broadcastPlayerMsg(-7, "The Red Team's flag has been captured!");
                             applyto.getClient().getSession().write(EffectPacket.showCraftingEffect("UI/UIWindow2.img/CTF/Tail/Red", (byte) applyto.getDirection(), 600000, 0));
-                            applyto.getMap().broadcastMessage(applyto, EffectPacket.showCraftingEffect(applyto.getId(), "UI/UIWindow2.img/CTF/Tail/Red", (byte) applyto.getDirection(), 600000, 0), false);
+                            applyto.getMap().broadcastMessage(applyto, EffectPacket.showCraftingEffect(applyto, "UI/UIWindow2.img/CTF/Tail/Red", (byte) applyto.getDirection(), 600000, 0), false);
                         } else {
                             applyto.getEventInstance().setProperty("blueflag", String.valueOf(applyto.getId()));
                             applyto.getEventInstance().broadcastPlayerMsg(-7, "The Blue Team's flag has been captured!");
                             applyto.getClient().getSession().write(EffectPacket.showCraftingEffect("UI/UIWindow2.img/CTF/Tail/Blue", (byte) applyto.getDirection(), 600000, 0));
-                            applyto.getMap().broadcastMessage(applyto, EffectPacket.showCraftingEffect(applyto.getId(), "UI/UIWindow2.img/CTF/Tail/Blue", (byte) applyto.getDirection(), 600000, 0), false);
+                            applyto.getMap().broadcastMessage(applyto, EffectPacket.showCraftingEffect(applyto, "UI/UIWindow2.img/CTF/Tail/Blue", (byte) applyto.getDirection(), 600000, 0), false);
                         }
                     }
                 } else {
@@ -2004,7 +2004,7 @@ public class MapleStatEffect implements Serializable {
             }
             case 5311004: {
                 final int zz = Randomizer.nextInt(4) + 1;
-                applyto.getMap().broadcastMessage(applyto, CField.EffectPacket.showDiceEffect(applyto.getId(), sourceid, zz, -1, level), false);
+                applyto.getMap().broadcastMessage(applyto, CField.EffectPacket.showDiceEffect(applyto, sourceid, zz, -1, level), false);
                 applyto.getClient().getSession().write(CField.EffectPacket.showDiceEffect(sourceid, zz, -1, level));
                 localstatups = new EnumMap<>(MapleBuffStat.class);
                 localstatups.put(MapleBuffStat.BARREL_ROLL, zz);
@@ -2031,7 +2031,7 @@ public class MapleStatEffect implements Serializable {
             case 5711011:
             case 5211007: {//dice
                 final int zz = Randomizer.nextInt(6) + 1;
-                applyto.getMap().broadcastMessage(applyto, EffectPacket.showDiceEffect(applyto.getId(), sourceid, zz, -1, level), false);
+                applyto.getMap().broadcastMessage(applyto, EffectPacket.showDiceEffect(applyto, sourceid, zz, -1, level), false);
                 applyto.getClient().getSession().write(EffectPacket.showDiceEffect(sourceid, zz, -1, level));
                 if (zz <= 1) {
                     return;
@@ -2049,7 +2049,7 @@ public class MapleStatEffect implements Serializable {
             case 5320007: {//dice
                 final int zz = Randomizer.nextInt(6) + 1;
                 final int zz2 = makeChanceResult() ? (Randomizer.nextInt(6) + 1) : 0;
-                applyto.getMap().broadcastMessage(applyto, EffectPacket.showDiceEffect(applyto.getId(), sourceid, zz, zz2 > 0 ? -1 : 0, level), false);
+                applyto.getMap().broadcastMessage(applyto, EffectPacket.showDiceEffect(applyto, sourceid, zz, zz2 > 0 ? -1 : 0, level), false);
                 applyto.getClient().getSession().write(EffectPacket.showDiceEffect(sourceid, zz, zz2 > 0 ? -1 : 0, level));
                 if (zz <= 1 && zz2 <= 1) {
                     return;
@@ -2079,7 +2079,7 @@ public class MapleStatEffect implements Serializable {
                 applyto.resetRunningStack();
                 applyto.addRunningStack(skillid == 24100003 ? 5 : 10);
                 applyto.getMap().broadcastMessage(applyto, PhantomPacket.gainCardStack(applyto, applyto.getRunningStack(), skillid == 24120002 ? 2 : 1, skillid, 0, skillid == 24100003 ? 5 : 10), true);
-                applyto.getMap().broadcastMessage(applyto, CField.EffectPacket.showDiceEffect(applyto.getId(), this.sourceid, zz, -1, this.level), false);
+                applyto.getMap().broadcastMessage(applyto, CField.EffectPacket.showDiceEffect(applyto, this.sourceid, zz, -1, this.level), false);
                 applyto.getClient().getSession().write(CField.EffectPacket.showDiceEffect(this.sourceid, zz, -1, this.level));
                 localstatups = new EnumMap(MapleBuffStat.class);
                 localstatups.put(MapleBuffStat.JUDGMENT_DRAW, zz);

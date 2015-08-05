@@ -2062,7 +2062,7 @@ public class PlayerHandler {
                     MapleMap to = chr.getMap().getReturnMap();
                     chr.changeMap(to, to.getPortal(0));
                 } else {
-                    c.getSession().write(CField.EffectPacket.useWheel((byte) (chr.getInventory(MapleInventoryType.CASH).countById(5510000) - 1)));
+                    c.getSession().write(CField.EffectPacket.useAmulet(2, (byte) (chr.getInventory(MapleInventoryType.CASH).countById(5510000) - 1),(byte) 0));
                     chr.getStat().setHp(chr.getStat().getMaxHp() / 100 * 40, chr);
                     MapleInventoryManipulator.removeById(c, MapleInventoryType.CASH, 5510000, 1, true, false);
 

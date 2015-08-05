@@ -219,37 +219,37 @@ public class EquipmentEnchant {
         if (ItemConstants.類型.武器(eq.getItemId())) {
             switch (reqJob) {
                 case 0: {
-                    scrolls.add(EchantScroll.攻擊_力量_100);
-                    scrolls.add(EchantScroll.攻擊_力量_70);
-                    scrolls.add(EchantScroll.攻擊_力量_30);
-                    scrolls.add(EchantScroll.攻擊_力量_15);
+                    scrolls.add(EchantScroll.攻擊力_力量_100);
+                    scrolls.add(EchantScroll.攻擊力_力量_70);
+                    scrolls.add(EchantScroll.攻擊力_力量_30);
+                    scrolls.add(EchantScroll.攻擊力_力量_15);
                     scrolls.add(EchantScroll.魔力_智力_100);
                     scrolls.add(EchantScroll.魔力_智力_70);
                     scrolls.add(EchantScroll.魔力_智力_30);
                     scrolls.add(EchantScroll.魔力_智力_15);
-                    scrolls.add(EchantScroll.攻擊_敏捷_100);
-                    scrolls.add(EchantScroll.攻擊_敏捷_70);
-                    scrolls.add(EchantScroll.攻擊_敏捷_30);
-                    scrolls.add(EchantScroll.攻擊_敏捷_15);
-                    scrolls.add(EchantScroll.攻擊_運氣_100);
-                    scrolls.add(EchantScroll.攻擊_運氣_70);
-                    scrolls.add(EchantScroll.攻擊_運氣_30);
-                    scrolls.add(EchantScroll.攻擊_運氣_15);
-                    scrolls.add(EchantScroll.攻擊_體力_100);
-                    scrolls.add(EchantScroll.攻擊_體力_70);
-                    scrolls.add(EchantScroll.攻擊_體力_30);
-                    scrolls.add(EchantScroll.攻擊_體力_15);
+                    scrolls.add(EchantScroll.攻擊力_敏捷_100);
+                    scrolls.add(EchantScroll.攻擊力_敏捷_70);
+                    scrolls.add(EchantScroll.攻擊力_敏捷_30);
+                    scrolls.add(EchantScroll.攻擊力_敏捷_15);
+                    scrolls.add(EchantScroll.攻擊力_幸運_100);
+                    scrolls.add(EchantScroll.攻擊力_幸運_70);
+                    scrolls.add(EchantScroll.攻擊力_幸運_30);
+                    scrolls.add(EchantScroll.攻擊力_幸運_15);
+                    scrolls.add(EchantScroll.攻擊力_體力_100);
+                    scrolls.add(EchantScroll.攻擊力_體力_70);
+                    scrolls.add(EchantScroll.攻擊力_體力_30);
+                    scrolls.add(EchantScroll.攻擊力_體力_15);
                     break;
                 }
                 case 1: {
-                    scrolls.add(EchantScroll.攻擊_力量_100);
-                    scrolls.add(EchantScroll.攻擊_力量_70);
-                    scrolls.add(EchantScroll.攻擊_力量_30);
-                    scrolls.add(EchantScroll.攻擊_力量_15);
-                    scrolls.add(EchantScroll.攻擊_體力_100);
-                    scrolls.add(EchantScroll.攻擊_體力_70);
-                    scrolls.add(EchantScroll.攻擊_體力_30);
-                    scrolls.add(EchantScroll.攻擊_體力_15);
+                    scrolls.add(EchantScroll.攻擊力_力量_100);
+                    scrolls.add(EchantScroll.攻擊力_力量_70);
+                    scrolls.add(EchantScroll.攻擊力_力量_30);
+                    scrolls.add(EchantScroll.攻擊力_力量_15);
+                    scrolls.add(EchantScroll.攻擊力_體力_100);
+                    scrolls.add(EchantScroll.攻擊力_體力_70);
+                    scrolls.add(EchantScroll.攻擊力_體力_30);
+                    scrolls.add(EchantScroll.攻擊力_體力_15);
                     break;
                 }
                 case 2:
@@ -259,42 +259,42 @@ public class EquipmentEnchant {
                     scrolls.add(EchantScroll.魔力_智力_15);
                     break;
                 case 4:
-                    scrolls.add(EchantScroll.攻擊_敏捷_100);
-                    scrolls.add(EchantScroll.攻擊_敏捷_70);
-                    scrolls.add(EchantScroll.攻擊_敏捷_30);
-                    scrolls.add(EchantScroll.攻擊_敏捷_15);
-                    scrolls.add(EchantScroll.攻擊_體力_100);
-                    scrolls.add(EchantScroll.攻擊_體力_70);
-                    scrolls.add(EchantScroll.攻擊_體力_30);
-                    scrolls.add(EchantScroll.攻擊_體力_15);
+                    scrolls.add(EchantScroll.攻擊力_敏捷_100);
+                    scrolls.add(EchantScroll.攻擊力_敏捷_70);
+                    scrolls.add(EchantScroll.攻擊力_敏捷_30);
+                    scrolls.add(EchantScroll.攻擊力_敏捷_15);
+                    scrolls.add(EchantScroll.攻擊力_體力_100);
+                    scrolls.add(EchantScroll.攻擊力_體力_70);
+                    scrolls.add(EchantScroll.攻擊力_體力_30);
+                    scrolls.add(EchantScroll.攻擊力_體力_15);
                     break;
                 case 8:
-                    scrolls.add(EchantScroll.攻擊_力量_100);
-                    scrolls.add(EchantScroll.攻擊_力量_70);
-                    scrolls.add(EchantScroll.攻擊_力量_30);
-                    scrolls.add(EchantScroll.攻擊_力量_15);
-                    scrolls.add(EchantScroll.攻擊_敏捷_100);
-                    scrolls.add(EchantScroll.攻擊_敏捷_70);
-                    scrolls.add(EchantScroll.攻擊_敏捷_30);
-                    scrolls.add(EchantScroll.攻擊_敏捷_15);
-                    scrolls.add(EchantScroll.攻擊_運氣_100);
-                    scrolls.add(EchantScroll.攻擊_運氣_70);
-                    scrolls.add(EchantScroll.攻擊_運氣_30);
-                    scrolls.add(EchantScroll.攻擊_運氣_15);
+                    scrolls.add(EchantScroll.攻擊力_力量_100);
+                    scrolls.add(EchantScroll.攻擊力_力量_70);
+                    scrolls.add(EchantScroll.攻擊力_力量_30);
+                    scrolls.add(EchantScroll.攻擊力_力量_15);
+                    scrolls.add(EchantScroll.攻擊力_敏捷_100);
+                    scrolls.add(EchantScroll.攻擊力_敏捷_70);
+                    scrolls.add(EchantScroll.攻擊力_敏捷_30);
+                    scrolls.add(EchantScroll.攻擊力_敏捷_15);
+                    scrolls.add(EchantScroll.攻擊力_幸運_100);
+                    scrolls.add(EchantScroll.攻擊力_幸運_70);
+                    scrolls.add(EchantScroll.攻擊力_幸運_30);
+                    scrolls.add(EchantScroll.攻擊力_幸運_15);
                     break;
                 case 16:
-                    scrolls.add(EchantScroll.攻擊_力量_100);
-                    scrolls.add(EchantScroll.攻擊_力量_70);
-                    scrolls.add(EchantScroll.攻擊_力量_30);
-                    scrolls.add(EchantScroll.攻擊_力量_15);
-                    scrolls.add(EchantScroll.攻擊_敏捷_100);
-                    scrolls.add(EchantScroll.攻擊_敏捷_70);
-                    scrolls.add(EchantScroll.攻擊_敏捷_30);
-                    scrolls.add(EchantScroll.攻擊_敏捷_15);
-                    scrolls.add(EchantScroll.攻擊_體力_100);
-                    scrolls.add(EchantScroll.攻擊_體力_70);
-                    scrolls.add(EchantScroll.攻擊_體力_30);
-                    scrolls.add(EchantScroll.攻擊_體力_15);
+                    scrolls.add(EchantScroll.攻擊力_力量_100);
+                    scrolls.add(EchantScroll.攻擊力_力量_70);
+                    scrolls.add(EchantScroll.攻擊力_力量_30);
+                    scrolls.add(EchantScroll.攻擊力_力量_15);
+                    scrolls.add(EchantScroll.攻擊力_敏捷_100);
+                    scrolls.add(EchantScroll.攻擊力_敏捷_70);
+                    scrolls.add(EchantScroll.攻擊力_敏捷_30);
+                    scrolls.add(EchantScroll.攻擊力_敏捷_15);
+                    scrolls.add(EchantScroll.攻擊力_體力_100);
+                    scrolls.add(EchantScroll.攻擊力_體力_70);
+                    scrolls.add(EchantScroll.攻擊力_體力_30);
+                    scrolls.add(EchantScroll.攻擊力_體力_15);
                 case 3:
                 case 5:
                 case 6:
@@ -310,17 +310,17 @@ public class EquipmentEnchant {
         } else if (eq.getItemId() / 10000 == 108) {
             switch (reqJob) {
                 case 0:
-                    scrolls.add(EchantScroll.攻擊_100);
-                    scrolls.add(EchantScroll.攻擊_70);
-                    scrolls.add(EchantScroll.攻擊_30);
+                    scrolls.add(EchantScroll.攻擊力_100);
+                    scrolls.add(EchantScroll.攻擊力_70);
+                    scrolls.add(EchantScroll.攻擊力_30);
                     scrolls.add(EchantScroll.魔力_100);
                     scrolls.add(EchantScroll.魔力_70);
                     scrolls.add(EchantScroll.魔力_30);
                     break;
                 case 1:
-                    scrolls.add(EchantScroll.攻擊_100);
-                    scrolls.add(EchantScroll.攻擊_70);
-                    scrolls.add(EchantScroll.攻擊_30);
+                    scrolls.add(EchantScroll.攻擊力_100);
+                    scrolls.add(EchantScroll.攻擊力_70);
+                    scrolls.add(EchantScroll.攻擊力_30);
                     break;
                 case 2:
                     scrolls.add(EchantScroll.魔力_100);
@@ -328,19 +328,19 @@ public class EquipmentEnchant {
                     scrolls.add(EchantScroll.魔力_30);
                     break;
                 case 4:
-                    scrolls.add(EchantScroll.攻擊_100);
-                    scrolls.add(EchantScroll.攻擊_70);
-                    scrolls.add(EchantScroll.攻擊_30);
+                    scrolls.add(EchantScroll.攻擊力_100);
+                    scrolls.add(EchantScroll.攻擊力_70);
+                    scrolls.add(EchantScroll.攻擊力_30);
                     break;
                 case 8:
-                    scrolls.add(EchantScroll.攻擊_100);
-                    scrolls.add(EchantScroll.攻擊_70);
-                    scrolls.add(EchantScroll.攻擊_30);
+                    scrolls.add(EchantScroll.攻擊力_100);
+                    scrolls.add(EchantScroll.攻擊力_70);
+                    scrolls.add(EchantScroll.攻擊力_30);
                     break;
                 case 16:
-                    scrolls.add(EchantScroll.攻擊_100);
-                    scrolls.add(EchantScroll.攻擊_70);
-                    scrolls.add(EchantScroll.攻擊_30);
+                    scrolls.add(EchantScroll.攻擊力_100);
+                    scrolls.add(EchantScroll.攻擊力_70);
+                    scrolls.add(EchantScroll.攻擊力_30);
                 case 3:
                 case 5:
                 case 6:
@@ -365,9 +365,9 @@ public class EquipmentEnchant {
                     scrolls.add(EchantScroll.敏捷_100);
                     scrolls.add(EchantScroll.敏捷_70);
                     scrolls.add(EchantScroll.敏捷_30);
-                    scrolls.add(EchantScroll.運氣_100);
-                    scrolls.add(EchantScroll.運氣_70);
-                    scrolls.add(EchantScroll.運氣_30);
+                    scrolls.add(EchantScroll.幸運_100);
+                    scrolls.add(EchantScroll.幸運_70);
+                    scrolls.add(EchantScroll.幸運_30);
                     scrolls.add(EchantScroll.體力_100);
                     scrolls.add(EchantScroll.體力_70);
                     scrolls.add(EchantScroll.體力_30);
@@ -403,9 +403,9 @@ public class EquipmentEnchant {
                     scrolls.add(EchantScroll.敏捷_100);
                     scrolls.add(EchantScroll.敏捷_70);
                     scrolls.add(EchantScroll.敏捷_30);
-                    scrolls.add(EchantScroll.運氣_100);
-                    scrolls.add(EchantScroll.運氣_70);
-                    scrolls.add(EchantScroll.運氣_30);
+                    scrolls.add(EchantScroll.幸運_100);
+                    scrolls.add(EchantScroll.幸運_70);
+                    scrolls.add(EchantScroll.幸運_30);
                     break;
                 case 16:
                     scrolls.add(EchantScroll.力量_100);

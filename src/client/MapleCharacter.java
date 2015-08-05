@@ -3462,7 +3462,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             characterCard.recalcLocalStats(this);
             stats.recalcLocalStats(this);
             client.getSession().write(CWvsContext.updatePlayerStats(statup, this));
-            map.broadcastMessage(this, EffectPacket.showJobChangeEffect(this.getId()), false);
+            map.broadcastMessage(this, EffectPacket.showJobChangeEffect(this), false);
             this.map.broadcastMessage(this, CField.updateCharLook(this, false), false);
             silentPartyUpdate();
             guildUpdate();
@@ -3958,14 +3958,14 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             client.getSession().write(CWvsContext.showAzwanKilled());
         }
         if (!MapleJob.isBeginner(job) && !inPVP() && !GameConstants.isAzwanMap(getMapId())) {
-            int charms = getItemQuantity(5130000, false);
-            if (charms > 0) {
+            int amulet = getItemQuantity(5130000, false);
+            if (amulet > 0) {
                 MapleInventoryManipulator.removeById(client, MapleInventoryType.CASH, 5130000, 1, true, false);
-                charms--;
-                if (charms > 0xFF) {
-                    charms = 0xFF;
+                amulet--;
+                if (amulet > 0xFF) {
+                    amulet = 0xFF;
                 }
-                client.getSession().write(EffectPacket.useCharm((byte) charms, (byte) 0, true));
+                client.getSession().write(EffectPacket.useAmulet(1, (byte) amulet, (byte) 0));
             } else {
                 float diepercentage;
                 long expforlevel = getNeededExp();
@@ -4023,14 +4023,14 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
     public void healHP(int delta) {
         addHP(delta);
-        client.getSession().write(EffectPacket.showHpHealed(delta));
-        getMap().broadcastMessage(this, EffectPacket.showHpHealed(getId(), delta), false);
+        client.getSession().write(EffectPacket.showHealed(delta));
+        getMap().broadcastMessage(this, EffectPacket.showHealed(this, delta), false);
     }
 
     public void healMP(int delta) {
         addMP(delta);
-        client.getSession().write(EffectPacket.showHpHealed(delta));
-        getMap().broadcastMessage(this, EffectPacket.showHpHealed(getId(), delta), false);
+        client.getSession().write(EffectPacket.showHealed(delta));
+        getMap().broadcastMessage(this, EffectPacket.showHealed(this, delta), false);
     }
 
     /**
@@ -4911,7 +4911,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         obtainHyperSP();
         stats.setInfo(maxhp, maxmp, maxhp, maxmp);
         client.getSession().write(CWvsContext.updatePlayerStats(statup, this));
-        map.broadcastMessage(this, EffectPacket.showLevelupEffect(getId()), false);
+        map.broadcastMessage(this, EffectPacket.showLevelupEffect(this), false);
         characterCard.recalcLocalStats(this);
         stats.recalcLocalStats(this);
         silentPartyUpdate();

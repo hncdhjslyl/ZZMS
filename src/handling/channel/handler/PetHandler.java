@@ -114,7 +114,7 @@ public class PetHandler {
                 if (newCloseness >= GameConstants.getClosenessNeededForLevel(pet.getLevel() + 1)) {
                     pet.setLevel(pet.getLevel() + 1);
                     c.getSession().write(EffectPacket.showPetLevelUp(petIndex));
-                    chr.getMap().broadcastMessage(EffectPacket.showPetLevelUp(chr.getId(), petIndex));
+                    chr.getMap().broadcastMessage(EffectPacket.showPetLevelUp(chr, petIndex));
                 }
                 c.getSession().write(PetPacket.updatePet(pet, chr.getInventory(MapleInventoryType.CASH).getItem((byte) pet.getInventoryPosition()), false));
             }
@@ -171,7 +171,7 @@ public class PetHandler {
                 if (newCloseness >= GameConstants.getClosenessNeededForLevel(pet.getLevel() + 1)) {
                     pet.setLevel(pet.getLevel() + 1);
                     c.getSession().write(EffectPacket.showPetLevelUp(index));
-                    chr.getMap().broadcastMessage(EffectPacket.showPetLevelUp(chr.getId(), index));
+                    chr.getMap().broadcastMessage(EffectPacket.showPetLevelUp(chr, index));
                 }
             }
             c.getSession().write(PetPacket.updatePet(pet, chr.getInventory(MapleInventoryType.CASH).getItem((byte) pet.getInventoryPosition()), false));

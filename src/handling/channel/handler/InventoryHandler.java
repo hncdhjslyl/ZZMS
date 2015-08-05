@@ -285,7 +285,7 @@ public class InventoryHandler {
                                 MapleInventoryManipulator.removeById(c, GameConstants.getInventoryType(itemId), itemId, 1, false, false);
 
                                 c.getSession().write(EffectPacket.showRewardItemAnimation(reward.itemid, reward.effect));
-                                chr.getMap().broadcastMessage(chr, EffectPacket.showRewardItemAnimation(reward.itemid, reward.effect, chr.getId()), false);
+                                chr.getMap().broadcastMessage(chr, EffectPacket.showRewardItemAnimation(reward.itemid, reward.effect, chr), false);
                                 return true;
                             }
                         }
@@ -3058,7 +3058,7 @@ public class InventoryHandler {
                     if (c.getPlayer().getInventory(MapleInventoryType.CASH).getNumFreeSlot() >= 1 && c.getPlayer().getInventory(MapleInventoryType.EQUIP).getNumFreeSlot() >= 1) {
                         if (Randomizer.nextInt(100) < 30) { //30% for Hilla's Pet
                             if (MapleInventoryManipulator.checkSpace(c, 5000217, 1, "") && MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, toUse.getItemId(), 1, true, false)) {
-                                MapleInventoryManipulator.addById(c, 5000217, (short) 1, "", MaplePet.createPet(5000217, "Blackheart", 1, 0, 100, MapleInventoryIdentifier.getInstance(), 0, (short) 0, 0), 45, MapleInventoryManipulator.DAY, "從 " + toUse + " 的道具腳本中獲得, 時間:" + FileoutputUtil.CurrentReadable_Date());
+                                MapleInventoryManipulator.addById(c, 5000217, (short) 1, "", MaplePet.createPet(5000217, "Blackheart", 1, 0, 100, MapleInventoryIdentifier.getInstance(), 0, (short) 0x1E7F, 0), 45, MapleInventoryManipulator.DAY, "從 " + toUse + " 的道具腳本中獲得, 時間:" + FileoutputUtil.CurrentReadable_Date());
                             } else {
                                 c.getPlayer().dropMessage(0, "Please make more space");
                             }
@@ -4670,10 +4670,10 @@ public class InventoryHandler {
                 boolean isMercedes = MapleJob.is精靈遊俠(c.getPlayer().getJob());
                 if ((elf == 0 && !isMercedes) || (elf == 1 && isMercedes)) {
                     c.getSession().write(EffectPacket.showWeirdEffect("Effect/BasicEff.img/JobChangedElf", 5155000));
-                    c.getPlayer().getMap().broadcastMessage(c.getPlayer(), EffectPacket.showWeirdEffect(c.getPlayer().getId(), "Effect/BasicEff.img/JobChangedElf", 5155000), false);
+                    c.getPlayer().getMap().broadcastMessage(c.getPlayer(), EffectPacket.showWeirdEffect(c.getPlayer(), "Effect/BasicEff.img/JobChangedElf", 5155000), false);
                 } else {
                     c.getSession().write(EffectPacket.showWeirdEffect("Effect/BasicEff.img/JobChanged", 5155000));
-                    c.getPlayer().getMap().broadcastMessage(c.getPlayer(), EffectPacket.showWeirdEffect(c.getPlayer().getId(), "Effect/BasicEff.img/JobChanged", 5155000), false);
+                    c.getPlayer().getMap().broadcastMessage(c.getPlayer(), EffectPacket.showWeirdEffect(c.getPlayer(), "Effect/BasicEff.img/JobChanged", 5155000), false);
                 }
                 c.getPlayer().setElf(elf == 0 ? 1 : 0);
                 c.getPlayer().updateInfoQuest(GameConstants.精靈耳朵, "sw=" + c.getPlayer().getElf());
@@ -4696,7 +4696,7 @@ public class InventoryHandler {
                     statup.put(MapleStat.GENDER, (long) c.getPlayer().getGender());
                     c.getSession().write(CWvsContext.updatePlayerStats(statup, c.getPlayer()));
                     c.getSession().write(CField.EffectPacket.showCraftingEffect("Effect/BasicEff.img/TransGender", (byte) 1, 0, 0));
-                    c.getPlayer().getMap().broadcastMessage(c.getPlayer(), CField.EffectPacket.showCraftingEffect(c.getPlayer().getId(), "Effect/BasicEff.img/TransGender", (byte) 1, 0, 0), false);
+                    c.getPlayer().getMap().broadcastMessage(c.getPlayer(), CField.EffectPacket.showCraftingEffect(c.getPlayer(), "Effect/BasicEff.img/TransGender", (byte) 1, 0, 0), false);
                     c.getPlayer().equipChanged();
                     used = true;
                 }
@@ -4942,7 +4942,7 @@ public class InventoryHandler {
                     if (pet.getCloseness() >= GameConstants.getClosenessNeededForLevel(pet.getLevel() + 1)) {
                         pet.setLevel(pet.getLevel() + 1);
                         c.getSession().write(EffectPacket.showPetLevelUp(c.getPlayer().getPetIndex(pet)));
-                        c.getPlayer().getMap().broadcastMessage(EffectPacket.showPetLevelUp(c.getPlayer().getId(), petindex));
+                        c.getPlayer().getMap().broadcastMessage(EffectPacket.showPetLevelUp(c.getPlayer(), petindex));
                     }
                 }
                 c.getSession().write(PetPacket.updatePet(pet, c.getPlayer().getInventory(MapleInventoryType.CASH).getItem(pet.getInventoryPosition()), false));
@@ -5241,7 +5241,7 @@ public class InventoryHandler {
                         MapleInventoryManipulator.addFromDrop(c, mapitem.getItem(), true/*, mapitem.getDropper() instanceof MapleMonster*/);
                         removeItem(chr, mapitem, ob);
                     } else {
-                        MapleInventoryManipulator.addById(c, mapitem.getItemId(), (short) 1, "", MaplePet.createPet(mapitem.getItemId(), MapleItemInformationProvider.getInstance().getName(mapitem.getItemId()), 1, 0, 100, MapleInventoryIdentifier.getInstance(), 0, (short) 0, 0), 90, MapleInventoryManipulator.DAY, null);
+                        MapleInventoryManipulator.addById(c, mapitem.getItemId(), (short) 1, "", MaplePet.createPet(mapitem.getItemId(), MapleItemInformationProvider.getInstance().getName(mapitem.getItemId()), 1, 0, 100, MapleInventoryIdentifier.getInstance(), 0, (short) 0x1E7F, 0), 90, MapleInventoryManipulator.DAY, null);
                         removeItem_Pet(chr, mapitem, mapitem.getItemId());
                     }
                 } else {
