@@ -9,17 +9,9 @@ import java.util.Properties;
 import tools.EncodingDetect;
 
 public enum RecvPacketOpcode implements WritableIntValueHolder {
-
-    // 未知[完成-179] [01 00 00 00 00 00 00 00 00]
-    STRANGE_DATA(false, (short) 0x2A),
     
-    // 打工系统[完成]
-    PART_TIME_JOB(true, (short) 0x34),
-    // 角色卡[完成]
-    CHARACTER_CARD(true, (short) 0x35),
-    // 未知[未知]
-    ENABLE_LV50_CHAR(true, (short) 0x36),
-    
+    // 未知[完成-182] [01 00 00 00 00 00 00 00 00]
+    STRANGE_DATA(false, (short) 0x66),
     // 客戶端驗證[完成-182]
     CLIENT_HELLO(false, (short) 0x67),
     // 密碼驗證[完成-182]
@@ -32,7 +24,7 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     CHAR_SELECT(true, (short) 0x6E),
     // 伺服器選單回覆[完成-182]
     SERVERLIST_REQUEST(false, (short) 0x71),    
-    // 自動登入轉向[完成]
+    // 自動登入轉向[完成-182]
     LOGIN_REDIRECTOR(false, (short) 0x72),
     // 檢查角色名稱[完成-182]
     CHECK_CHAR_NAME(true, (short) 0x73), 
@@ -48,6 +40,13 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     
     // 客戶端錯誤信息回覆[完成-182]
     CLIENT_FEEDBACK(false, (short) 0x85),
+
+    // 打工系统[完成-182]
+    PART_TIME_JOB(true, (short) 0x8F),
+    // 角色卡[完成-182]
+    CHARACTER_CARD(true, (short) 0x90),
+    // 未知[推測]
+    ENABLE_LV50_CHAR(true, (short) 0x91),
     
     // Pong[完成-182]
     PONG(false, (short) 0x94),
@@ -57,6 +56,11 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     // 客戶端錯誤[完成-182] 【[ Name: %s, Job: %d, Field: %d, World: %d, Channel: %d ]\r\n】
     CLIENT_ERROR(false, (short) 0x96),
     
+    // 選擇性別[完成-182]
+    SET_GENDER(false, (short) 0x9D),
+    // 0x9E 【回到登入介面】[String(帳號)]
+    // 伺服器狀態[推測]
+    SERVERSTATUS_REQUEST(false, (short) 0x9),
     // 背景驗證[完成-182]
     GET_SERVER(false, (short) 0xA0),
     
@@ -65,22 +69,16 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     
     
     
-    // 選擇性別[完成]
-    SET_GENDER(false, (short) 0x4B),
-    // 0x4C 【回到登入介面】[String(帳號)]
-    // 伺服器狀態[未知]
-    SERVERSTATUS_REQUEST(false, (short) 0x4D),
-    
     ////////////////////////////////////////////////
     
     // 變更地圖[完成-182]
     CHANGE_MAP(true, (short) 0xA8),
-    // 變更頻道[完成-179]
+    // 變更頻道[完成-182]
     CHANGE_CHANNEL(true, (short) 0xA9),
     // 0xAA
     // 0xAB
     // 0xAC
-    // 購物商城[完成-179]
+    // 購物商城[完成-182]
     ENTER_CASH_SHOP(true, (short) 0xAD),
     // PvP開始[完成]
     ENTER_PVP(true, (short) 0xAE),
@@ -101,18 +99,18 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     
     // 玩家移動[完成-182]
     MOVE_PLAYER(true, (short) 0xB7),    
-    // 取消椅子[完成-179]
+    // 取消椅子[完成-182]
     CANCEL_CHAIR(true, (short) 0xB8),
-    // 使用椅子[完成-179]
+    // 使用椅子[完成-182]
     USE_CHAIR(true, (short) 0xB9),
     
     // 0xBA
     
-    // 近距離攻擊[完成-179]
+    // 近距離攻擊[完成-182]
     CLOSE_RANGE_ATTACK(true, (short) 0xBB),
-    // 遠距離攻擊[完成-179]
+    // 遠距離攻擊[完成-182]
     RANGED_ATTACK(true, (short) 0xBC),
-    // 魔法攻擊[完成-179]
+    // 魔法攻擊[完成-182]
     MAGIC_ATTACK(true, (short) 0xBD),
     // 被動攻擊(抗壓...)[推測]
     PASSIVE_ATTACK(true, (short) 0xBE),
@@ -421,10 +419,10 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     // 阿斯旺復活
     AZWAN_REVIVE(true, (short) 0x159),
     
-    // 0x109
+    // 0x15A
     
     // 使用髮型卷[2540000][完成]
-    USE_COSMETIC(true, (short) 0x7FFE),
+    USE_COSMETIC(true, (short) 0x15B),
     
     // DF連擊[完成-181] [意志之劍取消]
     DF_COMBO(true, (short) 0x10B),
@@ -443,49 +441,49 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     // 0x120
     
     // 管理員聊天[完成]
-    ADMIN_CHAT(true, (short) 0x7FFE),
+    ADMIN_CHAT(true, (short) 0x171),
     // 隊伍聊天
-    PARTYCHAT(true, (short) 0x7FFE),
+    PARTYCHAT(true, (short) 0x172),
     // 悄悄話[完成]
-    COMMAND(true, (short) 0x7FFE),
+    COMMAND(true, (short) 0x173),
     // 聊天招待[完成]
-    MESSENGER(true, (short) 0x7FFE),
+    MESSENGER(true, (short) 0x174),
     // 玩家互動[完成]
-    PLAYER_INTERACTION(true, (short) 0x7FFE),
+    PLAYER_INTERACTION(true, (short) 0x175),
     // 隊伍操作[完成]
-    PARTY_OPERATION(true, (short) 0x7FFE),
+    PARTY_OPERATION(true, (short) 0x176),
     // 接受/拒絕組隊邀請[完成]
-    DENY_PARTY_REQUEST(true, (short) 0x7FFE),
+    DENY_PARTY_REQUEST(true, (short) 0x177),
     // 允許組隊邀請
-    ALLOW_PARTY_INVITE(true, (short) 0x7FFE),
+    ALLOW_PARTY_INVITE(true, (short) 0x178),
     // 建立遠征隊
-    EXPEDITION_OPERATION(true, (short) 0x7FFE),
+    EXPEDITION_OPERATION(true, (short) 0x179),
     // 遠征隊搜尋
-    EXPEDITION_LISTING(true, (short) 0x7FFE),
+    EXPEDITION_LISTING(true, (short) 0x17A),
     // 公會操作[完成]
-    GUILD_OPERATION(true, (short) 0x7FFE),
+    GUILD_OPERATION(true, (short) 0x17B),
     // 拒絕公會邀請
-    DENY_GUILD_REQUEST(true, (short) 0x7FFE),
+    DENY_GUILD_REQUEST(true, (short) 0x17C),
     // 申請加入公會
-    JOIN_GUILD_REQUEST(true, (short) 0x7FFE),
+    JOIN_GUILD_REQUEST(true, (short) 0x17D),
     // 取消加入公會
-    JOIN_GUILD_CANCEL(true, (short) 0x7FFE),
+    JOIN_GUILD_CANCEL(true, (short) 0x17E),
     // 允許加入公會邀請
-    ALLOW_GUILD_JOIN(true, (short) 0x7FFE),
+    ALLOW_GUILD_JOIN(true, (short) 0x17F),
     // 拒絕加入公會邀請
-    DENY_GUILD_JOIN(true, (short) 0x7FFE),
+    DENY_GUILD_JOIN(true, (short) 0x180),
     
-    // 0x131
-    // 0x132
+    // 0x181
+    // 0x182
     
     // 管理員指令[完成]
-    ADMIN_COMMAND(true, (short) 0x7FFE),
+    ADMIN_COMMAND(true, (short) 0x183),
     // 管理員指令
-    ADMIN_COMMAND2(true, (short) 0x7FFE),
+    ADMIN_COMMAND2(true, (short) 0x184),
     // 管理員日誌[完成]
-    ADMIN_LOG(true, (short) 0x7FFE),
+    ADMIN_LOG(true, (short) 0x185),
     // 好友操作[完成]
-    BUDDYLIST_MODIFY(true, (short) 0x7FFE), 
+    BUDDYLIST_MODIFY(true, (short) 0x186), 
     
     // 0x137
     // 0x138
@@ -506,59 +504,59 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     // 變更鍵盤設置[完成-182]
     CHANGE_KEYMAP(true, (short) 0x190),
     // 猜拳遊戲[完成]
-    RPS_GAME(true, (short) 0x7FFE),
+    RPS_GAME(true, (short) 0x191),
     
-    // 0x141
-    // 0x142
-    // 0x143
+    // 0x192
+    // 0x193
+    // 0x194
     
     // 戒指操作[完成]
-    RING_ACTION(true, (short) 0x7FFE),
+    RING_ACTION(true, (short) 0x195),
     // 結婚操作[完成]
-    WEDDING_ACTION(true, (short) 0x7FFE),
+    WEDDING_ACTION(true, (short) 0x196),
     // 公會聯盟操作
-    ALLIANCE_OPERATION(true, (short) 0x7FFE),
+    ALLIANCE_OPERATION(true, (short) 0x197),
     // 拒絕公會聯盟邀請
-    DENY_ALLIANCE_REQUEST(true, (short) 0x7FFE),
+    DENY_ALLIANCE_REQUEST(true, (short) 0x198),
     // 移動至家族成員身邊
-    CYGNUS_SUMMON(true, (short) 0x7FFE),
+    CYGNUS_SUMMON(true, (short) 0x199),
     // 狂郎勇士連擊
-    ARAN_COMBO(true, (short) 0x7FFE),
+    ARAN_COMBO(true, (short) 0x19A),
     // 怪物CRC Key改變回傳[完成]
-    MONSTER_CRC_KEY(true, (short) 0x7FFE),
+    MONSTER_CRC_KEY(true, (short) 0x19B),
     // 製作道具完成
-    CRAFT_DONE(true, (short) 0x7FFE),
+    CRAFT_DONE(true, (short) 0x19C),
     // 製作道具效果
-    CRAFT_EFFECT(true, (short) 0x7FFE),
+    CRAFT_EFFECT(true, (short) 0x19D),
     // 製作道具開始
-    CRAFT_MAKE(true, (short) 0x7FFE),
+    CRAFT_MAKE(true, (short) 0x19E),
     // 變更房間[完成-179]
-    CHANGE_ROOM_CHANNEL(true, (short) 0x7FFE),
+    CHANGE_ROOM_CHANNEL(true, (short) 0x1B3),
     // 選擇技能
-    CHOOSE_SKILL(true, (short) 0x7FFE),
+    CHOOSE_SKILL(true, (short) 0x1B5),
     // 技能竊取
-    SKILL_SWIPE(true, (short) 0x7FFE),
+    SKILL_SWIPE(true, (short) 0x1B6),
     // 檢視技能
-    VIEW_SKILLS(true, (short) 0x7FFE),
+    VIEW_SKILLS(true, (short) 0x1B7),
     // 撤銷偷竊技能
-    CANCEL_OUT_SWIPE(true, (short) 0x7FFE),
+    CANCEL_OUT_SWIPE(true, (short) 0x1B8),
     
     // 釋放意志之劍[完成-181]
-    RELEASE_TEMPEST_BLADES(true, (short) 0x16E),
+    RELEASE_TEMPEST_BLADES(true, (short) 0x1BF),
     
     // 更新超級技能(Done)
-    UPDATE_HYPER(true, (short) 0x7FFE),
+    UPDATE_HYPER(true, (short) 0x1C6),
     // 重置超級技能(Done)
-    RESET_HYPER(true, (short) 0x7FFE),
+    RESET_HYPER(true, (short) 0x1C7),
+    
+    // 返回選角界面[完成-182]
+    BACK_TO_CHARLIST(true, (short) 0x1D8),
     
     // 創建角色跟刪除角色輸入的驗證碼[完成-182]
     SECURITY_CODE(true, (short) 0x1E7),
     
     // 0x1E8
-    
-    // 返回選角界面[完成-182]
-    BACK_TO_CHARLIST(true, (short) 0x1D8),
-    
+    // 0x1E9
     // 0x1EA
     // 0x1EB
     // 0x1EC
@@ -626,60 +624,72 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     // 創角進入遊戲[完成-182]
     CREACTE_CHAR_SELECT(true, (short) 0x219),
     
-    // 0x1C3
+    // 0x21A
     
     // 寵物移動[完成]
-    MOVE_PET(true, (short) 0x7FFE),
+    MOVE_PET(true, (short) 0x21B),
     // 寵物說話[完成]
-    PET_CHAT(true, (short) 0x7FFE),
+    PET_CHAT(true, (short) 0x21C),
     // 寵物指令[完成]
-    PET_COMMAND(true, (short) 0x7FFE),
+    PET_COMMAND(true, (short) 0x21D),
     // 寵物拾取[完成]
-    PET_LOOT(true, (short) 0x7FFE),
+    PET_LOOT(true, (short) 0x21E),
     // 宠物自动吃药
-    PET_AUTO_POT(true, (short) 0x7FFE),
+    PET_AUTO_POT(true, (short) 0x21F),
     // 寵物過濾
-    PET_IGNORE(true, (short) 0x7FFE),
+    PET_IGNORE(true, (short) 0x220),
     // 花狐移動[177-完成]
-    MOVE_HAKU(true, (short) 0x7FFE),
-    // 花狐動作(包括變身)[177-完成](2015-3-26更正)
-    HAKU_ACTION(true, (short) 0x7FFE),
+    MOVE_HAKU(true, (short) 0x225),
+    // 花狐動作(包括變身)[177-完成]
+    HAKU_ACTION(true, (short) 0x226),
+
+    //
+    //
+    //
+
     // 影朋花狐使用輔助技能
-    HAKU_USE_BUFF(true, (short) 0x7FFE),
+    HAKU_USE_BUFF(true, (short) 0x229),
     
     //
     //
 
     //召唤兽移动[177-完成]
-    MOVE_SUMMON(true, (short) 0x7FFE),
+    MOVE_SUMMON(true, (short) 0x22C),
     //召唤兽攻击(176.Done)
-    SUMMON_ATTACK(true, (short) 0x7FFE),
+    SUMMON_ATTACK(true, (short) 0x22D),
     //召唤兽伤害(176.Done)
-    DAMAGE_SUMMON(true, (short) 0x7FFE),
+    DAMAGE_SUMMON(true, (short) 0x22E),
     //召唤兽技能(176.Done)
-    SUB_SUMMON(true, (short) 0x7FFE),
+    SUB_SUMMON(true, (short) 0x22F),
     //移除召唤兽(176.Done)
-    REMOVE_SUMMON(true, (short) 0x7FFE),
+    REMOVE_SUMMON(true, (short) 0x230),
+
+    //
+    //
+    //
+    //
+    //
+
     //神龍移動[177-完成]
-    MOVE_DRAGON(true, (short) 0x7FFE),
+    MOVE_DRAGON(true, (short) 0x236),
     // 使用物品任務
-    USE_ITEM_QUEST(true, (short) 0x7FFE),
+    USE_ITEM_QUEST(true, (short) 0x239),
     // 機器人移動[完成]
-    MOVE_ANDROID(true, (short) 0x7FFE), 
+    MOVE_ANDROID(true, (short) 0x23A), 
     //安卓情感回傳(176.Done)
-    ANDROID_EMOTION_RESULT(true, (short) 0x7FFE),
+    ANDROID_EMOTION_RESULT(true, (short) 0x23B),
     //更新任務
-    UPDATE_QUEST(true, (short) 0x7FFE),
-    QUEST_ITEM(true, (short) 0x7FFE),
+    UPDATE_QUEST(true, (short) 0x23C),
+    QUEST_ITEM(true, (short) 0x23D),
     //快速欄按鍵(176.Done)
-    QUICK_SLOT(true, (short) 0x7FFE),
+    QUICK_SLOT(true, (short) 0x241),
     //按下按鈕
-    BUTTON_PRESSED(true, (short) 0x7FFE),
+    BUTTON_PRESSED(true, (short) 0x242),
     
     //
 
     // 操控角色完成反饋[完成]
-    DIRECTION_COMPLETE(true, (short) 0x7FFE),
+    DIRECTION_COMPLETE(true, (short) 0x244),
     
     //
     //
@@ -688,27 +698,27 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     SYSTEM_PROCESS_LIST(true, (short) 0x247),
     
     //神之子-開始強化[完成-180]
-    ZERO_SCROLL_START(true, (short) 0x7FFE),
+    ZERO_SCROLL_START(true, (short) 0x249),
     //神之子-武器潛在能力[完成-180]
-    ZERO_WEAPON_ABILITY(true, (short) 0x7FFE),    
+    ZERO_WEAPON_ABILITY(true, (short) 0x24A),
     //神之子-武器介面[完成-180]
-    ZERO_WEAPON_UI(true, (short) 0x7FFE),
+    ZERO_WEAPON_UI(true, (short) 0x24B),
     //神之子-與精靈對話[完成-180]
-    ZERO_NPC_TALK(true, (short) 0x7FFE),
+    ZERO_NPC_TALK(true, (short) 0x24C),
     //神之子-使用卷軸[完成-180]
-    ZERO_WEAPON_SCROLL(true, (short) 0x7FFE),
+    ZERO_WEAPON_SCROLL(true, (short) 0x24D),
     //神之子-武器成長[完成-180]
-    ZERO_WEAPON_UPGRADE(true, (short) 0x7FFE),
+    ZERO_WEAPON_UPGRADE(true, (short) 0x24E),
     //神之子-武器成長[完成-180]
-    ZERO_WEAPON_UPGRADE_START(true, (short) 0x7FFE),
+    ZERO_WEAPON_UPGRADE_START(true, (short) 0x24F),
 
     //加載角色成功
-    LOAD_PLAYER_SCCUCESS(true, (short) 0x7FFE),
+    LOAD_PLAYER_SCCUCESS(true, (short) 0x253),
     // 箭座控制[完成]
-    ARROW_BLASTER_ACTION(true, (short) 0x7FFE),
+    ARROW_BLASTER_ACTION(true, (short) 0x256),
     
     // 遊戲嚮導[完成-179]
-    GUIDE_TRANSFER(true, (short) 0x7FFE),
+    GUIDE_TRANSFER(true, (short) 0x26C),
     
     // 0x216
     // 0x217
@@ -716,37 +726,37 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     // 0x219
     
     // 新星世界[完成-179]
-    SHINING_STAR_WORLD(true, (short) 0x7FFE),
+    SHINING_STAR_WORLD(true, (short) 0x272),
     // Boss清單[完成-179]
-    BOSS_LIST(true, (short) 0x7FFE),
+    BOSS_LIST(true, (short) 0x273),
     
-    // 0x21E 【新星世界試穿衣服】
-    // 0x21F 【新星世界復原衣服】
+    // 0x276 【新星世界試穿衣服】
+    // 0x277 【新星世界復原衣服】
 
     // 公會佈告欄操作
-    BBS_OPERATION(true, (short) 0x7FFE),
+    BBS_OPERATION(true, (short) 0x295),
     // 離開遊戲[完成] 
-    EXIT_GAME(true, (short) 0x7FFE),
+    EXIT_GAME(true, (short) 0x29A),
     // 潘姆音樂[完成]
-    PAM_SONG(true, (short) 0x7FFE),
+    PAM_SONG(true, (short) 0x29C),
     // 聖誕團隊藥水[2212000][完成]
-    TRANSFORM_PLAYER(true, (short) 0x7FFE),
-    // 0x25E [Long]
+    TRANSFORM_PLAYER(true, (short) 0x2B5),
+    // 0x2B6 [Long]
     // 進擊的巨人視窗選項反饋
-    ATTACK_ON_TITAN_SELECT(true, (short) 0x7FFE),
+    ATTACK_ON_TITAN_SELECT(true, (short) 0x2B7),
     // 拍賣系統[完成-179]
-    ENTER_MTS(true, (short) 0x7FFE),
+    ENTER_MTS(true, (short) 0x2B9),
     // 使用兵法書(2370000)[完成]
-    SOLOMON(true, (short) 0x7FFE),
+    SOLOMON(true, (short) 0x2BA),
     // 獲得兵法書經驗值[完成]
-    GACH_EXP(true, (short) 0x7FFE),
+    GACH_EXP(true, (short) 0x2BB),
     // 使用強化任意門[完成-179]
-    CHRONOSPHERE(true, (short) 0x7FFE),
+    CHRONOSPHERE(true, (short) 0x2C9),
     // 0x272
     // 0x273
     // 0x274
     // 使用閃耀方塊(5062017)[完成]
-    USE_FLASH_CUBE(true, (short) 0x7FFE),
+    USE_FLASH_CUBE(true, (short) 0x2CD),
     // 0x276
     // 0x277
     // 0x278
@@ -755,12 +765,13 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     // 0x27B
     // 0x27C
     // 0x27D
-    // 怪物移動[完成-179]
-    MOVE_LIFE(true, (short) 0x7FFE),
+    // 怪物移動[完成-182]
+    MOVE_LIFE(true, (short) 0x2EA),
     // 怪物復仇
-    AUTO_AGGRO(true, (short) 0x7FFE),
+    AUTO_AGGRO(true, (short) 0x2EB),
     // 怪物自爆
-    MONSTER_BOMB(true, (short) 0x7FFE),
+    MONSTER_BOMB(true, (short) 0x2EC),
+
     // Npc動作(包括說話)[完成-182]
     NPC_ACTION(true, (short) 0x303),
     
@@ -780,29 +791,29 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     // 攻擊箱子[完成-182]
     DAMAGE_REACTOR(true, (short) 0x30D),
     // 雙擊箱子
-    TOUCH_REACTOR(true, (short) 0x7FFE),
+    TOUCH_REACTOR(true, (short) 0x30E),
     // 召喚分解機[完成]
-    MAKE_EXTRACTOR(true, (short) 0x7FFE),
+    MAKE_EXTRACTOR(true, (short) 0x312),
     // 玩家數據更新?
-    UPDATE_ENV(true, (short) 0x7FFE),
+    UPDATE_ENV(true, (short) 0x313),
     // 滾雪球
-    SNOWBALL(true, (short) 0x7FFE),
+    SNOWBALL(true, (short) 0x316),
     // 向左擊飛[完成]
-    LEFT_KNOCK_BACK(true, (short) 0x7FFE),
+    LEFT_KNOCK_BACK(true, (short) 0x317),
     //组队成员搜索
-    MEMBER_SEARCH(true, (short) 0x7FFE),
+    MEMBER_SEARCH(true, (short) 0x32B),
     //队伍搜索
-    PARTY_SEARCH(true, (short) 0x7FFE),
+    PARTY_SEARCH(true, (short) 0x32C),
     // 開始採集[完成-179]
-    START_HARVEST(true, (short) 0x7FFE),
+    START_HARVEST(true, (short) 0x332),
     // 停止採集[完成-179]
-    STOP_HARVEST(true, (short) 0x7FFE),
+    STOP_HARVEST(true, (short) 0x333),
     // 快速移動(開啟Npc)[完成-179]
-    QUICK_MOVE(true, (short) 0x7FFE),
+    QUICK_MOVE(true, (short) 0x336),
     //採集符文輪[完成-179]
-    TOUCH_RUNE(true, (short) 0x7FFE),
+    TOUCH_RUNE(true, (short) 0x337),
     //取得符文[完成-179]
-    USE_RUNE(true, (short) 0x7FFE),
+    USE_RUNE(true, (short) 0x338),
 
     // 0x2CB 【楓葉戰士選擇模式】
 
@@ -837,14 +848,14 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     // 創建角色二次密碼認證[完成-182]
     CREATE_CHAR_2PW(true, (short) 0x3C3),
     // 使用黃金鐵鎚[完成-179]
-    GOLDEN_HAMMER(true, (short) 0x7FFE),
+    GOLDEN_HAMMER(true, (short) 0x3D2),
     // 黃金鐵鎚使用完成
-    VICIOUS_HAMMER(true, (short) 0x7FFE),
+    VICIOUS_HAMMER(true, (short) 0x3D3),
     
-    // 使用白金槌子[完成-181]
-    USE_PLATINUM_HAMMER(true, (short) 0x369),
-    // 使用白金槌子[完成-181]
-    PLATINUM_HAMMER(true, (short) 0x36A),
+    // 使用白金鎚子[完成-181]
+    USE_PLATINUM_HAMMER(true, (short) 0x3D4),
+    // 使用白金鎚子[完成-181]
+    PLATINUM_HAMMER(true, (short) 0x3D5),
     
     // 獲得獎勵[完成-181]
     REWARD(true, (short) 0x3AE),

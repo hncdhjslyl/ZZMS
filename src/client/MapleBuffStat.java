@@ -8,9 +8,6 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     //==========================Mask[0] - 1 - IDA[0xE]
  
     // 0    
-//==========================Mask[0] - 1 - IDA[0xE]
- 
-    // 0    
     TEST_BUFF0(0, true),
     //提升最大爆擊                      [完成-179]
     INDIE_CR(1, true),

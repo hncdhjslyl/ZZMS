@@ -1541,7 +1541,7 @@ public class CField {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.FLASH_CUBE_RESPONSE.getValue());
-        mplew.writeInt(245186978);
+        mplew.writeInt(1805734203);
         mplew.write(type);
         mplew.writeInt(value);
 
@@ -5311,6 +5311,7 @@ public class CField {
                     mplew.write(value[0]);
                     mplew.writeInt(value[1]);
                     mplew.write(value[2]);
+                    mplew.writeZeroBytes(3);
                     mplew.writeMapleAsciiString(str[0]);
                     break;
                 case RESURRECTION_INFO:

@@ -723,7 +723,11 @@ public class MapleInventoryManipulator {
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
-        if (ItemConstants.類型.武器(source.getItemId()) && dst != -10 && dst != -11) {
+        if (ItemConstants.類型.副手(source.getItemId()) && dst != -10) {
+            c.getSession().write(CWvsContext.enableActions());
+            return;
+        }
+        if (ItemConstants.類型.武器(source.getItemId()) && dst != -11) {
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
@@ -835,7 +839,7 @@ public class MapleInventoryManipulator {
                         c.getSession().write(InventoryPacket.getShowInventoryFull());
                         return;
                     }
-                } else if (weapon != null && ItemConstants.類型.雙手武器(weapon.getItemId()) && !ItemConstants.類型.副手武器(source.getItemId())) {
+                } else if (weapon != null && ItemConstants.類型.雙手武器(weapon.getItemId()) && !ItemConstants.類型.特殊副手(source.getItemId())) {
                     if (chr.getInventory(MapleInventoryType.EQUIP).isFull(-1)) {
                         c.getSession().write(InventoryPacket.getInventoryFull());
                         c.getSession().write(InventoryPacket.getShowInventoryFull());
@@ -853,7 +857,7 @@ public class MapleInventoryManipulator {
             case -11: { // Weapon
                 Item weapon = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -11);
                 Item shield = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -10);
-                if (shield != null && ItemConstants.類型.雙手武器(source.getItemId()) && !ItemConstants.類型.副手武器(shield.getItemId())) {
+                if (shield != null && ItemConstants.類型.雙手武器(source.getItemId()) && !ItemConstants.類型.特殊副手(shield.getItemId())) {
                     if (chr.getInventory(MapleInventoryType.EQUIP).isFull(-1)) {
                         c.getSession().write(InventoryPacket.getInventoryFull());
                         c.getSession().write(InventoryPacket.getShowInventoryFull());

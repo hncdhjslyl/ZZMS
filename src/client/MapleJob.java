@@ -508,8 +508,6 @@ public enum MapleJob {
     public static int getTrueJobGrade(int job) {
         if (job / 100 == 27) {
             return 2;
-        } else if (job / 100 == 36) {
-            return 6;
         } else {
             return job % 1000 / 100;
         }

@@ -995,9 +995,9 @@ public class InventoryHandler {
             final boolean isEpic = scroll.getItemId() / 100 == 20497 && scroll.getItemId() < 2049750;//特殊捲
             final boolean isUnique = scroll.getItemId() / 100 == 20497 && scroll.getItemId() >= 2049750 && scroll.getItemId() < 2049780;//罕見卷
             final boolean isLegend = scroll.getItemId() / 100 == 20497 && scroll.getItemId() >= 2049780;//傳說卷
-            if ((!isEpic && !isUnique && !isLegend && toScroll.getState(false) >= 1) || (isEpic && toScroll.getState(false) >= 18) || (isUnique && toScroll.getState(false) >= 19) || (isLegend && toScroll.getState(false) >= 20) || (toScroll.getLevel() == 0 && toScroll.getUpgradeSlots() == 0 && !ItemConstants.類型.盾牌(toScroll.getItemId()) && !ItemConstants.類型.副手武器(toScroll.getItemId()) && !ItemConstants.類型.能源(toScroll.getItemId()) && !ItemConstants.類型.特殊潛能道具(toScroll.getItemId())/* && !isEpic && !isUnique*/) || vegas > 0 || ii.isCash(toScroll.getItemId()) || ItemConstants.類型.無法潛能道具(toScroll.getItemId())) {
+            if ((!isEpic && !isUnique && !isLegend && toScroll.getState(false) >= 1) || (isEpic && toScroll.getState(false) >= 18) || (isUnique && toScroll.getState(false) >= 19) || (isLegend && toScroll.getState(false) >= 20) || (toScroll.getLevel() == 0 && toScroll.getUpgradeSlots() == 0 && !ItemConstants.類型.副手(toScroll.getItemId()) && !ItemConstants.類型.能源(toScroll.getItemId()) && !ItemConstants.類型.特殊潛能道具(toScroll.getItemId())/* && !isEpic && !isUnique*/) || vegas > 0 || ii.isCash(toScroll.getItemId()) || ItemConstants.類型.無法潛能道具(toScroll.getItemId())) {
                 if (chr.isShowErr()) {
-                    chr.showInfo("砸卷錯誤", true, "isPotentialScroll" + (toScroll.getState(false) >= 1) + " " + (toScroll.getLevel() == 0 && toScroll.getUpgradeSlots() == 0 && !ItemConstants.類型.盾牌(toScroll.getItemId()) && !ItemConstants.類型.副手武器(toScroll.getItemId()) && !ItemConstants.類型.能源(toScroll.getItemId()) && !ItemConstants.類型.特殊潛能道具(toScroll.getItemId())) + "vegas" + (vegas > 0) + "裝備是否是為點裝" + ii.isCash(toScroll.getItemId()) + "特殊潛能道具" + ItemConstants.類型.無法潛能道具(toScroll.getItemId()));
+                    chr.showInfo("砸卷錯誤", true, "isPotentialScroll" + (toScroll.getState(false) >= 1) + " " + (toScroll.getLevel() == 0 && toScroll.getUpgradeSlots() == 0 && !ItemConstants.類型.副手(toScroll.getItemId()) && !ItemConstants.類型.能源(toScroll.getItemId()) && !ItemConstants.類型.特殊潛能道具(toScroll.getItemId())) + "vegas" + (vegas > 0) + "裝備是否是為點裝" + ii.isCash(toScroll.getItemId()) + "特殊潛能道具" + ItemConstants.類型.無法潛能道具(toScroll.getItemId()));
                 }
                 c.getSession().write(InventoryPacket.getInventoryFull());
                 c.getSession().write(CWvsContext.enableActions());
@@ -1005,9 +1005,9 @@ public class InventoryHandler {
                 return false;
             }
         } else if (ItemConstants.類型.附加潛能卷軸(scroll.getItemId())) {//附加潛能捲軸
-            if (toScroll.getState(true) >= 1 || toScroll.getState(false) == 0 || (toScroll.getLevel() == 0 && toScroll.getUpgradeSlots() == 0 && !ItemConstants.類型.盾牌(toScroll.getItemId()) && !ItemConstants.類型.副手武器(toScroll.getItemId()) && !ItemConstants.類型.能源(toScroll.getItemId()) && !ItemConstants.類型.特殊潛能道具(toScroll.getItemId())) || vegas > 0 || ii.isCash(toScroll.getItemId()) || ItemConstants.類型.無法潛能道具(toScroll.getItemId())) {
+            if (toScroll.getState(true) >= 1 || toScroll.getState(false) == 0 || (toScroll.getLevel() == 0 && toScroll.getUpgradeSlots() == 0 && !ItemConstants.類型.副手(toScroll.getItemId()) && !ItemConstants.類型.能源(toScroll.getItemId()) && !ItemConstants.類型.特殊潛能道具(toScroll.getItemId())) || vegas > 0 || ii.isCash(toScroll.getItemId()) || ItemConstants.類型.無法潛能道具(toScroll.getItemId())) {
                 if (chr.isShowErr()) {
-                    chr.showInfo("砸卷錯誤", true, "isBonusPotentialScroll " + (toScroll.getState(true) >= 1) + " " + (toScroll.getLevel() == 0 && toScroll.getUpgradeSlots() == 0 && !ItemConstants.類型.盾牌(toScroll.getItemId()) && !ItemConstants.類型.副手武器(toScroll.getItemId()) && !ItemConstants.類型.能源(toScroll.getItemId()) && !ItemConstants.類型.特殊潛能道具(toScroll.getItemId())) + "vegas" + (vegas > 0) + "裝備是否是為點裝" + ii.isCash(toScroll.getItemId()) + "特殊潛能道具" + ItemConstants.類型.無法潛能道具(toScroll.getItemId()));
+                    chr.showInfo("砸卷錯誤", true, "isBonusPotentialScroll " + (toScroll.getState(true) >= 1) + " " + (toScroll.getLevel() == 0 && toScroll.getUpgradeSlots() == 0 && !ItemConstants.類型.副手(toScroll.getItemId()) && !ItemConstants.類型.能源(toScroll.getItemId()) && !ItemConstants.類型.特殊潛能道具(toScroll.getItemId())) + "vegas" + (vegas > 0) + "裝備是否是為點裝" + ii.isCash(toScroll.getItemId()) + "特殊潛能道具" + ItemConstants.類型.無法潛能道具(toScroll.getItemId()));
                 }
                 c.getSession().write(InventoryPacket.getInventoryFull());
                 c.getSession().write(CWvsContext.enableActions());
@@ -1192,11 +1192,11 @@ public class InventoryHandler {
         } else if (!ItemConstants.類型.機器人心臟(toScroll.getItemId()) && (ItemConstants.類型.提升卷(scroll.getItemId()) || ItemConstants.類型.普通升級卷軸(scroll.getItemId()))) {//普通捲軸
             switch (scroll.getItemId() % 1000 / 100) {
                 case 0: //單手1h
-                    if (ItemConstants.類型.雙手武器(toScroll.getItemId()) || !ItemConstants.類型.武器(toScroll.getItemId())) {
+                    if (ItemConstants.類型.雙手武器(toScroll.getItemId()) || !(ItemConstants.類型.武器(toScroll.getItemId()) || ItemConstants.類型.雙刀(toScroll.getItemId()))) {
                         c.getSession().write(CWvsContext.enableActions());
                         c.getSession().write(CField.enchantResult(0, toScroll.getItemId()));
                         if (chr.isShowErr()) {
-                            chr.showInfo("砸卷錯誤", true, "是雙手武器" + ItemConstants.類型.雙手武器(toScroll.getItemId()) + " 不是武器" + !ItemConstants.類型.武器(toScroll.getItemId()));
+                            chr.showInfo("砸卷錯誤", true, "是雙手武器" + ItemConstants.類型.雙手武器(toScroll.getItemId()) + " 不是武器" + !(ItemConstants.類型.武器(toScroll.getItemId()) || ItemConstants.類型.雙刀(toScroll.getItemId())));
                         }
                         return false;
                     }
@@ -1212,21 +1212,21 @@ public class InventoryHandler {
                     }
                     break;
                 case 2: //防具armor
-                    if (ItemConstants.類型.飾品(toScroll.getItemId()) || ItemConstants.類型.武器(toScroll.getItemId())) {
+                    if (ItemConstants.類型.飾品(toScroll.getItemId()) || ItemConstants.類型.武器(toScroll.getItemId()) || ItemConstants.類型.雙刀(toScroll.getItemId())) {
                         c.getSession().write(CWvsContext.enableActions());
                         c.getSession().write(CField.enchantResult(0, toScroll.getItemId()));
                         if (chr.isShowErr()) {
-                            chr.showInfo("砸卷錯誤", true, "是飾品" + ItemConstants.類型.飾品(toScroll.getItemId()) + " 是武器" + ItemConstants.類型.武器(toScroll.getItemId()));
+                            chr.showInfo("砸卷錯誤", true, "是飾品" + ItemConstants.類型.飾品(toScroll.getItemId()) + " 是武器" + (ItemConstants.類型.武器(toScroll.getItemId()) || ItemConstants.類型.雙刀(toScroll.getItemId())));
                         }
                         return false;
                     }
                     break;
                 case 3: //飾品accessory
-                    if (!ItemConstants.類型.飾品(toScroll.getItemId()) || ItemConstants.類型.武器(toScroll.getItemId())) {
+                    if (!ItemConstants.類型.飾品(toScroll.getItemId()) || ItemConstants.類型.武器(toScroll.getItemId()) || ItemConstants.類型.雙刀(toScroll.getItemId())) {
                         c.getSession().write(CWvsContext.enableActions());
                         c.getSession().write(CField.enchantResult(0, toScroll.getItemId()));
                         if (chr.isShowErr()) {
-                            chr.showInfo("砸卷錯誤", true, "不是飾品" + !ItemConstants.類型.飾品(toScroll.getItemId()) + " 是武器" + ItemConstants.類型.武器(toScroll.getItemId()));
+                            chr.showInfo("砸卷錯誤", true, "不是飾品" + !ItemConstants.類型.飾品(toScroll.getItemId()) + " 是武器" + (ItemConstants.類型.武器(toScroll.getItemId()) || ItemConstants.類型.雙刀(toScroll.getItemId())));
                         }
                         return false;
                     }
@@ -1248,31 +1248,31 @@ public class InventoryHandler {
                     }
                     break;
                 case 3: //單手1h
-                    if (ItemConstants.類型.雙手武器(toScroll.getItemId()) || !ItemConstants.類型.武器(toScroll.getItemId())) {
+                    if (ItemConstants.類型.雙手武器(toScroll.getItemId()) || !(ItemConstants.類型.武器(toScroll.getItemId()) || ItemConstants.類型.雙刀(toScroll.getItemId()))) {
                         c.getSession().write(CWvsContext.enableActions());
                         c.getSession().write(CField.enchantResult(0, toScroll.getItemId()));
                         if (chr.isShowErr()) {
-                            chr.showInfo("砸卷錯誤", true, "是雙手武器" + ItemConstants.類型.雙手武器(toScroll.getItemId()) + " 不是武器" + !ItemConstants.類型.武器(toScroll.getItemId()));
+                            chr.showInfo("砸卷錯誤", true, "是雙手武器" + ItemConstants.類型.雙手武器(toScroll.getItemId()) + " 不是武器" + !(ItemConstants.類型.武器(toScroll.getItemId()) || ItemConstants.類型.雙刀(toScroll.getItemId())));
                         }
                         return false;
                     }
                     break;
                 case 5: //飾品accessory
-                    if (!ItemConstants.類型.飾品(toScroll.getItemId()) || ItemConstants.類型.武器(toScroll.getItemId())) {
+                    if (!ItemConstants.類型.飾品(toScroll.getItemId()) || ItemConstants.類型.武器(toScroll.getItemId()) || ItemConstants.類型.雙刀(toScroll.getItemId())) {
                         c.getSession().write(CWvsContext.enableActions());
                         c.getSession().write(CField.enchantResult(0, toScroll.getItemId()));
                         if (chr.isShowErr()) {
-                            chr.showInfo("砸卷錯誤", true, "不是飾品" + !ItemConstants.類型.飾品(toScroll.getItemId()) + " 是武器" + ItemConstants.類型.武器(toScroll.getItemId()));
+                            chr.showInfo("砸卷錯誤", true, "不是飾品" + !ItemConstants.類型.飾品(toScroll.getItemId()) + " 是武器" + (ItemConstants.類型.武器(toScroll.getItemId()) || ItemConstants.類型.雙刀(toScroll.getItemId())));
                         }
                         return false;
                     }
                     break;
                 case 6: //防具armor
-                    if (ItemConstants.類型.飾品(toScroll.getItemId()) || ItemConstants.類型.武器(toScroll.getItemId())) {
+                    if (ItemConstants.類型.飾品(toScroll.getItemId()) || ItemConstants.類型.武器(toScroll.getItemId()) || ItemConstants.類型.雙刀(toScroll.getItemId())) {
                         c.getSession().write(CWvsContext.enableActions());
                         c.getSession().write(CField.enchantResult(0, toScroll.getItemId()));
                         if (chr.isShowErr()) {
-                            chr.showInfo("砸卷錯誤", true, "是飾品" + ItemConstants.類型.飾品(toScroll.getItemId()) + " 是武器" + ItemConstants.類型.武器(toScroll.getItemId()));
+                            chr.showInfo("砸卷錯誤", true, "是飾品" + ItemConstants.類型.飾品(toScroll.getItemId()) + " 是武器" + (ItemConstants.類型.武器(toScroll.getItemId()) || ItemConstants.類型.雙刀(toScroll.getItemId())));
                         }
                         return false;
                     }
@@ -1765,11 +1765,6 @@ public class InventoryHandler {
                         c.getSession().write(CField.getFlashCubeRespons(1, 1));
                         break;
                     }
-                    case 5062019: {//閃耀鏡射方塊
-                        c.getPlayer().dropMessage(1, "此方塊未修復，請聯繫管理員。");
-                        c.getSession().write(CWvsContext.enableActions());
-                        return;
-                    }
                     case 5062020: {//閃炫方塊
                         int line = slea.readInt();
                         if (Integer.valueOf(c.getPlayer().getOneInfo(GameConstants.TMS方塊, "c")) == line) {
@@ -1846,11 +1841,6 @@ public class InventoryHandler {
                     c.getSession().write(CWvsContext.enableActions());
                     return;
                 }
-                if (toUse.getItemId() == 5062019 || toUse.getItemId() == 5062021) {
-                    c.getPlayer().dropMessage(1, "此方塊未修復，請聯繫管理員。");
-                    c.getSession().write(CWvsContext.enableActions());
-                    return;
-                }
 
                 eq.setOldState(eq.getState(false));
 
@@ -1877,8 +1867,10 @@ public class InventoryHandler {
                             c.getSession().write(CField.showFlashCubeEquip(0, eq));
                             break;
                         case 5062019://閃耀鏡射方塊
-                            c.getPlayer().dropMessage(1, "此方塊未修復，請聯繫管理員。");
-                            c.getSession().write(CWvsContext.enableActions());
+                        case 5062021://新對等方塊
+                            MapleInventoryManipulator.removeFromSlot(c.getPlayer().getClient(), MapleInventoryType.CASH, (short) slot, (short) 1, false, true);
+                            c.getSession().write(CField.getFlashCubeRespons(1, 0));
+                            cubeMega(c, eq, toUse.getItemId());
                             return;
                         case 5062020://閃炫方塊
                             ArrayList<Integer> newPots = new ArrayList<>();
@@ -2038,7 +2030,7 @@ public class InventoryHandler {
             potentialState -= 16;
         }
 
-        if (eq.getLevel() == 0 && eq.getUpgradeSlots() == 0 && !ItemConstants.類型.盾牌(eq.getItemId()) && !ItemConstants.類型.副手武器(eq.getItemId()) && !ItemConstants.類型.能源(eq.getItemId()) && !ItemConstants.類型.特殊潛能道具(eq.getItemId()) || MapleItemInformationProvider.getInstance().isCash(eq.getItemId()) || ItemConstants.類型.無法潛能道具(eq.getItemId())) {
+        if (eq.getLevel() == 0 && eq.getUpgradeSlots() == 0 && !ItemConstants.類型.副手(eq.getItemId()) && !ItemConstants.類型.能源(eq.getItemId()) && !ItemConstants.類型.特殊潛能道具(eq.getItemId()) || MapleItemInformationProvider.getInstance().isCash(eq.getItemId()) || ItemConstants.類型.無法潛能道具(eq.getItemId())) {
             c.getPlayer().dropMessage(1, "在這道具無法使用。");
             c.getSession().write(CField.showMapleCubeCost(3, 0));
             return false;

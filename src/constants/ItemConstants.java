@@ -22,7 +22,7 @@ public class ItemConstants {
     public static final short SHOE = -7; //鞋子
     public static final short GLOVE = -8; //手套
     public static final short CAPE = -9; //披風
-    public static final short SHIELD = -10; //副手武器
+    public static final short SHIELD = -10; //副手
     public static final short WEAPON = -11; //武器
     public static final short RING1 = -12; //戒指1
     public static final short RING2 = -13; //戒指2
@@ -519,7 +519,7 @@ public class ItemConstants {
                     type |= CubeType.去掉無用潛能.getValue();
                 case 5062005://驚奇方塊
                 case 5062006://白金奇幻方塊
-                case 5062021://對等方塊
+                case 5062021://新對等方塊
                     type |= CubeType.對等.getValue();
                     break;
                 case 5062008://鏡射方塊
@@ -566,7 +566,7 @@ public class ItemConstants {
         public static boolean optionTypeFits(final int optionType, final int itemId) {
             switch (optionType) {
                 case 10: // 武器、盾牌、副手和能源
-                    return 類型.武器(itemId) || 類型.盾牌(itemId) || 類型.副手武器(itemId) || 類型.能源(itemId);
+                    return 類型.武器(itemId) || 類型.副手(itemId) || 類型.能源(itemId);
                 case 11: // 除了武器的全部裝備
                     return !類型.武器(itemId);
                 case 20: // 除了配飾和武器的全部裝備
@@ -574,15 +574,15 @@ public class ItemConstants {
                 case 40: // 配飾
                     return 類型.飾品(itemId);
                 case 51: // 帽子
-                    return itemId / 10000 == 100;
+                    return 類型.帽子(itemId);
                 case 52: // 披風
-                    return itemId / 10000 == 110;
+                    return 類型.披風(itemId);
                 case 53: // 上衣、褲子與套服
-                    return itemId / 10000 == 104 || itemId / 10000 == 105 || itemId / 10000 == 106;
+                    return 類型.上衣(itemId) || 類型.套服(itemId) || 類型.褲裙(itemId);
                 case 54: // 手套
-                    return itemId / 10000 == 108;
+                    return 類型.手套(itemId);
                 case 55: // 鞋子
-                    return itemId / 10000 == 107;
+                    return 類型.鞋子(itemId);
                 default:
                     return true;
             }
@@ -768,7 +768,7 @@ public class ItemConstants {
         }
 
         public static boolean 盾牌(int itemid) {
-            return itemid / 10000 == 109 && !副手武器(itemid);
+            return itemid / 10000 == 109;
         }
 
         public static boolean 披風(int itemid) {
@@ -1009,12 +1009,8 @@ public class ItemConstants {
             return 臉飾(itemid) || 眼飾(itemid) || 耳環(itemid) || 戒指(itemid) || 墜飾(itemid) || 腰帶(itemid) || 勳章(itemid) || 肩飾(itemid) || 口袋道具(itemid) || 胸章(itemid) || 能源(itemid) || 圖騰(itemid);
         }
 
-        public static boolean 副手武器(final int itemid) {
-            return itemid / 1000 == 1098 || itemid / 1000 == 1099 || 雙刀(itemid) || 特殊副手(itemid);
-        }
-
         public static boolean 副手(int itemid) {
-            return 盾牌(itemid) || 副手武器(itemid);
+            return 盾牌(itemid) || 雙刀(itemid) || 特殊副手(itemid);
         }
 
         public static boolean 武器(int itemid) {
@@ -1233,7 +1229,7 @@ public class ItemConstants {
             return itemid >= 2046060 && itemid <= 2046069 || itemid >= 2046141 && itemid <= 2046145 || itemid >= 2046519 && itemid <= 2046530 || itemid >= 2046701 && itemid <= 2046712;
         }
 
-        public static boolean 提升卷(int itemid) {
+        public static boolean 提升卷(int itemid) { // 龍騎士獲得的強化牌板
             return itemid >=  2047000 && itemid < 2047310;
         }
 
@@ -1403,9 +1399,6 @@ public class ItemConstants {
         if (類型.雙刀(itemid)) {
             return MapleWeaponType.雙刀;
         }
-        if (類型.特殊副手(itemid)) {
-            return MapleWeaponType.特殊副手;
-        }
         if (類型.手杖(itemid)) {
             return MapleWeaponType.手杖;
         }
@@ -1463,7 +1456,7 @@ public class ItemConstants {
         if (類型.璃(itemid)) {
             return MapleWeaponType.璃;
         }
-        return MapleWeaponType.沒有武器;
+        return MapleWeaponType.未知;
     }
 
     public static byte gachaponRareItem(final int itemid) {

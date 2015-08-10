@@ -9158,7 +9158,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                 }
             }
             if (MapleJob.is天使破壞者(getJob())) {
-                if (!ItemConstants.類型.套服(itemId) && !ItemConstants.類型.副手武器(itemId)
+                if (!ItemConstants.類型.套服(itemId) && !ItemConstants.類型.副手(itemId)
                         && !ItemConstants.類型.武器(itemId) && !ItemConstants.類型.勳章(itemId)) {
                     continue;
                 }

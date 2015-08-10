@@ -293,7 +293,7 @@ public class ItemMakerHandler {
         } else {
             throw new RuntimeException("Invalid Item Maker type" + level);
         }
-        if (ItemConstants.類型.武器(itemid) || ItemConstants.類型.套服(itemid)) {
+        if (ItemConstants.類型.武器(itemid) || ItemConstants.類型.雙刀(itemid) || ItemConstants.類型.套服(itemid)) {
             all[1] = Randomizer.rand(5, 11);
         } else {
             all[1] = Randomizer.rand(3, 7);
@@ -620,7 +620,7 @@ public class ItemMakerHandler {
                 }
             }
             toGet = 4031016;
-            quantity = (short) Randomizer.rand(3, ItemConstants.類型.武器(itemId) || ItemConstants.類型.套服(itemId) ? 11 : 7);
+            quantity = (short) Randomizer.rand(3, ItemConstants.類型.武器(itemId) || ItemConstants.類型.雙刀(itemId) || ItemConstants.類型.套服(itemId) ? 11 : 7);
             if (reqLevel <= 60) {
                 toGet = 4021013;
             } else if (reqLevel <= 90) {

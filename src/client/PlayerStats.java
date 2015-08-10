@@ -3099,54 +3099,53 @@ public class PlayerStats implements Serializable {
             localmaxbasepvpdamage = 1;
         } else {
             final Item weapon_item = chra.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -11);
-            final Item weapon_item2 = chra.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -10);
             final int job = chra.getJob();
             final MapleWeaponType weapon = weapon_item == null ? MapleWeaponType.沒有武器 : ItemConstants.武器類型(weapon_item.getItemId());
-            final MapleWeaponType weapon2 = weapon_item2 == null ? MapleWeaponType.沒有武器 : ItemConstants.武器類型(weapon_item2.getItemId());
-            int mainstat, secondarystat, mainstatpvp, secondarystatpvp;
-            final boolean mage = (job >= 200 && job <= 232) || (job >= 1200 && job <= 1212) || (job >= 2200 && job <= 2218) || (job >= 3200 && job <= 3212);
+            int stat, statpvp;
+            final boolean mage = MapleJob.is法師(job);
             switch (weapon) {
+                case 能量劍:
+                    stat = 4 * (localstr + localdex + localluk);
+                    statpvp = 4 * (str + dex + luk);
+                    break;
+                case 靈魂射手:
                 case 弓:
                 case 弩:
                 case 火槍:
-                    mainstat = localdex;
-                    secondarystat = localstr;
-                    mainstatpvp = dex;
-                    secondarystatpvp = str;
+                case 雙弩槍:
+                    stat = 4 * localdex + localstr;
+                    statpvp = 4 * + dex + str;
                     break;
                 case 短劍:
-                case 雙刀:
+                    stat = 4 * localluk + localdex;
+                    statpvp = 4 * + luk + dex;
+                    if (MapleJob.is盜賊(job)) {
+                        stat = localstr;
+                        statpvp = str;
+                    }
+                    break;
                 case 拳套:
                 case 手杖:
-                    mainstat = localluk;
-                    secondarystat = localdex + localstr;
-                    mainstatpvp = luk;
-                    secondarystatpvp = dex + str;
+                    stat = 4 * localluk + localdex;
+                    statpvp = 4 * + luk + dex;
+                    break;
+                case 魔劍:
+                    stat = localmaxhp / 7 + localstr;
+                    statpvp = maxhp / 7 + str;
                     break;
                 default:
                     if (mage) {
-                        mainstat = localint_;
-                        secondarystat = localluk;
-                        mainstatpvp = int_;
-                        secondarystatpvp = luk;
+                        stat = 4 * localint_ + localluk;
+                        statpvp = 4 * + int_ + luk;
                     } else {
-                        mainstat = localstr;
-                        secondarystat = localdex;
-                        mainstatpvp = str;
-                        secondarystatpvp = dex;
+                        stat = 4 * localstr + localdex;
+                        statpvp = 4 * + str + dex;
                     }
                     break;
             }
-            localmaxbasepvpdamage = weapon.getMaxDamageMultiplier(job) * (4 * mainstatpvp + secondarystatpvp) * (100.0f + (pvpDamage / 100.0f));
-            localmaxbasepvpdamageL = weapon.getMaxDamageMultiplier(job) * (4 * mainstat + secondarystat) * (100.0f + (pvpDamage / 100.0f));
-            if (weapon2 != MapleWeaponType.沒有武器 && weapon_item != null && weapon_item2 != null) {
-                Equip we1 = (Equip) weapon_item;
-                Equip we2 = (Equip) weapon_item2;
-                localmaxbasedamage = weapon.getMaxDamageMultiplier(job) * (4 * mainstat + secondarystat) * ((watk - (mage ? we2.getMatk() : we2.getWatk())) / 100.0f);
-                localmaxbasedamage += weapon2.getMaxDamageMultiplier(job) * (4 * mainstat + secondarystat) * ((watk - (mage ? we1.getMatk() : we1.getWatk())) / 100.0f);
-            } else {
-                localmaxbasedamage = weapon.getMaxDamageMultiplier(job) * (4 * mainstat + secondarystat) * (watk / 100.0f);
-            }
+            localmaxbasepvpdamage = weapon.getMaxDamageMultiplier(job) * statpvp * (100.0f + (pvpDamage / 100.0f));
+            localmaxbasepvpdamageL = weapon.getMaxDamageMultiplier(job) * stat * (100.0f + (pvpDamage / 100.0f));
+            localmaxbasedamage = weapon.getMaxDamageMultiplier(job) * stat * (watk / 100.0f);
         }
     }
 

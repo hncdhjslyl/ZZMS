@@ -216,7 +216,7 @@ public class EquipmentEnchant {
         MapleData info = data.getChildByPath("info");
         int reqJob = MapleDataTool.getInt("reqJob", info, 0);
         Map<EchantEquipStat, Integer> stats = new HashMap();
-        if (ItemConstants.類型.武器(eq.getItemId())) {
+        if (ItemConstants.類型.武器(eq.getItemId()) || ItemConstants.類型.雙刀(eq.getItemId())) {
             switch (reqJob) {
                 case 0: {
                     scrolls.add(EchantScroll.攻擊力_力量_100);
@@ -638,7 +638,7 @@ public class EquipmentEnchant {
             if (nEquip.getLuk() > 0) {
                 stats.put(EchantEquipStat.LUK, value);
             }
-            if (!ItemConstants.類型.武器(nEquip.getItemId())) {
+            if (!ItemConstants.類型.武器(nEquip.getItemId()) && !ItemConstants.類型.雙刀(nEquip.getItemId())) {
                 return stats;
             }
 

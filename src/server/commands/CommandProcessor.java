@@ -105,7 +105,7 @@ public class CommandProcessor {
         sb.append("\r\n@GM 訊息內容：發送訊息給線上的管理員。");
         sb.append("\r\n@怪物：顯示距離最近的怪物訊息。");
         sb.append("\r\n@解卡：如果卡死或者無法開啟NPC可以使用這個指令。");
-        sb.append("\r\n/查看：顯示各種訊息並解卡。");
+        sb.append("\r\n@查看：顯示各種訊息並解卡。");
         sb.append("\r\n@卡圖：只有卡圖無法出來時才能使用。");
         sb.append("\r\n@獲取貓頭鷹：獲得一個可以搜尋怪物掉寶的貓頭鷹。");
         sb.append("\r\n@地圖掉寶：查看當前地圖怪物的掉寶數據。");
