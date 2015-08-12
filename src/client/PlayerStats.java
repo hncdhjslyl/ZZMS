@@ -921,8 +921,8 @@ public class PlayerStats implements Serializable {
                     eff = bx.getEffect(bof);
                     accuracy += eff.getAccX();
                     jump += eff.getPassiveJump();
-                    speed += eff.getSpeedMax(); // TODO: split speed max and speed. (speed have a limit, while speedMax will add to the max)
-                } // TODO: research more on percentage hp/mp and stats, which doesn't take effect to note.
+                    speed += eff.getSpeedMax();
+                }
                 bx = SkillFactory.getSkill(5080004); // Shadow Heart
                 bof = chra.getTotalSkillLevel(bx);
                 if (bof > 0) {
@@ -968,7 +968,6 @@ public class PlayerStats implements Serializable {
                         passive_sharpeye_max_percent += eff.getCriticalMax();
                         bossdam_r += eff.getBossDamage();
                     }
-                    // TODO: 5721009, 5720012(Counterattack)
                 }
                 break;
             }
@@ -2826,7 +2825,7 @@ public class PlayerStats implements Serializable {
             case 3110:
             case 3111:
             case 3112: {
-                critSkill = SkillFactory.getSkill(31100006); //TODO LEGEND, not final
+                critSkill = SkillFactory.getSkill(31100006);
                 critlevel = player.getTotalSkillLevel(critSkill);
                 if (critlevel > 0) {
                     this.passive_sharpeye_rate += (short) (critSkill.getEffect(critlevel).getCr());
@@ -3042,7 +3041,7 @@ public class PlayerStats implements Serializable {
         if (player.getSkillLevel(skil) <= 0) {
             passive_mastery = 0;
             return;
-        }// TODO: add job id check above skill, etc
+        }
         final MapleStatEffect eff = SkillFactory.getSkill(skil).getEffect(player.getTotalSkillLevel(skil));
         if (acc) {
             accuracy += eff.getX();
@@ -3557,7 +3556,6 @@ public class PlayerStats implements Serializable {
         }
         bossdam_r *= (soc.get("bdR") + 100.0) / 100.0;
         ignoreTargetDEF *= (soc.get("imdR") + 100.0) / 100.0;
-        // TODO: Auto Steal potentials (modify handleSteal), potentials with invincible stuffs, abnormal status duration decrease,
         // poison, stun, etc (uses level field -> cast disease to mob/player), face?
     }
 

@@ -1565,9 +1565,9 @@ public final class MapleMap {
             @Override
             public final void sendPackets(MapleClient c) {
                 if (GameConstants.isAzwanMap(c.getPlayer().getMapId())) {
-                    c.getSession().write(MobPacket.spawnMonster(monster, monster.getStats().getSummonType() <= 1 ? -3 : monster.getStats().getSummonType(), oid, true)); // TODO effect
+                    c.getSession().write(MobPacket.spawnMonster(monster, monster.getStats().getSummonType() <= 1 ? -3 : monster.getStats().getSummonType(), oid, true));
                 } else {
-                    c.getSession().write(MobPacket.spawnMonster(monster, monster.getStats().getSummonType() <= 1 ? -3 : monster.getStats().getSummonType(), oid, false)); // TODO effect
+                    c.getSession().write(MobPacket.spawnMonster(monster, monster.getStats().getSummonType() <= 1 ? -3 : monster.getStats().getSummonType(), oid, false));
                 }
             }
         });
@@ -2153,8 +2153,10 @@ public final class MapleMap {
                 endSpeedRun();
                 broadcastMessage(CWvsContext.broadcastMsg(5, "The speed run has ended."));
             }
+            broadcastMessage(chr, CField.getEffectSwitch(chr.getId(), chr.getEffectSwitch()), false);
         } else {
             broadcastGMMessage(chr, packet, false);
+            broadcastGMMessage(chr, CField.getEffectSwitch(chr.getId(), chr.getEffectSwitch()), false);
         }
 
         if (!chr.isClone()) {
@@ -3404,7 +3406,6 @@ public final class MapleMap {
                 SpeedRunner.addSpeedRunData(type, SpeedRunner.addSpeedRunData(new StringBuilder(SpeedRunner.getPreamble(type)), new HashMap<Integer, String>(), z, leader, 1, time), timz);
             } else {
                 //i wish we had a way to get the rank
-                //TODO revamp
                 SpeedRunner.removeSpeedRunData(type);
                 SpeedRunner.loadSpeedRunData(type);
             }

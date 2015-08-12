@@ -319,7 +319,6 @@ public class ChatHandler {
             case 0x09: //like
                 if (messenger != null) {
                     String charname = slea.readMapleAsciiString();
-                    //todo send like packet here
                 }
                 break;
             case 0x0A: //guidance
@@ -327,7 +326,6 @@ public class ChatHandler {
                     slea.readByte();
                     String charname = slea.readMapleAsciiString();
                     String targetname = slea.readMapleAsciiString();
-                    //todo send guide packet here
                 }
                 break;
             case 0x0B: //char info
@@ -340,7 +338,6 @@ public class ChatHandler {
             case 0x0E: //whisper
                 if (messenger != null) {
                     String charname = slea.readMapleAsciiString();
-                    //todo send whisper packet here
                 }
                 break;
         }

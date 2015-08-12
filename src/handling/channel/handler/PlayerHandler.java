@@ -4,18 +4,26 @@ import client.*;
 import client.anticheat.CheatingOffense;
 import client.inventory.Equip;
 import client.inventory.Item;
+import client.inventory.ItemLoader;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
+import database.DatabaseConnection;
 import handling.RecvPacketOpcode;
 import handling.channel.ChannelServer;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import scripting.NPCScriptManager;
 import server.*;
 import server.Timer.BuffTimer;
@@ -32,7 +40,6 @@ import server.maps.FieldLimitType;
 import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
-import server.maps.MapleSummon;
 import server.movement.LifeMovementFragment;
 import server.quest.MapleQuest;
 import tools.AttackPair;
@@ -2358,5 +2365,15 @@ public class PlayerHandler {
             c.getSession().write(CField.ZeroPacket.OpenZeroUpgrade(type, level, action, ep.getItemId()));
         }
 
+    }
+
+    public static void EffectSwitch(final LittleEndianAccessor slea, final MapleClient c) {
+        int pos = slea.readInt();
+        c.getPlayer().updateEffectSwitch(pos);
+        if (!c.getPlayer().isHidden()) {
+            c.getPlayer().getMap().broadcastMessage(c.getPlayer(), CField.getEffectSwitch(c.getPlayer().getId(), c.getPlayer().getEffectSwitch()), false);
+        } else {
+            c.getPlayer().getMap().broadcastGMMessage(c.getPlayer(), CField.getEffectSwitch(c.getPlayer().getId(), c.getPlayer().getEffectSwitch()), false);
+        }
     }
 }

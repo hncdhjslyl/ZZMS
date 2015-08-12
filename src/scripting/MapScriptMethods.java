@@ -467,7 +467,6 @@ public class MapScriptMethods {
                 //926010030-926010049 = 35 Yetis
                 //926010050-926010069 = 40 Yetis
                 //926010070-926010089 - 50 Yetis (specialized? immortality)
-                //TODO also find positions to spawn these at
                 c.getPlayer().getMap().resetFully();
                 c.getSession().write(CField.showEffect("killing/bonus/bonus"));
                 c.getSession().write(CField.showEffect("killing/bonus/stage"));
@@ -1955,7 +1954,7 @@ public class MapScriptMethods {
             case "enter_edelstein":
             case "patrty6_1stIn":
             case "standbyAzwan":
-            case "angelic_tuto0"://for now TODO real tut
+            case "angelic_tuto0":
                 if (c.getPlayer().getJob() == 6001) {
                     while (c.getPlayer().getLevel() < 10) {
                         c.getPlayer().levelUp();

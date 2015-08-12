@@ -510,7 +510,7 @@ public class CashShopOperation {
             //} else if (action == 99) { //buy with mesos
             //    int sn = slea.readInt();
             //    int price = slea.readInt();
-        } else if (action == 101) {//TODO BETTER idk what it is
+        } else if (action == 101) {
 //            System.out.println("action 101");//might be farm mesos? RITE NOW IS FREEH
             slea.skip(1);
             int type = slea.readInt();
@@ -594,9 +594,9 @@ public class CashShopOperation {
             c.getSession().write(CSPacket.Like(item));
         } else if (Scategory == 109) {
             c.getSession().write(CSPacket.Favorite(c.getPlayer()));
-        } else if (Scategory == 112) {//click on special item TODO
+        } else if (Scategory == 112) {//click on special item
             //int C8 - C9 - CA
-        } else if (Scategory == 113) {//buy from cart inventory TODO
+        } else if (Scategory == 113) {//buy from cart inventory
             //byte buy = 1 or gift = 0
             //byte amount
             //for each SN

@@ -22,7 +22,7 @@ public class Equip extends Item implements Serializable {
     public static final long ARMOR_RATIO = 350000L;
     public static final long WEAPON_RATIO = 700000L;
     //charm: -1 = has not been initialized yet, 0 = already been worn, >0 = has teh charm exp
-    private byte state = 0, bonusState = 0, oldState = 0, upgradeSlots = 0, level = 0, vicioushammer = 0, enhance = 0, enhanctBuff = 0, reqLevel = 0, yggdrasilWisdom = 0, bossDamage = 0, ignorePDR = 0, totalDamage = 0, allStat = 0, karmaCount = -1, fire = -1, starforce;
+    private byte state = 0, bonusState = 0, oldState = 0, upgradeSlots = 0, level = 0, vicioushammer = 0, platinumhammer = 0, enhance = 0, enhanctBuff = 0, reqLevel = 0, yggdrasilWisdom = 0, bossDamage = 0, ignorePDR = 0, totalDamage = 0, allStat = 0, karmaCount = -1, fire = -1, starforce;
     private short str = 0, dex = 0, _int = 0, luk = 0, hp = 0, mp = 0, watk = 0, matk = 0, wdef = 0, mdef = 0, acc = 0, avoid = 0, hands = 0, speed = 0, jump = 0, charmExp = 0, pvpDamage = 0, soulname, soulenchanter, soulpotential;
     private int durability = -1, incSkill = -1, potential1 = 0, potential2 = 0, potential3 = 0, bonuspotential1 = 0, bonuspotential2 = 0, bonuspotential3 = 0, fusionAnvil = 0, socket1 = 0, socket2 = 0, socket3 = 0, soulskill;
     private long itemEXP = 0;
@@ -67,6 +67,7 @@ public class Equip extends Item implements Serializable {
         ret.itemEXP = itemEXP;
         ret.durability = durability;
         ret.vicioushammer = vicioushammer;
+        ret.platinumhammer = platinumhammer;
         ret.state = state;
         ret.potential1 = potential1;
         ret.potential2 = potential2;
@@ -299,6 +300,18 @@ public class Equip extends Item implements Serializable {
 
     public void setViciousHammer(byte ham) {
         vicioushammer = ham;
+    }
+    
+    public byte getPlatinumHammer() {
+        return platinumhammer;
+    }
+
+    public void setPlatinumHammer(byte ham) {
+        platinumhammer = ham;
+    }
+    
+    public byte getHammer() {
+        return (byte) (vicioushammer + platinumhammer);
     }
 
     public long getItemEXP() {
@@ -590,6 +603,14 @@ public class Equip extends Item implements Serializable {
             ret = 18;//稀有
         } else if (v1 >= 1 || v2 >= 1 || v3 >= 1) {
             ret = 17;//特殊
+        } else if (v1 == -20 || v2 == -20 || v3 == -20 || v1 == -4 || v2 == -4 || v3 == -4) {
+            ret = 4;//未鑒定傳說
+        } else if (v1 == -19 || v2 == -19 || v3 == -19 || v1 == -3 || v2 == -3 || v3 == -3) {
+            ret = 3;//未鑒定罕見
+        } else if (v1 == -18 || v2 == -18 || v3 == -18 || v1 == -2 || v2 == -2 || v3 == -2) {
+            ret = 2;//未鑒定稀有
+        } else if (v1 == -17 || v2 == -17 || v3 == -17 || v1 == -1 || v2 == -1 || v3 == -1) {
+            ret = 1;//未鑒定特殊
         } else if (v1 < 0 || v2 < 0 || v3 < 0) {
             return;
         }
@@ -687,6 +708,7 @@ public class Equip extends Item implements Serializable {
             default:
                 rank = Randomizer.nextInt(100) < 4 ? (Randomizer.nextInt(100) < 4 ? -19 : -18) : -17;
         }
+        fullLine = getState(bonus) != 0 && getPotential(3, bonus) != 0 ? true : fullLine;
         setPotential(rank, 1, bonus);
         setPotential(Randomizer.nextInt(10) <= 1 || fullLine ? rank : 0, 2, bonus); //1/10 chance of 3 line
         setPotential(0, 3, bonus); //just set it theoretically
@@ -853,115 +875,6 @@ public class Equip extends Item implements Serializable {
         return specialStats;
     }
 
-    public Map<EquipStat, Long> getStatsTest() {
-        return statsTest;
-    }
-
-    public static Equip calculateEquipStatsTest(Equip eq) {
-        eq.getStatsTest().clear();
-        if (eq.getUpgradeSlots() > 0) {
-            eq.getStatsTest().put(EquipStat.SLOTS, Long.valueOf(eq.getUpgradeSlots()));
-        }
-        if (eq.getLevel() > 0) {
-            eq.getStatsTest().put(EquipStat.LEVEL, Long.valueOf(eq.getLevel()));
-        }
-        if (eq.getStr() > 0) {
-            eq.getStatsTest().put(EquipStat.STR, Long.valueOf(eq.getStr()));
-        }
-        if (eq.getDex() > 0) {
-            eq.getStatsTest().put(EquipStat.DEX, Long.valueOf(eq.getDex()));
-        }
-        if (eq.getInt() > 0) {
-            eq.getStatsTest().put(EquipStat.INT, Long.valueOf(eq.getInt()));
-        }
-        if (eq.getLuk() > 0) {
-            eq.getStatsTest().put(EquipStat.LUK, Long.valueOf(eq.getLuk()));
-        }
-        if (eq.getHp() > 0) {
-            eq.getStatsTest().put(EquipStat.MHP, Long.valueOf(eq.getHp()));
-        }
-        if (eq.getMp() > 0) {
-            eq.getStatsTest().put(EquipStat.MMP, Long.valueOf(eq.getMp()));
-        }
-        if (eq.getWatk() > 0) {
-            eq.getStatsTest().put(EquipStat.WATK, Long.valueOf(eq.getWatk()));
-        }
-        if (eq.getMatk() > 0) {
-            eq.getStatsTest().put(EquipStat.MATK, Long.valueOf(eq.getMatk()));
-        }
-        if (eq.getWdef() > 0) {
-            eq.getStatsTest().put(EquipStat.WDEF, Long.valueOf(eq.getWdef()));
-        }
-        if (eq.getMdef() > 0) {
-            eq.getStatsTest().put(EquipStat.MDEF, Long.valueOf(eq.getMdef()));
-        }
-        if (eq.getAcc() > 0) {
-            eq.getStatsTest().put(EquipStat.ACC, Long.valueOf(eq.getAcc()));
-        }
-        if (eq.getAvoid() > 0) {
-            eq.getStatsTest().put(EquipStat.AVOID, Long.valueOf(eq.getAvoid()));
-        }
-        if (eq.getHands() > 0) {
-            eq.getStatsTest().put(EquipStat.HANDS, Long.valueOf(eq.getHands()));
-        }
-        if (eq.getSpeed() > 0) {
-            eq.getStatsTest().put(EquipStat.SPEED, Long.valueOf(eq.getSpeed()));
-        }
-        if (eq.getJump() > 0) {
-            eq.getStatsTest().put(EquipStat.JUMP, Long.valueOf(eq.getJump()));
-        }
-        if (eq.getFlag() > 0) {
-            eq.getStatsTest().put(EquipStat.FLAG, Long.valueOf(eq.getFlag()));
-        }
-        if (eq.getIncSkill() > 0) {
-            eq.getStatsTest().put(EquipStat.INC_SKILL, Long.valueOf(eq.getIncSkill()));
-        }
-        if (eq.getEquipLevel() > 0) {
-            eq.getStatsTest().put(EquipStat.ITEM_LEVEL, Long.valueOf(eq.getEquipLevel()));
-        }
-        if (eq.getItemEXP() > 0) {
-            eq.getStatsTest().put(EquipStat.ITEM_EXP, eq.getItemEXP());
-        }
-        if (eq.getDurability() > -1) {
-            eq.getStatsTest().put(EquipStat.DURABILITY, Long.valueOf(eq.getDurability()));
-        }
-        if (eq.getViciousHammer() > 0) {
-            eq.getStatsTest().put(EquipStat.VICIOUS_HAMMER, Long.valueOf(eq.getViciousHammer()));
-        }
-        if (eq.getPVPDamage() > 0) {
-            eq.getStatsTest().put(EquipStat.PVP_DAMAGE, Long.valueOf(eq.getPVPDamage()));
-        }
-        if (eq.getEnhanctBuff() > 0) {
-            eq.getStatsTest().put(EquipStat.ENHANCT_BUFF, Long.valueOf(eq.getEnhanctBuff()));
-        }
-        if (eq.getReqLevel() > 0) {
-            eq.getStatsTest().put(EquipStat.REQUIRED_LEVEL, Long.valueOf(eq.getReqLevel()));
-        }
-        if (eq.getYggdrasilWisdom() > 0) {
-            eq.getStatsTest().put(EquipStat.YGGDRASIL_WISDOM, Long.valueOf(eq.getYggdrasilWisdom()));
-        }
-        if (eq.getFinalStrike()) {
-            eq.getStatsTest().put(EquipStat.FINAL_STRIKE, Long.valueOf(eq.getFinalStrike() ? 1 : 0));
-        }
-        if (eq.getBossDamage() > 0) {
-            eq.getStatsTest().put(EquipStat.BOSS_DAMAGE, Long.valueOf(eq.getBossDamage()));
-        }
-        if (eq.getIgnorePDR() > 0) {
-            eq.getStatsTest().put(EquipStat.IGNORE_PDR, Long.valueOf(eq.getIgnorePDR()));
-        }
-        //SPECIAL STATS:
-        if (eq.getTotalDamage() > 0) {
-            eq.getStatsTest().put(EquipStat.TOTAL_DAMAGE, Long.valueOf(eq.getTotalDamage()));
-        }
-        if (eq.getAllStat() > 0) {
-            eq.getStatsTest().put(EquipStat.ALL_STAT, Long.valueOf(eq.getAllStat()));
-        }
-        eq.getStatsTest().put(EquipStat.KARMA_COUNT, Long.valueOf(eq.getKarmaCount())); //no count = -1
-        //eq.getStatsTest().put(EquipStat.UNK8, Long.valueOf(-1)); // test
-        //eq.getStatsTest().put(EquipStat.UNK10, Long.valueOf(0)); // test
-        return (Equip) eq.copy();
-    }
-
     public static Equip calculateEquipStats(Equip eq) {
         eq.getStats().clear();
         eq.getSpecialStats().clear();
@@ -1031,7 +944,7 @@ public class Equip extends Item implements Serializable {
         if (eq.getDurability() > -1) {
             eq.getStats().add(EquipStat.DURABILITY);
         }
-        if (eq.getViciousHammer() > 0) {
+        if (eq.getViciousHammer() > 0 || eq.getPlatinumHammer() > 0) {
             eq.getStats().add(EquipStat.VICIOUS_HAMMER);
         }
         if (eq.getPVPDamage() > 0) {
@@ -1094,6 +1007,7 @@ public class Equip extends Item implements Serializable {
         this.itemEXP = newEquip.itemEXP;
         this.durability = newEquip.durability;
         this.vicioushammer = newEquip.vicioushammer;
+        this.platinumhammer = newEquip.platinumhammer;
         this.enhance = newEquip.enhance;
         this.charmExp = newEquip.charmExp;
         this.pvpDamage = newEquip.pvpDamage;

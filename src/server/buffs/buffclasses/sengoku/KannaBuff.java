@@ -71,10 +71,10 @@ public class KannaBuff extends AbstractBuffClass  {
                 eff.statups.put(MapleBuffStat.MAPLE_WARRIOR, eff.info.get(MapleStatInfo.x));
                 break;
             case 42121054: // Blackhearted Curse
-                //TODO
+                //TODO 阴阳师BUFF42121054
                 break;
             case 42121053: // Princess's Vow
-                //TODO
+                //TODO 阴阳师BUFF42121053
                 break;
             case 42101004: // 紫扇仰波‧焰
             case 42111006: // Frozen Shikigami Haunting

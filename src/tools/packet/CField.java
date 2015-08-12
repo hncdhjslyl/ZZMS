@@ -71,13 +71,13 @@ public class CField {
             mplew.write(ServerConstants.getGateway_IP());
         }
         mplew.writeShort(port);
-        mplew.writeInt(0);//176+ IDB無調用?
-        mplew.writeShort(0);//176+ IDB無調用?
+        mplew.writeInt(0); // [IP位置] 176+ IDB無調用?
+        mplew.writeShort(0); // [Port] 176+ IDB無調用?
         mplew.writeInt(clientId);
         mplew.write(0);
         mplew.writeInt(0);
-
 //      System.err.println(mplew.toString());
+
         return mplew.getPacket();
     }
 
@@ -114,6 +114,7 @@ public class CField {
         mplew.write(1);
         mplew.write(ServerConstants.getGateway_IP());
         mplew.writeShort(port);
+        mplew.write(0);
 
         return mplew.getPacket();
     }
@@ -1428,6 +1429,20 @@ public class CField {
         return mplew.getPacket();
     }
 
+    public static byte[] getEffectSwitch(int cid, List<Integer> items) {
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+
+        mplew.writeShort(SendPacketOpcode.EFFECT_SWITCH.getValue());
+        mplew.writeInt(cid);
+        mplew.writeInt(items.size());
+        for (int i : items) {
+            mplew.writeInt(i);
+        }
+        mplew.write(1);
+
+        return mplew.getPacket();
+    }
+
     public static byte[] getScrollEffect(int chr, int scroll, int toScroll) {
         return getScrollEffect(chr, Equip.ScrollResult.SUCCESS, false, false, scroll, toScroll);
     }
@@ -1513,61 +1528,78 @@ public class CField {
         return mplew.getPacket();
     }
 
-    public static byte[] showMapleCubeCost(int value, long cost) {
+    public static byte[] getTaiwanCube(int cubeId, byte op, int[] value, long[] value2, Item item, List<Integer> selects) {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
-        mplew.writeShort(SendPacketOpcode.FLASH_CUBE_RESPONSE.getValue());
-        mplew.writeInt(-1043023352);
-        mplew.write(3);
-        mplew.writeInt(value);//0 - 更新價格; 1 - 詢問是否洗道具; 2 - 重新加載道具潛能 ; 大於3 - 取下道具
-        mplew.writeLong(cost);
+        if (cubeId == 5062020) { // 閃炫方塊
+            mplew.writeShort(SendPacketOpcode.SHIMMER_CUBE_RESPONSE.getValue());
+        } else {
+            mplew.writeShort(SendPacketOpcode.FLASH_CUBE_RESPONSE.getValue());
+        }
 
-        return mplew.getPacket();
-    }
+        int pointer;
+        switch (cubeId) {
+            case 3994895: // 楓方塊 [完成-182]
+                pointer = -1043023352;
+                break;
+            case 5062017: // 閃耀方塊 [完成-182]
+                pointer = -803375447;
+                break;
+            case 5062019: // 閃耀鏡射方塊 [完成-182]
+                pointer = 1805734203;
+                break;
+            case 5062020: // 閃炫方塊 [完成-182]
+                if (op == 7) { // 顯示洗出的潛能
+                    pointer = 1166928371;
+                } else { // 選擇潛能
+                    pointer = -437621832;
+                }
+                break;
+            case 5062021: // 新對等方塊
+            default:
+                pointer = 0;
+                System.err.println("未知指針值的台方塊：" + cubeId);
+        }
 
-    public static byte[] showFlashCubeEquip(int value, Item item) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
-        mplew.writeShort(SendPacketOpcode.FLASH_CUBE_RESPONSE.getValue());
-        mplew.writeInt(245186978);
-        mplew.write(3);
-        mplew.writeInt(value);
-        PacketHelper.addItemInfo(mplew, item);
-
-        return mplew.getPacket();
-    }
-
-    public static byte[] getFlashCubeRespons(int type, int value) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
-        mplew.writeShort(SendPacketOpcode.FLASH_CUBE_RESPONSE.getValue());
-        mplew.writeInt(1805734203);
-        mplew.write(type);
-        mplew.writeInt(value);
-
-        return mplew.getPacket();
-    }
-
-    public static byte[] getShimmerCubeRespons(int type, int value) {
-        return getShimmerCubeRespons(type, value, 0, new ArrayList());
-    }
-
-    public static byte[] getShimmerCubeRespons(int type, int value, int line, ArrayList<Integer> selects) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
-        mplew.writeShort(SendPacketOpcode.SHIMMER_CUBE_RESPONSE.getValue());
-        mplew.writeInt(-441292612);
-        mplew.write(type);
-        mplew.writeInt(value);
-        if (line > 0) {
-            mplew.writeInt(line);
-            mplew.writeInt(selects.size());
-            for (int i : selects) {
-                mplew.writeInt(i);
-            }
+        mplew.writeInt(pointer);
+        mplew.write(op);
+        mplew.writeInt(value[0]);//楓方塊：「0 - 更新價格; 1 - 詢問是否洗道具; 2 - 重新加載道具潛能 ; 大於3 - 取下道具」
+        switch (op) {
+            case 3:
+                if (item != null) { // 閃耀顯示洗後結果
+                    PacketHelper.addItemInfo(mplew, item);
+                } else if (value2 != null) { // 楓方塊顯示消耗楓幣
+                    mplew.writeLong(value2[0]);
+                }
+                break;
+            case 7: // 閃耀顯示洗後結果
+                mplew.writeInt(value[1]);
+                mplew.writeInt(selects.size());
+                selects.forEach((i) -> mplew.writeInt(i));
+                break;
         }
 
         return mplew.getPacket();
+    }
+
+    public static byte[] showMapleCubeCost(int value, long cost) {
+        return getTaiwanCube(3994895, (byte) 3, new int[]{value}, new long[]{cost}, null, null);
+    }
+
+    public static byte[] showFlashCubeEquip(Item item) {
+        return getTaiwanCube(5062017, (byte) 3, new int[]{0}, null, item, null);
+    }
+
+    public static byte[] getFlashCubeRespons(int itemId, int value) {
+        return getTaiwanCube(itemId, (byte) 1, new int[]{value}, null, null, null);
+    }
+
+    public static byte[] getShimmerCubeRespons() {
+        return getTaiwanCube(5062020, (byte) 1, new int[]{0}, null, null, null);
+    }
+
+    public static byte[] getShimmerCubeRespons(int line, List<Integer> selects) {
+        return getTaiwanCube(5062020, (byte) 7, new int[]{0, line}, null, null, selects);
     }
 
     public static byte[] showNebuliteEffect(int chr, boolean success) {
@@ -4305,7 +4337,7 @@ public class CField {
             }
             return mplew.getPacket();
         }
-        
+
         public static byte[] getArisanNPCTalk(int npc, boolean read, byte msgType, byte type, byte result, String talk) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
@@ -5093,64 +5125,63 @@ public class CField {
             return mplew.getPacket();
         }
     }
-    
+
     public static class ZeroPacket {
-        
+
         public static byte[] gainWeaponPoint(int gain) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-            
+
             mplew.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
             mplew.write(0x20);
             mplew.writeInt(gain);
-            
+
             return mplew.getPacket();
         }
 
         public static byte[] updateWeaponPoint(int wp) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-            
+
             mplew.writeShort(SendPacketOpcode.ZERO_UPDATE.getValue());
             mplew.writeInt(wp);
-            
+
             return mplew.getPacket();
         }
-    
+
         public static byte[] UseWeaponScroll(int Success) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-            
+
             mplew.writeShort(SendPacketOpcode.ZERO_SCROLL.getValue());
             mplew.writeShort(1);
             mplew.write(0);
             mplew.writeInt(Success);
-            
+
             return mplew.getPacket();
         }
 
         public static byte[] UseWeaponScrollStart() {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-            
+
             mplew.writeShort(SendPacketOpcode.ZERO_SCROLL_START.getValue());
-            
+
             return mplew.getPacket();
         }
 
         public static byte[] OpenWeaponUI(int type) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-            
+
             mplew.writeShort(SendPacketOpcode.ZERO_RESULT.getValue());
             mplew.writeInt(type);
             mplew.writeInt((type == 1) ? 100000 : 50000);
             mplew.writeInt((type == 1) ? 600 : 500);
             mplew.write(0);
             mplew.write(0);
-            
+
             return mplew.getPacket();
         }
 
-
         public static byte[] OpenZeroUpgrade(int type, int level, int action, int weapon) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-            
+
             mplew.writeShort(SendPacketOpcode.ZERO_UPGRADE.getValue());
             mplew.write(0);
             mplew.write(action);
@@ -5158,13 +5189,13 @@ public class CField {
             mplew.writeInt(level);
             mplew.writeInt(weapon + 10001);
             mplew.writeInt(weapon + 1);
-            
+
             return mplew.getPacket();
         }
 
         public static byte[] NPCTalk() {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-            
+
             mplew.writeShort(SendPacketOpcode.NPC_TALK.getValue());
             mplew.write(3);
             mplew.writeInt(0);
@@ -5174,13 +5205,13 @@ public class CField {
             mplew.writeMapleAsciiString("#face1#滾開！");
             mplew.write(HexTool.getByteArrayFromHexString("01 01"));
             mplew.writeInt(0);
-            
+
             return mplew.getPacket();
         }
     }
 
     public static class EffectPacket {
-        
+
         public static byte[] showEffect(MapleCharacter chr, SpecialEffectType effect, int[] value, String[] str, Map<Integer, Integer> items) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
             if (chr == null) {
@@ -5195,14 +5226,14 @@ public class CField {
                 case LEVEL_UP:
                     // Nothing...
                     break;
-                case LOCAL_SKILL:                    
+                case LOCAL_SKILL:
                 case REMOTE_SKILL:
                     // This is a long code
                     break;
                 case ZERO:
                     int skill = 0;
                     mplew.writeInt(value[0]);
-                    mplew.write(value[1]);                    
+                    mplew.write(value[1]);
                     if (skill == 25121006 || skill == 31111003) {
                         mplew.writeInt(value[2]);
                     }
@@ -5265,8 +5296,9 @@ public class CField {
                     mplew.writeInt(value[0]); // 1 = 護身符, 2 = 紡織輪, 4 = 戰鬥機器人
                     mplew.write(value[1]); // 剩餘次數
                     mplew.write(value[2]);
-                    if (value[0] != 1 || value[0] != 2 || value[0] != 4)
+                    if (value[0] != 1 || value[0] != 2 || value[0] != 4) {
                         mplew.writeInt(value[3]); // Unk
+                    }
                     break;
                 case UNK_C:
                     mplew.writeInt(0);

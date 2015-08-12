@@ -1080,7 +1080,7 @@ public abstract class AbstractPlayerInteraction {
         c.getPlayer().updateInfoQuest(7216, "3");
         c.getPlayer().updateInfoQuest(7214, "5");
         c.getPlayer().updateInfoQuest(7215, "0");
-        //c.getSession().write(InfoPacket.updateInfoQuest(1207, "min=1;tuto=1")); //old - 1207, "pt=1;min=4;belt=1;tuto=1")); //todo
+        //c.getSession().write(InfoPacket.updateInfoQuest(1207, "min=1;tuto=1")); //old - 1207, "pt=1;min=4;belt=1;tuto=1"));
         //c.getSession().write(InfoPacket.updateInfoQuest(7281, "item=0;chk=0;cNum=0;sec=" + sec + ";stage=0;lBonus=0"));
         c.getSession().write(EffectPacket.Mulung_DojoUp());
         c.getSession().write(CField.instantMapWarp((byte) 6));

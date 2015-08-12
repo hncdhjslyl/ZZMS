@@ -13,19 +13,21 @@ import tools.StringUtil;
 
 public enum SendPacketOpcode implements WritableIntValueHolder {
 
-    // [CLogin::OnPacket]
+    //================================
+    // CLogin::OnPacket 開始(182-完成)
+    //================================ 
     // 密碼驗證[完成-182]
     LOGIN_STATUS((short) 0x00),
     // 伺服器選單[完成-182]
     SERVERLIST((short) 0x01),
-    // 推薦伺服器[完成]
+    // CLogin::OnLatestConnectedWorld[完成-182]
     ENABLE_RECOMMENDED((short) 0x02), 
-    // (null)[完成]
+    // CLogin::OnRecommendWorldMessage[完成-182]
     SEND_RECOMMENDED((short) 0x03),
     
-    // 0x04
+    // 0x04 [Long] * 8
     
-    // 選擇伺服器[完成-182] [Int(伺服器編號)](原本GMS118端為CHANNEL_SELECTED)
+    // 選擇伺服器[完成-182] [Int(伺服器編號)]
     CHANNEL_SELECTED((short) 0x05),
     // 角色選單[完成-182]
     CHARLIST((short) 0x06),
@@ -34,7 +36,7 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     // 帳號信息[完成-182]
     ACCOUNT_INFO((short) 0x08),
     
-    // 0x09
+    // 0x09 [Byte]
     
     // 檢查角色名稱[完成-182]
     CHAR_NAME_RESPONSE((short) 0x0A),
@@ -45,57 +47,52 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
 
     // 0x0D 【刪除新星世界角色】[Int][Boolean] false => [Long][Long]
     // 0x0E 【登入新星世界伺服器(未確認)】[Int][Byte]
-    
-    // 變更角色名稱[完成] [Int][String][Short]
-    CHANGE_NAME((short) 0x0F),
-    
+    // 0x0F 【變更角色名稱】[Int][String][Short]
     // 0x10 [Int]
 
-    // 變更頻道[完成]
+    // 變更頻道[完成-182]
     CHANGE_CHANNEL((short) 0x11),
     // Ping[完成-182]
     PING((short) 0x12),
     
-    // 0x13 【Ver.178 Add】
+    // 0x13
     
     // 購物商城[完成-182]
     CS_USE((short) 0x14),
     
     // 0x15 CClientSocket::OnAuthenMessage【驗證訊息】[Int][Byte]
     // 0x16
-    // 0x17 【外掛偵測】[位置未知]
-    // 0x18 [位置未知]
+    // 0x17 【外掛偵測】
+    // 0x18
     // 0x19 【身分驗證】[Byte]
-    // 0x16 [位置未知]
-    // 0x17 CClientSocket::OnCheckCrcResult【外掛偵測】[Boolean]
+    // 0x1A
+    // 0x1B CClientSocket::OnCheckCrcResult【外掛偵測】[Boolean]
 
     // 打工系統[完成-182]
     PART_TIME((short) 0x1C),
     
-    // 0x1B [-]
-    
-    // 0x1D [Long] * 8
-    // 0x1E [-] => 接收 0x44
+    // 0x1D [-]
+    // 0x1E [-]
     // 0x1F [Int][Int]
     // 0x20 【購買道具】[Int][Int][Int][Byte][Byte][Byte]
     
-    // 選擇性別 + 設置第二組密碼[完成]
+    // 選擇性別 + 設置第二組密碼[完成-182]
     CHOOSE_GENDER((short) 0x21),
-    // 選擇性別 + 設置第二組密碼回覆[完成]
+    // 選擇性別 + 設置第二組密碼回覆[完成-182]
     GENDER_SET((short) 0x22),
-    // 外掛偵測[完成]
+    // 外掛偵測[完成-182]
     HACKSHIELD_REQUEST((short) 0x23),
-    // 強制變更角色名稱[完成] [-]
+    // 強制變更角色名稱[完成-182] [-]
     FORCED_CHANGE_CHAR_NAME((short) 0x24),
-    // 強制變更角色名稱訊息[完成] [Byte]
+    // 強制變更角色名稱訊息[完成-182] [Byte]
     FORCED_CHANGE_CHAR_NAME_NOTICE((short) 0x25), 
-    // 伺服器狀態[完成]
+    // 伺服器狀態[完成-182]
     SERVERSTATUS((short) 0x26),
     // 背景驗證[完成-182]
     LOGIN_AUTH((short) 0x27),
     
-    // 0x28 [位置未知]
-    // 0x29 [位置未知]
+    // 0x28
+    // 0x29
     // 0x2A [Byte][Byte][Int]
     // 0x2B 【新星世界按鈕 + 刪除角色按鈕】[Int]
     
@@ -660,8 +657,8 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     // 0x161
     // 0x162
 
-    // 閃炫方塊回覆
-    SHIMMER_CUBE_RESPONSE((short) 0x163),
+    // 閃炫方塊回覆[完成-182]
+    SHIMMER_CUBE_RESPONSE((short) 0x169),
     
     // 0x164  178新增
     // 0x165 【任務抵達】
@@ -749,11 +746,20 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     GMEVENT_INSTRUCTIONS((short) 0x1A2),
     // 計時器[完成]
     CLOCK((short) 0x1A3),
+
+    //================================
+    // CField_ContiMove::OnPacket 開始(182-完成)
+    //================================ 
+
     // 船隻移動[完成]
     BOAT_MOVE((short) 0x1A4),
     // 船隻狀態[完成]
     BOAT_STATE((short) 0x1A5),
-    
+
+    //================================
+    // CField_ContiMove::OnPacket 結束
+    //================================ 
+
     // 0x1A6
     // 0x1A7
     // 0x1A8
@@ -775,9 +781,17 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     MOVE_PLATFORM((short) 0x1AF),
     
     // 0x1B0 【接收 => 0x2B7】
-    
+
+    //================================
+    // CField_KillCount::OnPacket 開始(182-完成)
+    //================================ 
+
     // 金字塔擊殺數量[完成]
-    PYRAMID_KILL_COUNT((short) 0x1B1),
+    PYRAMID_KILL_COUNT((short) 0x1AC),
+
+    //================================
+    // CField_KillCount::OnPacket 結束
+    //================================ 
     
     // 0x1B2 [Int][Int][Int][Int][String]
     // 0x1B3 [Int][Int][Byte]
@@ -940,7 +954,8 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     // 0x20B 
     // 0x20C
     // 0x20D
-    // 0x20E
+    // 裝備特效開關[完成-182]
+    EFFECT_SWITCH((short) 0x20E),
     // 0x20F
     // 0x210
     // 0x211
@@ -1705,46 +1720,65 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     REMOVE_EXTRACTOR((short) 0x3A1),
     
     //================================
-    // CEventsPool::OnPacket 开始
+    // CEventsPool::OnPacket 開始(182-完成)「CField_SnowBall::OnPacket」
     //================================ 
     
     //滾動雪球
-    ROLL_SNOWBALL((short) 0x36B),
+    ROLL_SNOWBALL((short) 0x3A4),
     //攻擊雪球
-    HIT_SNOWBALL((short) 0x36C),
+    HIT_SNOWBALL((short) 0x3A5),
     //雪球訊息
-    SNOWBALL_MESSAGE((short) 0x36D),
+    SNOWBALL_MESSAGE((short) 0x3A6),
     //向左擊飛
-    LEFT_KNOCK_BACK((short) 0x36E),
+    LEFT_KNOCK_BACK((short) 0x3A7),
+
+    //================================
+    // CField_Coconut::OnPacket 開始(182-完成)
+    //================================ 
+
     //攻擊椰子
-    HIT_COCONUT((short) 0x36F),
+    HIT_COCONUT((short) 0x3A8),
     //椰子活動分數
-    COCONUT_SCORE((short) 0x370),
+    COCONUT_SCORE((short) 0x3A9),
+
+    //================================
+    // CField_GuildBoss::OnPacket 開始(182-完成)
+    //================================ 
+
     // CField_GuildBoss::OnHealerMove[完成]
-    MOVE_HEALER((short) 0x371),
+    MOVE_HEALER((short) 0x3AA),
     // CField_GuildBoss::OnPulleyStateChange[完成]
-    PULLEY_STATE((short) 0x372),
+    PULLEY_STATE((short) 0x3AB),
+
+    //================================
+    // CField_MonsterCarnival::OnPacket 開始(182-完成)
+    //================================ 
     // 怪物擂台賽開始[完成]
-    MONSTER_CARNIVAL_START((short) 0x373),
+    MONSTER_CARNIVAL_START((short) 0x3AC),
     // 怪物擂台賽獲得CP[完成]
-    MONSTER_CARNIVAL_OBTAINED_CP((short) 0x374),
+    MONSTER_CARNIVAL_OBTAINED_CP((short) 0x3AD),
     // 怪物擂台賽狀態[完成]
-    MONSTER_CARNIVAL_STATS((short) 0x375),
+    MONSTER_CARNIVAL_STATS((short) 0x3AE),
     
-    // 0x376 [Int] * 4
+    // 0x3AF [Int] * 4
     
     // 怪物擂台賽召喚[完成]
-    MONSTER_CARNIVAL_SUMMON((short) 0x377),
+    MONSTER_CARNIVAL_SUMMON((short) 0x3B0),
     // 怪物擂台賽訊息[完成]
-    MONSTER_CARNIVAL_MESSAGE((short) 0x378),
+    MONSTER_CARNIVAL_MESSAGE((short) 0x3B1),
     // 怪物擂台賽死亡[完成]
-    MONSTER_CARNIVAL_DIED((short) 0x379),
+    MONSTER_CARNIVAL_DIED((short) 0x3B2),
     // 怪物擂台賽離開[完成]
-    MONSTER_CARNIVAL_LEAVE((short) 0x37A),
+    MONSTER_CARNIVAL_LEAVE((short) 0x3B3),
     // 怪物擂台賽分數[完成]
-    MONSTER_CARNIVAL_RESULT((short) 0x37B),
+    MONSTER_CARNIVAL_RESULT((short) 0x3B4),
     // 怪物擂台賽排名[完成]
-    MONSTER_CARNIVAL_RANKING((short) 0x37C),
+    MONSTER_CARNIVAL_RANKING((short) 0x3B5),
+
+    //================================
+    // CField_MonsterCarnival::OnPacket 結束
+    //================================ 
+
     // 更新納希競技大會分數[完成]
     ARIANT_SCORE_UPDATE((short) 0x37D),
     // 0x37E
@@ -2142,17 +2176,20 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     // CField_Wedding::OnWeddingCeremonyEnd[完成]
     WEDDING_CEREMONY_END((short) 0x4D2),
     
+    
+    //================================
+    // CField_Tournament::OnPacket 開始(182-完成)
+    //================================
+    
+    // 0x4CC CField_Tournament::OnTournament
+    // 0x4CD CField_Tournament::OnTournamentMatchTable
+    // 0x4CE CField_Tournament::OnTournamentSetPrize
+    // 0x4CF CField_Tournament::OnTournamentUEW
+
     //================================
     // CCashShop::OnPacket 開始
     //================================ 
     // 0x47E 【購物商城合約】
-    
-    // sub_6DFA9F {
-    // 0x47F
-    // 0x480
-    // 0x481
-    // 0x482
-    // }
     
     // 0x483
     

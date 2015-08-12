@@ -1341,6 +1341,9 @@ public class MapleServerHandler extends IoHandlerAdapter {
                 final MapleMap mapz = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(select);
                 c.getPlayer().changeMap(mapz, mapz.getPortal(0));
                 break;
+            case EFFECT_SWITCH:
+                PlayerHandler.EffectSwitch(slea, c);
+                break;
             default:
                 System.err.println("[發現未處理數據包] Recv [" + header.toString() + "]");
                 break;

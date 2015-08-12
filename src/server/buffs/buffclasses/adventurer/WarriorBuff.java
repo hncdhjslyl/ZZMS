@@ -108,9 +108,7 @@ public class WarriorBuff extends AbstractBuffClass {
                 eff.statups.put(MapleBuffStat.ELEMENT_RESET, eff.info.get(MapleStatInfo.x));
                 break;
             case 1221054: //神域護佑Sacrosanctity
-//                eff.statups.put(MapleBuffStat.KAISER_MAJESTY3, eff.info.get(MapleStatInfo.x));
-                eff.statups.put(MapleBuffStat.ENRAGE, eff.info.get(MapleStatInfo.x));
-                //TODO
+                eff.statups.put(MapleBuffStat.INVINCIBILITY, 1);
                 break;
             case 1301006: //禦魔陣Iron Will
                 eff.statups.put(MapleBuffStat.MDEF, eff.info.get(MapleStatInfo.x));

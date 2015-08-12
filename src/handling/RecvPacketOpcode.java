@@ -14,14 +14,25 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     STRANGE_DATA(false, (short) 0x66),
     // 客戶端驗證[完成-182]
     CLIENT_HELLO(false, (short) 0x67),
+    
+    // 0x68
+    
     // 密碼驗證[完成-182]
     LOGIN_PASSWORD(false, (short) 0x69),
     // 角色選單[完成-182]
     CHARLIST_REQUEST(false, (short) 0x6A),
+    
+    // 0x6B
+    // 0x6C
+    
     // 玩家登入[完成-182]
     PLAYER_LOGGEDIN(false, (short) 0x6D),
     // 選擇角色[完成-182]
     CHAR_SELECT(true, (short) 0x6E),
+    
+    // 0x6F
+    // 0x70
+    
     // 伺服器選單回覆[完成-182]
     SERVERLIST_REQUEST(false, (short) 0x71),    
     // 自動登入轉向[完成-182]
@@ -29,24 +40,52 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     // 檢查角色名稱[完成-182]
     CHECK_CHAR_NAME(true, (short) 0x73), 
     
+    // 0x74
+    // 0x75
+    // 0x76
+    // 0x77
+    // 0x78
+    // 0x79
+    // 0x7A
+    // 0x7B
+    
     // 建立角色[完成-182]
     CREATE_CHAR(false, (short) 0x7C),
     // 50等角色卡角色建立[完成-182]
-    CREATE_LV50_CHAR(true, (short) 0x7D),    
+    CREATE_LV50_CHAR(true, (short) 0x7D),
     // 建立終極冒險家[完成]
     CREATE_ULTIMATE(false, (short) 0x7E),
     // 刪除角色[完成-182]
     DELETE_CHAR(true, (short) 0x7F),
     
+    // 0x80
+    // 0x81
+    // 0x82
+    // 0x83
+    // 0x84
+    
     // 客戶端錯誤信息回覆[完成-182]
     CLIENT_FEEDBACK(false, (short) 0x85),
 
+    // 0x86
+    // 0x87
+    // 0x88
+    // 0x89
+    // 0x8A
+    // 0x8B
+    // 0x8C
+    // 0x8D
+    // 0x8E
+    
     // 打工系统[完成-182]
     PART_TIME_JOB(true, (short) 0x8F),
     // 角色卡[完成-182]
     CHARACTER_CARD(true, (short) 0x90),
-    // 未知[推測]
+    // 未知[推測-182]
     ENABLE_LV50_CHAR(true, (short) 0x91),
+    
+    // 0x92
+    // 0x93
     
     // Pong[完成-182]
     PONG(false, (short) 0x94),
@@ -56,18 +95,30 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     // 客戶端錯誤[完成-182] 【[ Name: %s, Job: %d, Field: %d, World: %d, Channel: %d ]\r\n】
     CLIENT_ERROR(false, (short) 0x96),
     
+    // 0x97
+    // 0x98
+    // 0x99
+    // 0x9A
+    // 0x9B
+    // 0x9C
+    
     // 選擇性別[完成-182]
     SET_GENDER(false, (short) 0x9D),
+    
     // 0x9E 【回到登入介面】[String(帳號)]
-    // 伺服器狀態[推測]
-    SERVERSTATUS_REQUEST(false, (short) 0x9),
+    
+    // 伺服器狀態[推測-182]
+    SERVERSTATUS_REQUEST(false, (short) 0x9F),
     // 背景驗證[完成-182]
     GET_SERVER(false, (short) 0xA0),
     
+    // 0xA1
+    // 0xA2
+    // 0xA3
+    // 0xA4
+    
     // 客戶端開始(顯示視窗)[完成-182]
     CLIENT_START(false, (short) 0xA5), 
-    
-    
     
     ////////////////////////////////////////////////
     
@@ -75,14 +126,18 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     CHANGE_MAP(true, (short) 0xA8),
     // 變更頻道[完成-182]
     CHANGE_CHANNEL(true, (short) 0xA9),
+    
     // 0xAA
     // 0xAB
     // 0xAC
+    
     // 購物商城[完成-182]
     ENTER_CASH_SHOP(true, (short) 0xAD),
     // PvP開始[完成]
     ENTER_PVP(true, (short) 0xAE),
+    
     // 0xAF
+    
     // 阿斯旺開始[完成]
     ENTER_AZWAN(true, (short) 0xB0),
     // 阿斯旺活動
@@ -853,12 +908,15 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     VICIOUS_HAMMER(true, (short) 0x3D3),
     
     // 使用白金鎚子[完成-181]
-    USE_PLATINUM_HAMMER(true, (short) 0x3D4),
+    USE_PLATINUM_HAMMER(true, (short) 0x3D5),
     // 使用白金鎚子[完成-181]
-    PLATINUM_HAMMER(true, (short) 0x3D5),
+    PLATINUM_HAMMER(true, (short) 0x3D6),
     
     // 獲得獎勵[完成-181]
     REWARD(true, (short) 0x3AE),
+    
+    // 裝備特效開關[完成-182]
+    EFFECT_SWITCH(true, (short) 0x420),
     
     // 使用世界樹的祝福(2048500)
     USE_ABYSS_SCROLL(true, (short) 0x7FFE),
@@ -1023,8 +1081,8 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
 //            case "USE_INNER_PORTAL":
 //            case "MOVE_HAKU":
 //            case "FRIENDLY_DAMAGE":
-//            case "CLOSE_RANGE_ATTACK": //todo code zero
-//            case "RANGED_ATTACK": //todo code zero
+//            case "CLOSE_RANGE_ATTACK":
+//            case "RANGED_ATTACK":
 //            case "ARAN_COMBO":
 //            case "SPECIAL_STAT":
 //            case "UPDATE_HYPER":

@@ -35,7 +35,8 @@ public enum QuickMove {
             | QuickMoveNPC.皇家美髮.getValue()
             | QuickMoveNPC.皇家整形.getValue()
             | QuickMoveNPC.里貝卡.getValue()
-            | QuickMoveNPC.楓之谷拍賣場.getValue();
+            | QuickMoveNPC.楓之谷拍賣場.getValue()
+            | QuickMoveNPC.初音未來.getValue();
     public final static long GLOBAL_NPC = 
             QuickMoveNPC.戰國露西亞.getValue()
             | QuickMoveNPC.次元傳送門.getValue();
@@ -78,7 +79,8 @@ public enum QuickMove {
         楓之谷拍賣場(20, false, 0, 30, "可以透過愛格里曲來訪問楓之谷拍賣場."),//178已刪
         戰國露西亞(21, 100, true, 9130033, 30, "測試服專用的便利商店"),//戰國商店
         戰國藍多普(22, 101, false, 9130032, 30, ""),//戰國商店
-        次元傳送門(23, 2, true, 3000012, 10, "使用可傳送到任意城市的#c<次元傳送門>#。");
+        初音未來(23, 102, true, 812000000, 30, "移動至初音未來合作特設地圖#c<初音未來的演唱會會場>#。"),
+        次元傳送門(24, 2, true, 3000012, 10, "使用可傳送到任意城市的#c<次元傳送門>#。");
         private final long value;
         private final int type, id, level;
         private final String desc;

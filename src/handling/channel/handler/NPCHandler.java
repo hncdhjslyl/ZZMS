@@ -569,7 +569,6 @@ public class NPCHandler {
         //drpq level 105 weapons - ~420k per %; 2k per durability point
         //explorer level 30 weapons - ~10 mesos per %
         final int price = (int) Math.ceil(rPercentage * ii.getPrice(eq.getItemId()) / (ii.getReqLevel(eq.getItemId()) < 70 ? 100.0 : 1.0)); // / 100 for level 30?
-        //TODO: need more data on calculating off client
         if (c.getPlayer().getMeso() < price) {
             return;
         }

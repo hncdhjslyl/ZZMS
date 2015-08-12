@@ -148,7 +148,7 @@ public class MapleClient implements Serializable {
         return allowedChar.contains(id);
     }
 
-    public final List<MapleCharacter> loadCharacters(final int serverId) { // TODO make this less costly zZz
+    public final List<MapleCharacter> loadCharacters(final int serverId) {
         final List<MapleCharacter> chars = new LinkedList<>();
 
         final Map<Integer, CardData> cardss = CharacterCardFactory.getInstance().loadCharacterCards(accId, serverId);
@@ -844,7 +844,7 @@ public class MapleClient implements Serializable {
         return this.accId;
     }
 
-    public final void updateLoginState(final int newstate, final String SessionID) { // TODO hide?
+    public final void updateLoginState(final int newstate, final String SessionID) {
         try {
             final Connection con = DatabaseConnection.getConnection();
             try (PreparedStatement ps = con.prepareStatement("UPDATE accounts SET loggedin = ?, SessionIP = ?, lastlogin = CURRENT_TIMESTAMP() WHERE id = ?")) {
@@ -901,7 +901,7 @@ public class MapleClient implements Serializable {
         }
     }
 
-    public final byte getLoginState() { // TODO hide?
+    public final byte getLoginState() {
         Connection con = DatabaseConnection.getConnection();
         try {
             PreparedStatement ps;
@@ -1685,7 +1685,7 @@ public class MapleClient implements Serializable {
         lastNpcClick = 0;
     }
 
-    public final Timestamp getCreated() { // TODO hide?
+    public final Timestamp getCreated() {
         Connection con = DatabaseConnection.getConnection();
         try {
             PreparedStatement ps;

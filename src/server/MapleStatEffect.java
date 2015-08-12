@@ -319,7 +319,7 @@ public class MapleStatEffect implements Serializable {
                     ret.info.put(MapleStatInfo.attackCount, 6);
                     ret.info.put(MapleStatInfo.bulletCount, 6);
                     break;
-                case 24100003: // TODO: for now, or could it be card stack? (1 count)
+                case 24100003:
                 case 24120002:
                     ret.info.put(MapleStatInfo.attackCount, 15);
                     break;
@@ -658,7 +658,7 @@ public class MapleStatEffect implements Serializable {
                             ret.statups.put(MapleBuffStat.SMART_KNOCKBACK, ret.info.get(MapleStatInfo.x));
                             break;
 
-                        case 23121004://TODO LEGEND
+                        case 23121004:
                             ret.statups.put(MapleBuffStat.DAMAGE_RATE, (int) ret.info.get(MapleStatInfo.damR));
                             ret.statups.put(MapleBuffStat.ENHANCED_MAXHP, (int) ret.info.get(MapleStatInfo.emhp));
                             break;
@@ -811,7 +811,7 @@ public class MapleStatEffect implements Serializable {
                         case 1121010: //enrage
                             ret.statups.put(MapleBuffStat.ENRAGE, ret.info.get(MapleStatInfo.x) * 100 + ret.info.get(MapleStatInfo.mobCount));
                             break;
-                        case 23111002: //TODO LEGEND: damage increase?
+                        case 23111002:
                         case 22161002: //phantom imprint
                             ret.monsterStatus.put(MonsterStatus.IMPRINT, ret.info.get(MapleStatInfo.x));
                             break;
@@ -952,11 +952,10 @@ public class MapleStatEffect implements Serializable {
                         case 2321002:
                             ret.statups.put(MapleBuffStat.MANA_REFLECTION, 1);
                             break;
-                        case 2321005: // holy shield, TODO JUMP
-//                            ret.statups.put(MapleBuffStat.HOLY_SHIELD, GameConstants.GMS ? (int) ret.level : ret.info.get(MapleStatInfo.x));
+                        case 2321005: // 進階祝福Advanced Blessing
                             ret.statups.put(MapleBuffStat.HOLY_SHIELD, ret.info.get(MapleStatInfo.x));
-                            ret.statups.put(MapleBuffStat.INDIE_MAX_HP, ret.info.get(MapleStatInfo.y));//fix names
-                            ret.statups.put(MapleBuffStat.INDIE_MAX_MP, ret.info.get(MapleStatInfo.z));
+                            ret.statups.put(MapleBuffStat.INDIE_MAX_HP, ret.info.get(MapleStatInfo.indieMhp));
+                            ret.statups.put(MapleBuffStat.INDIE_MAX_MP, ret.info.get(MapleStatInfo.indieMmp));
                             break;
                         case 3121007: // Hamstring
                             ret.statups.put(MapleBuffStat.HAMSTRING, ret.info.get(MapleStatInfo.x));
@@ -1233,7 +1232,7 @@ public class MapleStatEffect implements Serializable {
             }
         } else if (!primary && isResurrection()) {
             hpchange = stat.getMaxHp();
-            applyto.setStance(0); //TODO fix death bug, player doesnt spawn on other screen
+            applyto.setStance(0);
         }
         if (isDispel() && makeChanceResult()) {
             applyto.dispelDebuffs();
@@ -1473,7 +1472,7 @@ public class MapleStatEffect implements Serializable {
             }
         } else if (randomPickup != null && randomPickup.size() > 0) {
             MapleItemInformationProvider.getInstance().getItemEffect(randomPickup.get(Randomizer.nextInt(randomPickup.size()))).applyTo(applyto);
-        } else if (sourceid == 20031203 || sourceid == 20021110 || sourceid == 80001040) { //TODO: make them gms like
+        } else if (sourceid == 20031203 || sourceid == 20021110 || sourceid == 80001040) {
             applyto.changeMap(sourceid == 20031203 ? 150000000 : sourceid == 20021110 || sourceid == 80001040 ? 101050000 : 100000000, 0);
         }
         for (Entry<MapleTraitType, Integer> t : traits.entrySet()) {

@@ -1238,7 +1238,6 @@ public class PlayersHandler {
     }
 
     public static void updateRedLeafHigh(LittleEndianAccessor slea, MapleClient c) { //not finished yet
-        //TODO: load and set red leaf high in sql
         slea.readInt(); //questid or something
         slea.readInt(); //joe joe quest
         int joejoe = slea.readInt();

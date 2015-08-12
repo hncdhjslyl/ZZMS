@@ -28,6 +28,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.logging.Level;
 import org.apache.mina.core.future.WriteFuture;
 import scripting.EventInstanceManager;
 import scripting.EventManager;
@@ -775,7 +776,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                     }
                 }
 
-                //TODO {TEST} LOAD POTION POTS
                 /*ps = con.prepareStatement("SELECT * FROM potionpots WHERE cid = ?");
                  ps.setInt(1, ret.id);
                  rs = ps.executeQuery();
@@ -1186,9 +1186,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             ps = con.prepareStatement("INSERT INTO characters (level, str, dex, luk, `int`, hp, mp, maxhp, maxmp, sp, hsp, ap, skincolor, gender, job, hair, face, faceMarking, ears, tail, weaponPoint, map, meso, party, buddyCapacity, pets, subcategory, elf, friendshippoints, chatcolour, gm, accountid, name, world, position)"
                     + "                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", DatabaseConnection.RETURN_GENERATED_KEYS);
             int index = 0;
-//            if (GameConstants.isZero(chr.getJob())) {
-//               chr.level = 100;
-//            }
             ps.setInt(++index, chr.level); // Level
             final PlayerStats stat = chr.stats;
             ps.setInt(++index, stat.getStr()); // Str
@@ -1229,7 +1226,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                 db = 0;
             }
             ps.setLong(++index, chr.weaponPoint); // WeaponPoint
-            ps.setInt(++index, db == 2 ? 3000600 : type.map); //TODO fix jett, db tutorials
+            ps.setInt(++index, db == 2 ? 3000600 : type.map);
             ps.setLong(++index, chr.meso); // Meso
             ps.setInt(++index, -1); // Party
             ps.setByte(++index, chr.buddylist.getCapacity()); // Buddylist
@@ -1294,7 +1291,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             }
             ps.close();
 
-            //TODO {TEST} SAVE NEW JETT CORE AURA
             ps = con.prepareStatement("INSERT INTO coreauras (cid, str, dex, `int`, luk, att, magic, total, expire) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setInt(1, chr.id);
             if (MapleJob.is蒼龍俠客(chr.job)) {
@@ -1608,7 +1604,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                 ps.close();
             }
 
-            //TODO {TEST} SAVE NEW JETT CORE AURA
             deleteWhereCharacterId(con, "DELETE FROM coreauras WHERE cid = ?");
             ps = con.prepareStatement("INSERT INTO coreauras (cid, str, dex, `int`, luk, att, magic, total, expire) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setInt(1, id);
@@ -3019,7 +3014,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         if (MapleJob.is神之子(getJob())) {
             return 1;
         }
-        return gender; //todo zero
+        return gender;
     }
 
     @Override
@@ -4867,7 +4862,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         addLevelSkills();
         maxhp = Math.min(500000, Math.abs(maxhp));
         maxmp = Math.min(500000, Math.abs(maxmp));
-        if (MapleJob.is惡魔殺手(job)) { //TODO: use shield instead of df per job
+        if (MapleJob.is惡魔殺手(job)) {
             maxmp = GameConstants.getMPByJob(job);
         } else if (MapleJob.is神之子(job)) {
             maxmp = 100;
@@ -5471,7 +5466,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         }
     }
 
-    public void changeKeybinding(String key_name, byte type, int action) { //not finished yet TODO: finish it
+    public void changeKeybinding(String key_name, byte type, int action) {
         int key;
         switch (key_name.toUpperCase()) {
             case "F1":
@@ -7416,7 +7411,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                         } else if (MapleJob.is米哈逸(getJob())) {
                             leadid = 50001018;
                             //} else if (GameConstants.isCannon(getJob())) {
-                            //    leadid = 10008; //idk, TODO JUMP
+                            //    leadid = 10008;
                         }
                         if (getSkillLevel(SkillFactory.getSkill(leadid)) == 0 && getPet(0) != null) {
                             unequipPet(getPet(0), false, false);
@@ -7888,7 +7883,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         return this.gmLevel >= 1;
     }
 
-    // TODO: gvup, vic, lose, draw, VR
     public boolean startPartyQuest(final int questid) {
         boolean ret = false;
         MapleQuest q = MapleQuest.getInstance(questid);
@@ -10511,13 +10505,13 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             case 3001://惡魔
                 equip = (Equip) li.getEquipById(1099001);
                 break;
-            case 3100://惡魔復仇者1轉
+            case 3100://惡魔殺手1轉
                 equip = (Equip) li.getEquipById(1099000);
                 break;
-            case 3112://惡魔復仇者4轉
+            case 3112://惡魔殺手4轉
                 potential = true;
-            case 3110://惡魔復仇者2轉
-            case 3111://惡魔復仇者3轉
+            case 3110://惡魔殺手2轉
+            case 3111://惡魔殺手3轉
                 equip = (Equip) li.getEquipById(1099001 + job % 10 + ((job % 100) / 10));
                 break;
             case 3101://惡魔復仇者1轉
@@ -10917,7 +10911,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             }
             if (eq.getState(isBonus) >= 17 && eq.getState(isBonus) <= 20) {
                 if (isShowInfo() && eq.getState(isBonus) < 20) {
-                    dropMessage(-6, "伺服器管理員跳框成功率100%");
+                    dropMessage(-6, "伺服器管理員潛能等級提升成功率100%");
                 }
                 eq.renewPotential(isAdmin() ? 99 : stateRate, cubeTpye, toLock);
                 forceReAddItem_NoUpdate(eq, MapleInventoryType.EQUIP);
@@ -11098,5 +11092,50 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     
     public Collection<MapleMonster> getControlledMonsters() {
         return Collections.unmodifiableCollection(controlled);
+    }
+    
+    public List<Integer> getEffectSwitch() {
+        List<Integer> posList = new ArrayList();
+        try {
+            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT * FROM effectswitch WHERE `characterid` = ?");
+            ps.setInt(1, getId());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                posList.add(rs.getInt("pos"));
+            }
+            ps.close();
+            rs.close();
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(ItemLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return posList;
+    }
+    
+    public void updateEffectSwitch(int pos) {
+        PreparedStatement ps = null;
+        Connection con = DatabaseConnection.getConnection();
+        try {
+            ps = con.prepareStatement("SELECT * FROM effectswitch WHERE `characterid` = ? AND `pos` = ?");
+            ps.setInt(1, getId());
+            ps.setInt(2, pos);
+            ResultSet rs = ps.executeQuery();
+            if (rs.first()) {
+                ps.close();
+                rs.close();
+                ps = con.prepareStatement("DELETE FROM effectswitch WHERE pos = ?");
+                ps.setInt(1, pos);
+                ps.executeUpdate();
+            } else {
+                ps.close();
+                rs.close();
+                ps = con.prepareStatement("INSERT INTO effectswitch (characterid, pos) VALUES (?, ?)");
+                ps.setInt(1, getId());
+                ps.setInt(2, pos);
+                ps.execute();
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(ItemLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

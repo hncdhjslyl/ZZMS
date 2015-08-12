@@ -326,12 +326,6 @@ public class CharLoginHandler {
         unk = slea.readByte(); //6/7/8/9
         face = slea.readInt();
         hair = slea.readInt();
-//        if (job.hairColor) {
-//            hairColor = slea.readInt();
-//        }
-//        if (job.skinColor) {
-//            slea.readInt();
-//        }
         if (job.faceMark) {
             faceMark = slea.readInt();
         }
@@ -363,13 +357,14 @@ public class CharLoginHandler {
 //        boolean noSkin = job == JobType.惡魔 || job == JobType.精靈遊俠 || job == JobType.蒼龍俠客;
 //        int[] items = new int[]{face, hair, hairColor, noSkin ? -1 : skin, faceMark, hat, top, bottom, cape, shoes, weapon, shield};
 //        for (int i : items) {
-//          if (i > -1) {
-//        if (!LoginInformationProvider.getInstance().isEligibleItem(gender, index, job.type, i)) {
-//          System.out.println(gender + " | " + index + " | " + job.type + " | " + i);
-//          return;
-//           }
-//             index++;
-//         }
+//            if (i > -1) {
+//                if (!LoginInformationProvider.getInstance().isEligibleItem(gender, index, job.type, i)) {
+//                    System.out.println(gender + " | " + index + " | " + job.type + " | " + i);
+//                    return;
+//                }
+//                index++;
+//            }
+//        }
         //讀取創建角色默認配置
         MapleCharacter newchar = MapleCharacter.getDefault(c, job);
         newchar.setWorld((byte) c.getWorld());
@@ -424,7 +419,6 @@ public class CharLoginHandler {
         Item item;
         //-1 Hat | -2 Face | -3 Eye acc | -4 Ear acc | -5 Topwear 
         //-6 Bottom | -7 Shoes | -8 glove | -9 Cape | -10 Shield | -11 Weapon
-        //todo check zero's beta weapon slot
         int[][] equips = new int[][]{{hat, -1}, {top, -5}, {bottom, -6}, {cape, -9}, {shoes, -7}, {glove, -8}, {weapon, -11}, {shield, -10}};
         for (int[] i : equips) {
             if (i[0] > 0) {
@@ -454,6 +448,7 @@ public class CharLoginHandler {
             {30020232/*蓄能系統*/, 30020234/*全能增幅 I*/, 30020240/*多樣化裝扮*/, 30021238/*刀舞*/},//傑諾Xenon
             {100000279/*時之意志*/, 100000282/*雙重打擊*/, 100001262/*神殿回歸*/, 100001263/*時之威能*/, 100001264/*聖靈神速*/, 100001265/*爆裂跳躍*/, 100001266/*爆裂衝刺*/, 100001268/*時之庇護*/},//神之子Zero
             {20051284/*閃現*/, 20050285/*精靈降臨1式*/},//隱月Eunwol
+            {},//皮卡啾PinkBean
             {228/*草上飛*/},//蒼龍俠客Jett
             {40010000/*天賦的才能*/, 40010067/*攻守兼備*/, 40011023/*心刀*/},//劍豪Hayato
             {},//陰陽師Kanna
@@ -469,7 +464,7 @@ public class CharLoginHandler {
                     maxLevel = s.getMasterLevel();
                 }
                 ss.put(s, new SkillEntry((byte) 1, (byte) maxLevel, -1));
-            }            
+            }
             if (job == JobType.神之子) {
                 ss.put(SkillFactory.getSkill(101000103), new SkillEntry((byte) 8, (byte) 10, -1));
                 ss.put(SkillFactory.getSkill(101000203), new SkillEntry((byte) 8, (byte) 10, -1));
@@ -501,7 +496,7 @@ public class CharLoginHandler {
             newchar.getStat().maxmp = 805;
             newchar.getStat().mp = 38;
         }
-        
+
         if (job == JobType.天使破壞者) {
             newchar.setQuestAdd(MapleQuest.getInstance(25835), (byte) 2, ""); //任務：愛斯卡達的真面目
             newchar.setQuestAdd(MapleQuest.getInstance(25829), (byte) 2, ""); //任務：這個技能是什麼？
@@ -557,12 +552,12 @@ public class CharLoginHandler {
                     + "\r\n\r\n"
             );
         }
-        
+
         // 修正進階按鍵不完全
         if (keymapType == 1) {
-            int[] keyValue = new int[] {0x10, 0x11, 0x12, 0x13, 0x1E, 0x1F, 0x20, 0x21, 0x02, 0x03, 
-                                        0x04, 0x05, 0x1D, 0x38, 0x2C, 0x2D, 0x06, 0x07, 0x08, 0x09, 
-                                        0x2E, 0x16, 0x17, 0x24, 0x0A, 0x0B, 0x25, 0x31};
+            int[] keyValue = new int[]{0x10, 0x11, 0x12, 0x13, 0x1E, 0x1F, 0x20, 0x21, 0x02, 0x03,
+                0x04, 0x05, 0x1D, 0x38, 0x2C, 0x2D, 0x06, 0x07, 0x08, 0x09,
+                0x2E, 0x16, 0x17, 0x24, 0x0A, 0x0B, 0x25, 0x31};
             StringBuilder ret = new StringBuilder();
             for (int i = 0; i < 28; i++) {
                 ret.append(keyValue[i]).append(",");
@@ -670,7 +665,6 @@ public class CharLoginHandler {
         newchar.changeSkillLevel_Skip(ss, false);
         final MapleItemInformationProvider li = MapleItemInformationProvider.getInstance();
 
-        //TODO: Make this GMS - Like
         int[] items = new int[]{1142257, hat, top, shoes, glove, weapon, hat + 1, top + 1, shoes + 1, glove + 1, weapon + 1}; //brilliant = fine+1
         for (byte i = 0; i < items.length; i++) {
             Item item = li.getEquipById(items[i]);

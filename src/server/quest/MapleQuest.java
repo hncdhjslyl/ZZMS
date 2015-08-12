@@ -232,9 +232,9 @@ public class MapleQuest implements Serializable {
         if (blocked && !c.isGM()) {
             return false;
         }
-        //if (autoAccept) {
-        //    return true; //need script
-        //}
+        if (autoAccept) {
+            return true; //need script
+        }
         boolean jobs = true;
         for (MapleQuestRequirement r : startReqs) {
             if (r.getType() == MapleQuestRequirementType.dayByDay && npcid != null) { //everyday. we don't want ok

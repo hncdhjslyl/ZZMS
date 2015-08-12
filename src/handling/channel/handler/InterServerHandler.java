@@ -330,7 +330,7 @@ public class InterServerHandler {
         }
 
         //清理斷線未處理的方塊任務
-        c.getPlayer().clearInfoQuest(GameConstants.TMS方塊);
+        c.getPlayer().clearInfoQuest(GameConstants.台方塊);
 
         player.updateReward();
         player.getClient().getSession().write(CWvsContext.broadcastMsg(channelServer.getServerMessage(player.getWorld())));

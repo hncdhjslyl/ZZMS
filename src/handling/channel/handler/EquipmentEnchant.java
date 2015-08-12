@@ -181,14 +181,14 @@ public class EquipmentEnchant {
                 c.getSession().write(CWvsContext.Enchant.getStarForceResult(c.getPlayer(), source, item, result.getValue()));
                 break;
             }
-            case 50: { // FIXME 咒文的痕跡 放置道具
+            case 50: { // 咒文的痕跡 放置道具
                 short position = slea.readShort();
                 slea.skip(2);
                 Equip item = (Equip) c.getPlayer().getInventory(position < 0 ? MapleInventoryType.EQUIPPED : MapleInventoryType.EQUIP).getItem(position);
                 c.getSession().write(CWvsContext.Enchant.getEnchantList(c, item, getEchantScrolls(item), ServerConstants.FEVER_TIME));
                 break;
             }
-            case 52: { //星力強化 放置道具
+            case 52: { // 星力強化 放置道具
                 short position = slea.readShort();
                 Equip item = (Equip) c.getPlayer().getInventory(position < 0 ? MapleInventoryType.EQUIPPED : MapleInventoryType.EQUIP).getItem(position);
                 int reqLevel = MapleItemInformationProvider.getInstance().getReqLevel(item.getItemId());

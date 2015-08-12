@@ -174,7 +174,7 @@ public enum ItemLoader {
                         item.setExpiration(rs.getLong("expiredate"));
                         item.setGMLog(rs.getString("GM_Log"));
                         item.setGiftFrom(rs.getString("sender"));
-                        //item.setExp(rs.getInt("exp")); //TODO: test
+                        //item.setExp(rs.getInt("exp"));
                         if (ItemConstants.類型.寵物(item.getItemId())) {
                             if (item.getUniqueId() > -1) {
                                 MaplePet pet = MaplePet.loadFromDb(item.getItemId(), item.getUniqueId(), item.getPosition());
@@ -213,7 +213,7 @@ public enum ItemLoader {
             return;
         }
         StringBuilder query_2 = new StringBuilder("INSERT INTO `inventoryitems` (");
-        query.append(account ? "accountid" : "characterid");
+        query_2.append(account ? "accountid" : "characterid");
         query_2.append(", itemid, inventorytype, position, quantity, owner, GM_Log, uniqueid, expiredate, flag, `type`, sender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         ps = con.prepareStatement(query_2.toString(), Statement.RETURN_GENERATED_KEYS);
 

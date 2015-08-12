@@ -235,7 +235,6 @@ public class SummonHandler {
             } else {
                 //chr.dropMessage(5, "Warning - high damage.");
                 //AutobanManager.getInstance().autoban(c, "High Summon Damage (" + toDamage + " to " + attackEntry.right + ")");
-                // TODO : Check player's stat for damage checking.
                 break;
             }
         }
@@ -269,7 +268,6 @@ public class SummonHandler {
         c.getPlayer().removeSummon(summon);
         if (summon.getSkill() != 35121011) {
             c.getPlayer().cancelEffectFromBuffStat(MapleBuffStat.SUMMON);
-            //TODO: Multi Summoning, must do something about hack buffstat
         }
     }
 

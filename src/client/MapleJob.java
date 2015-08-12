@@ -181,6 +181,12 @@ public enum MapleJob {
     幻獸師3轉(11211),
     幻獸師4轉(11212),
     皮卡啾(13000),
+    皮卡啾1轉(13100),
+    凱內西斯(14000),
+    凱內西斯1轉(14200),
+    凱內西斯2轉(14210),
+    凱內西斯3轉(14211),
+    凱內西斯4轉(14212),
     未知(999999),
     ;
     private final int jobid;
@@ -401,6 +407,14 @@ public enum MapleJob {
 
     public static boolean is幻獸師(final int job) {
         return job / 100 == 112 || job == 11000;
+    }
+
+    public static boolean is皮卡啾(final int job) {
+        return job / 100 == 131 || job == 13000;
+    }
+
+    public static boolean is凱內西斯(final int job) {
+        return job / 100 == 142 || job == 14000;
     }
 
     public static boolean is劍士(final int job) {

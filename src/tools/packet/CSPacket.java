@@ -152,7 +152,7 @@ public class CSPacket {
 
         mplew.writeShort(SendPacketOpcode.CASH_SHOP_UPDATE.getValue());
         mplew.write(15);
-        mplew.write(1);//todo add db row
+        mplew.write(1);
 
         return mplew.getPacket();
     }
@@ -169,7 +169,7 @@ public class CSPacket {
         mplew.write(chr.getWishlistSize());
         for (int i : chr.getWishlist()) {
             CashItem ci = cif.getAllItem(i);
-//        for (CashItem i : cif.getMenuItems(301)) {//TODO create and load form favorites?
+//        for (CashItem i : cif.getMenuItems(301)) {
             addCSItemInfo(mplew, ci);
         }
         return mplew.getPacket();
@@ -535,6 +535,7 @@ public class CSPacket {
         mplew.writeInt(0);
         mplew.writeInt(0);
         mplew.writeInt(0);
+        mplew.writeLong(0);
 
         return mplew.getPacket();
     }
@@ -548,6 +549,7 @@ public class CSPacket {
         mplew.writeInt(0);
         mplew.writeInt(0);
         mplew.writeInt(0);
+        mplew.writeLong(0);
 
         return mplew.getPacket();
     }
@@ -697,6 +699,7 @@ public class CSPacket {
         mplew.writeShort(pos);
         PacketHelper.addItemInfo(mplew, item);
         mplew.writeInt(0); // For each: 8 bytes(Could be 2 ints or 1 long)
+        mplew.writeLong(0);
 
         return mplew.getPacket();
     }

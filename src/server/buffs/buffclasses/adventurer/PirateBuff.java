@@ -94,7 +94,7 @@ public class PirateBuff extends AbstractBuffClass {
                 eff.statups.put(MapleBuffStat.SPEED_INFUSION, eff.info.get(MapleStatInfo.x));
                 break;
             case 5121054: //Stimulating Conversation
-                //TODO
+                //TODO 拳霸BUFF
                 break;
             case 5221018: //Jolly Roger
                 eff.statups.put(MapleBuffStat.ELEMENTAL_STATUS_R, eff.info.get(MapleStatInfo.x));
@@ -110,7 +110,7 @@ public class PirateBuff extends AbstractBuffClass {
                 eff.statups.put(MapleBuffStat.INDIE_PAD, eff.info.get(MapleStatInfo.indiePad));
                 break;
             case 5221054: //Whaler's Potion
-                //TODO
+                //TODO 槍神BUFF
                 break;
             case 5301003: //Monkey Magic
                 eff.statups.put(MapleBuffStat.INDIE_MAX_HP, eff.info.get(MapleStatInfo.indieMhp));
@@ -128,13 +128,13 @@ public class PirateBuff extends AbstractBuffClass {
                 eff.statups.put(MapleBuffStat.STANCE, eff.info.get(MapleStatInfo.prop));
                 break;
             case 5321054: //Buckshot
-                //TODO
+                //TODO 重砲BUFF
                 break;
             case 5721009: //Relentless
-                //TODO
+                //TODO 蒼龍BUFF
                 break;
             case 5721054: //Bionic Maximizer
-                //TODO
+                //TODO 蒼龍BUFF
                 break;
             case 5121000: //Maple Warrior
             case 5221000: //Maple Warrior

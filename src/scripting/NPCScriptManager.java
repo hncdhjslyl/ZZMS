@@ -89,9 +89,9 @@ public class NPCScriptManager extends AbstractScriptManager {
                     dispose(c);
                 } else {
                     c.setClickedNPC();
-                    System.err.println("mode " + mode);
-                    System.err.println("type " + type);
-                    System.err.println("sel " + selection);
+//                    System.err.println("mode " + mode);
+//                    System.err.println("type " + type);
+//                    System.err.println("sel " + selection);
                     cm.getIv().invokeFunction("action", mode, type, selection);
                 }
             } catch (final ScriptException | NoSuchMethodException e) {

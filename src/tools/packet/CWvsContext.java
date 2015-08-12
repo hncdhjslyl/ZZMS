@@ -4840,7 +4840,7 @@ public class CWvsContext {
             PacketHelper.writeSingleMask(mplew, statups);
             if (skillid == 125) {
                 mplew.writeShort(0);
-                mplew.write(0); //todo test
+                mplew.write(0);
             }
             mplew.writeShort(x);
             mplew.writeShort(skillid);

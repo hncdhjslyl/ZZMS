@@ -998,7 +998,7 @@ public class GameConstants {
             case 112001008: // Fishy Slap
                 System.out.println("Get Attack Delay with skill " + id);
                 return 99; //skip duh chek
-            case 0: // Normal Attack, TODO delay for each weapon type
+            case 0: // Normal Attack
                 return 570;
         }
         if (skill != null && skill.getSkillType() == 3) {
@@ -1007,7 +1007,6 @@ public class GameConstants {
         if (skill != null && skill.getDelay() > 0 && !isNoDelaySkill(id)) {
             return skill.getDelay();
         }
-        // TODO delay for final attack, weapon type, swing,stab etc
         return 330; // Default usually
     }
     public final static int[] goldrewards = {
@@ -2484,7 +2483,7 @@ public class GameConstants {
     }
 
     public static boolean isSeparatedSp(int job) {
-        return !MapleJob.is管理員(job) && !MapleJob.is幻獸師(job);
+        return !MapleJob.is管理員(job) && !MapleJob.is幻獸師(job) && !MapleJob.is皮卡啾(job);
     }
 
     public static int getLinkedMountItem(final int sourceid) {
@@ -4070,7 +4069,7 @@ public class GameConstants {
     public static final int 申請公會名 = 26015;
     public static final int 凱撒快速鍵 = 52554;
     public static final int 楓方塊 = 52889;
-    public static final int TMS方塊 = 52998;
+    public static final int 台方塊 = 52998;
     public static final int 幻獸師的修養 = 59340;
     public static int ULT_EXPLORER = 111111;
     public static final int JAGUAR = 111112;

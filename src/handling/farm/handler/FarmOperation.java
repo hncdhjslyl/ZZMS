@@ -81,7 +81,7 @@ public class FarmOperation {
         ranking.add(new Pair<>(MapleFarm.getDefault(1, c, "Hemmi"), -1));
         c.getSession().write(FarmPacket.sendFarmRanking(chr, ranking));
         c.getSession().write(FarmPacket.updateAvatar(new Pair<>(WorldConstants.getMainWorld(), chr), null, false));
-        if (c.getFarm().getName().equals("Creating...")) { //todo put it on farm update handler
+        if (c.getFarm().getName().equals("Creating...")) {
             c.getSession().write(FarmPacket.updateQuestInfo(1111, (byte) 0, "A1/"));
             c.getSession().write(FarmPacket.updateQuestInfo(2001, (byte) 0, "A1/"));
         }

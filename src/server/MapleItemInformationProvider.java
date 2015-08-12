@@ -1,6 +1,7 @@
 package server;
 
 import client.MapleCharacter;
+import client.MapleJob;
 import client.MapleTrait.MapleTraitType;
 import client.inventory.Equip;
 import client.inventory.Item;
@@ -769,7 +770,7 @@ public class MapleItemInformationProvider {
             final Integer fameReq = stats.get("reqPOP");
             return fameReq == null || fame >= fameReq;
         }
-        return false;
+        return MapleJob.is管理員(job);
     }
 
     public final int getReqLevel(final int itemId) {
@@ -989,15 +990,15 @@ public class MapleItemInformationProvider {
                         return Randomizer.nextInt(99) < curse ? null : nEquip;
                     }
                     if (scroll.getItemId() >= 2049700 && scroll.getItemId() < 2049750) {//稀有潛能捲軸
-                        nEquip.resetPotential(2, nEquip.getPotential(3, false) != 0);
+                        nEquip.resetPotential(2, false);
                     } else if (scroll.getItemId() >= 2049750 && scroll.getItemId() < 2049759) {//罕見潛能捲軸
-                        nEquip.resetPotential(3, nEquip.getPotential(3, false) != 0);
+                        nEquip.resetPotential(3, false);
                     } else if (scroll.getItemId() == 2049780 || scroll.getItemId() == 2049782) {//傳說潛能捲軸
-                        nEquip.resetPotential(4, nEquip.getPotential(3, false) != 0);
+                        nEquip.resetPotential(4, false);
                     } else if (scroll.getItemId() == 2049419) {//附加3條潛能
-                        nEquip.resetPotential(true);
+                        nEquip.resetPotential(true, false);
                     } else {
-                        nEquip.resetPotential(false);
+                        nEquip.resetPotential(false, false);
                     }
                 } else if (ItemConstants.類型.附加潛能卷軸(scroll.getItemId())) {//附加潛能捲軸
                     if (Randomizer.nextInt(100) > success) {

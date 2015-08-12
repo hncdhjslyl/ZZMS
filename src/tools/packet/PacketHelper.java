@@ -551,7 +551,7 @@ public class PacketHelper {
         mplew.write(chr.getStat().pvpRank);
         mplew.writeInt(chr.getBattlePoints());
         mplew.write(6); // idk
-        mplew.write(7); // TODO JUMP
+        mplew.write(7);
         mplew.writeInt(0);
         mplew.writeInt(0);
         addPartTimeJob(mplew, MapleCharacter.getPartTime(chr.getId()));
@@ -619,7 +619,7 @@ public class PacketHelper {
         mplew.write(chr.getStat().pvpRank);
         mplew.writeInt(chr.getBattlePoints());
         mplew.write(6);//idk
-        mplew.write(7);//TODO JUMP
+        mplew.write(7);
         mplew.writeInt(0);
         mplew.writeInt(0);
         addPartTimeJob(mplew, MapleCharacter.getPartTime(chr.getId()));
@@ -759,7 +759,7 @@ public class PacketHelper {
             addExpirationTime(mplew, item.getExpiration());
             mplew.writeInt(chr == null ? -1 : chr.getExtendedSlots().indexOf(item.getItemId()));
             if (item.getType() == 1) {
-                mplew.write(0); //181+應該是白金鎚子次數
+                mplew.write(0);
                 final Equip equip = Equip.calculateEquipStats((Equip) item);
                 addEquipStats(mplew, equip);
                 addEquipBonusStats(mplew, equip, hasUniqueId);
@@ -852,7 +852,8 @@ public class PacketHelper {
                 mplew.writeInt(equip.getDurability());
             }
             if (equip.getStats().contains(EquipStat.VICIOUS_HAMMER)) {
-                mplew.writeInt(equip.getViciousHammer());
+                mplew.writeShort(equip.getViciousHammer());
+                mplew.writeShort(equip.getPlatinumHammer());
             }
             if (equip.getStats().contains(EquipStat.PVP_DAMAGE)) {
                 mplew.writeShort(equip.getPVPDamage());

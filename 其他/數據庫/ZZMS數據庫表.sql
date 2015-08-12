@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50536
 File Encoding         : 65001
 
-Date: 2015-08-10 21:03:13
+Date: 2015-08-12 19:40:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -78,7 +78,7 @@ CREATE TABLE `adminlog` (
   `mapid` int(11) NOT NULL DEFAULT '0',
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`logid`)
-) ENGINE=InnoDB AUTO_INCREMENT=524 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of adminlog
@@ -108,7 +108,7 @@ CREATE TABLE `alliances` (
   UNIQUE KEY `name` (`name`),
   KEY `id` (`id`),
   KEY `leaderid` (`leaderid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of alliances
@@ -128,7 +128,7 @@ CREATE TABLE `androids` (
   `face` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`uniqueid`),
   KEY `uniqueid` (`uniqueid`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of androids
@@ -201,7 +201,7 @@ CREATE TABLE `bbs_threads` (
   `guildid` int(10) unsigned NOT NULL,
   `localthreadid` int(10) unsigned NOT NULL,
   PRIMARY KEY (`threadid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of bbs_threads
@@ -222,7 +222,7 @@ CREATE TABLE `buddies` (
   KEY `buddyid` (`buddyid`),
   KEY `id` (`id`),
   CONSTRAINT `buddies_ibfk_1` FOREIGN KEY (`characterid`) REFERENCES `characters` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7998 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of buddies
@@ -240,7 +240,7 @@ CREATE TABLE `cashshop_categories` (
   `flag` int(11) NOT NULL,
   `sold` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of cashshop_categories
@@ -266,7 +266,7 @@ CREATE TABLE `cashshop_items` (
   `gender` tinyint(1) NOT NULL DEFAULT '2',
   `likes` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1228 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of cashshop_items
@@ -306,7 +306,7 @@ CREATE TABLE `cashshop_menuitems` (
   `gender` tinyint(1) NOT NULL DEFAULT '2',
   `likes` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of cashshop_menuitems
@@ -460,7 +460,7 @@ CREATE TABLE `character_slots` (
   PRIMARY KEY (`id`),
   KEY `accid` (`accid`),
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
 
 -- ----------------------------
 -- Records of character_slots
@@ -532,7 +532,7 @@ CREATE TABLE `coreauras` (
   `total` int(11) NOT NULL DEFAULT '0',
   `expire` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of coreauras
@@ -655,6 +655,21 @@ CREATE TABLE `dueypackages` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `effectswitch`
+-- ----------------------------
+DROP TABLE IF EXISTS `effectswitch`;
+CREATE TABLE `effectswitch` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `characterid` int(11) NOT NULL,
+  `pos` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of effectswitch
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `extendedslots`
 -- ----------------------------
 DROP TABLE IF EXISTS `extendedslots`;
@@ -663,7 +678,7 @@ CREATE TABLE `extendedslots` (
   `characterid` int(11) NOT NULL DEFAULT '0',
   `itemId` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of extendedslots
@@ -681,7 +696,7 @@ CREATE TABLE `famelog` (
   PRIMARY KEY (`famelogid`),
   KEY `characterid` (`characterid`),
   CONSTRAINT `famelog_ibfk_1` FOREIGN KEY (`characterid`) REFERENCES `characters` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of famelog
@@ -700,7 +715,7 @@ CREATE TABLE `familiars` (
   `expiry` bigint(20) NOT NULL DEFAULT '0',
   `vitality` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3286 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of familiars
@@ -717,7 +732,7 @@ CREATE TABLE `families` (
   PRIMARY KEY (`familyid`),
   KEY `familyid` (`familyid`),
   KEY `leaderid` (`leaderid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of families
@@ -736,7 +751,7 @@ CREATE TABLE `gifts` (
   `uniqueid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`giftid`),
   KEY `recipient` (`recipient`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of gifts
@@ -753,7 +768,7 @@ CREATE TABLE `gmlog` (
   `mapid` int(11) NOT NULL DEFAULT '0',
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`gmlogid`)
-) ENGINE=InnoDB AUTO_INCREMENT=29488 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of gmlog
@@ -785,7 +800,7 @@ CREATE TABLE `guilds` (
   UNIQUE KEY `name` (`name`),
   KEY `guildid` (`guildid`),
   KEY `leader` (`leader`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
 
 -- ----------------------------
 -- Records of guilds
@@ -835,7 +850,7 @@ CREATE TABLE `hiredmerch` (
   `Mesos` bigint(20) unsigned DEFAULT '0',
   `time` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`PackageId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of hiredmerch
@@ -870,7 +885,7 @@ CREATE TABLE `imps` (
   `fullness` mediumint(6) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`impid`),
   KEY `impid` (`impid`)
-) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of imps
@@ -889,7 +904,7 @@ CREATE TABLE `inner_ability_skills` (
   `rank` int(3) NOT NULL,
   `locked` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1384 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of inner_ability_skills
@@ -906,7 +921,7 @@ CREATE TABLE `internlog` (
   `mapid` int(11) NOT NULL DEFAULT '0',
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`gmlogid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2679 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of internlog
@@ -973,7 +988,7 @@ CREATE TABLE `inventoryequipment` (
   PRIMARY KEY (`inventoryequipmentid`),
   KEY `inventoryitemid` (`inventoryitemid`),
   CONSTRAINT `inventoryequipment_ibfk_1` FOREIGN KEY (`inventoryitemid`) REFERENCES `inventoryitems` (`inventoryitemid`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3350136 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
 
 -- ----------------------------
 -- Records of inventoryequipment
@@ -1002,7 +1017,7 @@ CREATE TABLE `inventoryitems` (
   KEY `inventorytype` (`inventorytype`),
   KEY `accountid` (`accountid`),
   KEY `characterid_2` (`characterid`,`inventorytype`)
-) ENGINE=InnoDB AUTO_INCREMENT=8333541 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
 
 -- ----------------------------
 -- Records of inventoryitems
@@ -1039,7 +1054,7 @@ CREATE TABLE `inventoryslot` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `characterid` (`characterid`),
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=130565 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of inventoryslot
@@ -1102,7 +1117,7 @@ CREATE TABLE `ipvotes` (
   `accid` int(11) NOT NULL,
   `lastvote` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ipvotes
@@ -1121,7 +1136,7 @@ CREATE TABLE `keymap` (
   PRIMARY KEY (`id`),
   KEY `keymap_ibfk_1` (`characterid`),
   CONSTRAINT `keymap_ibfk_1` FOREIGN KEY (`characterid`) REFERENCES `characters` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4030838 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
 
 -- ----------------------------
 -- Records of keymap
@@ -1186,7 +1201,7 @@ CREATE TABLE `monsterbook` (
   PRIMARY KEY (`id`),
   KEY `id` (`id`),
   KEY `charid` (`charid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1563 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
 
 -- ----------------------------
 -- Records of monsterbook
@@ -1205,7 +1220,7 @@ CREATE TABLE `mountdata` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `characterid` (`characterid`),
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7260 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of mountdata
@@ -1421,7 +1436,7 @@ CREATE TABLE `notes` (
   `gift` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `to` (`to`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of notes
@@ -1477,7 +1492,7 @@ CREATE TABLE `pets` (
   `excluded` varchar(255) NOT NULL DEFAULT '0,0,0,0,0,0,0,0,0,0',
   PRIMARY KEY (`petid`),
   KEY `petid` (`petid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1126 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of pets
@@ -1584,7 +1599,7 @@ CREATE TABLE `questinfo` (
   PRIMARY KEY (`questinfoid`),
   KEY `characterid` (`characterid`),
   CONSTRAINT `questsinfo_ibfk_1` FOREIGN KEY (`characterid`) REFERENCES `characters` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=623 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
 
 -- ----------------------------
 -- Records of questinfo
@@ -1606,7 +1621,7 @@ CREATE TABLE `queststatus` (
   KEY `characterid` (`characterid`),
   KEY `queststatusid` (`queststatusid`),
   CONSTRAINT `queststatus_ibfk_1` FOREIGN KEY (`characterid`) REFERENCES `characters` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=115910 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
 
 -- ----------------------------
 -- Records of queststatus
@@ -1624,7 +1639,7 @@ CREATE TABLE `queststatusmobs` (
   PRIMARY KEY (`queststatusmobid`),
   KEY `queststatusid` (`queststatusid`),
   CONSTRAINT `queststatusmobs_ibfk_1` FOREIGN KEY (`queststatusid`) REFERENCES `queststatus` (`queststatusid`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=289 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of queststatusmobs
@@ -1697,7 +1712,7 @@ CREATE TABLE `rewards` (
   `exp` int(11) NOT NULL DEFAULT '0',
   `desc` mediumtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1994 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of rewards
@@ -1717,7 +1732,7 @@ CREATE TABLE `rings` (
   KEY `ringid` (`ringid`),
   KEY `partnerChrId` (`partnerChrId`),
   KEY `partnerRingId` (`partnerRingId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1142 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
 
 -- ----------------------------
 -- Records of rings
@@ -1735,7 +1750,7 @@ CREATE TABLE `savedlocations` (
   PRIMARY KEY (`id`),
   KEY `savedlocations_ibfk_1` (`characterid`),
   CONSTRAINT `savedlocations_ibfk_1` FOREIGN KEY (`characterid`) REFERENCES `characters` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=493 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of savedlocations
@@ -1852,7 +1867,7 @@ CREATE TABLE `skillmacros` (
   `shout` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `characterid` (`characterid`)
-) ENGINE=InnoDB AUTO_INCREMENT=307 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of skillmacros
@@ -1873,7 +1888,7 @@ CREATE TABLE `skills` (
   PRIMARY KEY (`id`),
   KEY `skills_ibfk_1` (`characterid`),
   CONSTRAINT `skills_ibfk_1` FOREIGN KEY (`characterid`) REFERENCES `characters` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=67060 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of skills
@@ -1891,7 +1906,7 @@ CREATE TABLE `skills_cooldowns` (
   `StartTime` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `charid` (`charid`)
-) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of skills_cooldowns
@@ -1925,7 +1940,7 @@ CREATE TABLE `stolen` (
   `skillid` varchar(45) NOT NULL,
   `chosen` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2943 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of stolen
@@ -1943,7 +1958,7 @@ CREATE TABLE `storages` (
   PRIMARY KEY (`storageid`),
   KEY `accountid` (`accountid`),
   CONSTRAINT `storages_ibfk_1` FOREIGN KEY (`accountid`) REFERENCES `accounts` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3220 DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
 
 -- ----------------------------
 -- Records of storages

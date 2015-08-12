@@ -549,7 +549,7 @@ public class InventoryHandler {
         byte equipslot = (byte) slea.readInt();
         Item toUse = c.getPlayer().getInventory(MapleInventoryType.USE).getItem(slot);
         Equip equip = (Equip) c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem(equipslot);
-        if (equip == null || toUse == null || toUse.getItemId() != itemId || toUse.getQuantity() < 1 || c.getPlayer().hasBlockedInventory()) {
+        if (equip == null || toUse == null || toUse.getItemId() != itemId || toUse.getQuantity() < 1 || c.getPlayer().hasBlockedInventory() || !(ItemConstants.類型.鐵鎚(toUse.getItemId()) && itemId != 2472000)) {
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
@@ -558,7 +558,7 @@ public class InventoryHandler {
             Map hammerStats = ii.getEquipStats(itemId);
             int success = hammerStats == null || !hammerStats.containsKey("success") ? 100 : (int) hammerStats.get("success");
             if (c.getPlayer().isShowInfo()) {
-                c.getPlayer().showMessage(11, "黃金鐵鎚提煉 - 成功幾率: " + success + "%");
+                c.getPlayer().dropMessage(-6, "黃金鐵鎚提煉 - 成功幾率: " + success + "%");
             }
             if (Randomizer.nextInt(100) <= success) {
                 equip.setUpgradeSlots((byte) (equip.getUpgradeSlots() + 1));
@@ -584,21 +584,42 @@ public class InventoryHandler {
         byte equipslot = (byte) slea.readInt();
         Item toUse = c.getPlayer().getInventory(MapleInventoryType.USE).getItem(slot);
         Equip equip = (Equip) c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem(equipslot);
-        if (equip == null || toUse == null || toUse.getItemId() != itemId || toUse.getQuantity() < 1 || c.getPlayer().hasBlockedInventory()) {
+        if (equip == null || toUse == null || toUse.getItemId() != itemId || toUse.getQuantity() < 1 || c.getPlayer().hasBlockedInventory() || itemId != 2472000) {
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        if (ItemConstants.卷軸.canHammer(equip.getItemId()) && ii.getSlots(equip.getItemId()) > 0 && equip.getPlatinumHammer()< 5) {
-            Map hammerStats = ii.getEquipStats(itemId);
-            int success = hammerStats == null || !hammerStats.containsKey("success") ? 100 : (int) hammerStats.get("success");
+        if (ItemConstants.卷軸.canHammer(equip.getItemId()) && ii.getSlots(equip.getItemId()) > 0 && equip.getPlatinumHammer() < 5) {
+            int success;
+            switch (equip.getPlatinumHammer()) {
+                case 0:
+                    success = 60;
+                    break;
+                case 1:
+                    success = 45;
+                    break;
+                case 2:
+                    success = 30;
+                    break;
+                case 3:
+                    success = 15;
+                    break;
+                case 4:
+                    success = 5;
+                    break;
+                default:
+                    success = 0;
+            }
             if (c.getPlayer().isShowInfo()) {
-                c.getPlayer().showMessage(11, "白金鎚子提煉 - 成功幾率: " + success + "%");
+                c.getPlayer().dropMessage(-6, "白金鎚子提煉(次數：" + (equip.getPlatinumHammer() + 1) + ") - 成功幾率: " + success + "%「伺服器管理員成功率100%」");
+            }
+            if (c.getPlayer().isAdmin()) {
+                success = 100;
             }
             if (Randomizer.nextInt(100) <= success) {
                 equip.setUpgradeSlots((byte) (equip.getUpgradeSlots() + 1));
-                c.getSession().write(CSPacket.PlatinumHammer((byte) 0, 0));
                 equip.setPlatinumHammer((byte) (equip.getPlatinumHammer() + 1));
+                c.getSession().write(CSPacket.PlatinumHammer((byte) 0, 1)); //TODO 成功提示失敗
             } else {
                 c.getSession().write(CSPacket.PlatinumHammer((byte) 0, 1));
             }            
@@ -1077,9 +1098,9 @@ public class InventoryHandler {
                 return false;
             }
         } else if (ItemConstants.類型.白醫卷軸(scroll.getItemId())) {//白衣捲軸
-            if (stats == null || !stats.containsKey("recover") || !eqstats.containsKey("tuc") || toScroll.getLevel() + toScroll.getUpgradeSlots() + stats.get("recover") > eqstats.get("tuc") + toScroll.getViciousHammer()) {
+            if (stats == null || !stats.containsKey("recover") || !eqstats.containsKey("tuc") || toScroll.getLevel() + toScroll.getUpgradeSlots() + stats.get("recover") > eqstats.get("tuc") + toScroll.getHammer()) {
                 if (chr.isShowErr()) {
-                    chr.showInfo("砸卷錯誤", true, "白衣捲軸 - 砸卷道具不存在卷軸升級次數 " + (stats != null ? !stats.containsKey("recover") : true) + " 回復次數超過" + (toScroll.getLevel() + toScroll.getUpgradeSlots() + stats.get("recover") > eqstats.get("tuc") + toScroll.getViciousHammer()));
+                    chr.showInfo("砸卷錯誤", true, "白衣捲軸 - 砸卷道具不存在卷軸升級次數 " + (stats != null ? !stats.containsKey("recover") : true) + " 回復次數超過" + (toScroll.getLevel() + toScroll.getUpgradeSlots() + stats.get("recover") > eqstats.get("tuc") + toScroll.getHammer()));
                 }
                 c.getSession().write(InventoryPacket.getInventoryFull());
                 c.getSession().write(CWvsContext.enableActions());
@@ -1732,11 +1753,11 @@ public class InventoryHandler {
         final byte type = slea.readByte();
         switch (type) {
             case 1: {//放置楓方塊/選擇潛能
-                if (c.getPlayer().getOneInfo(GameConstants.TMS方塊, "i") == null) { //楓方塊
+                if (c.getPlayer().getOneInfo(GameConstants.台方塊, "u") == null) { //楓方塊
                     final short dst = slea.readShort();
                     final Equip eq = (Equip) c.getPlayer().getInventory(dst > 0 ? MapleInventoryType.EQUIP : MapleInventoryType.EQUIPPED).getItem(dst);
                     if (c.getPlayer().getInventory(MapleInventoryType.SETUP).findById(3994895) == null || eq == null) {
-                        c.getSession().write(CField.getShimmerCubeRespons(1, 0));
+                        c.getSession().write(CField.getShimmerCubeRespons());
                         c.getSession().write(CWvsContext.enableActions());
                         return;
                     }
@@ -1744,17 +1765,18 @@ public class InventoryHandler {
                     return;
                 }
 
-                int cubeId = Integer.parseInt(c.getPlayer().getOneInfo(GameConstants.TMS方塊, "i"));
+                int cubeId = Integer.parseInt(c.getPlayer().getOneInfo(GameConstants.台方塊, "u"));
                 Equip eq = null;
                 switch (cubeId) {
                     case 5062017: {//閃耀方塊
-                        if (slea.readShort() == 1) {
-                            eq = (Equip) c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem(Short.valueOf(c.getPlayer().getOneInfo(GameConstants.TMS方塊, "p")));
-                            if (eq.getItemId() != Integer.valueOf(c.getPlayer().getOneInfo(GameConstants.TMS方塊, "i"))) {
+                        int selected = slea.readShort();
+                        if (selected == 1) {
+                            eq = (Equip) c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem(Short.valueOf(c.getPlayer().getOneInfo(GameConstants.台方塊, "p")));
+                            if (eq.getItemId() != Integer.valueOf(c.getPlayer().getOneInfo(GameConstants.台方塊, "i"))) {
                                 c.getSession().write(CWvsContext.enableActions());
                                 return;
                             }
-                            String[] s = c.getPlayer().getOneInfo(GameConstants.TMS方塊, "o").split(",");
+                            String[] s = c.getPlayer().getOneInfo(GameConstants.台方塊, "o").split(",");
                             eq.setPotential(Integer.valueOf(s[0]), 1, false);
                             eq.setPotential(Integer.valueOf(s[1]), 2, false);
                             if (s.length == 3) {
@@ -1762,15 +1784,15 @@ public class InventoryHandler {
                             }
                             c.getPlayer().forceReAddItem(eq, eq.getPosition() > 0 ? MapleInventoryType.EQUIP : MapleInventoryType.EQUIPPED);
                         }
-                        c.getSession().write(CField.getFlashCubeRespons(1, 1));
+                        c.getSession().write(CField.getFlashCubeRespons(cubeId, 1));
                         break;
                     }
                     case 5062020: {//閃炫方塊
                         int line = slea.readInt();
-                        if (Integer.valueOf(c.getPlayer().getOneInfo(GameConstants.TMS方塊, "c")) == line) {
-                            eq = (Equip) c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem(Short.valueOf(c.getPlayer().getOneInfo(GameConstants.TMS方塊, "p")));
-                            if (eq.getItemId() != Integer.valueOf(c.getPlayer().getOneInfo(GameConstants.TMS方塊, "i"))) {
-                                c.getSession().write(CField.getShimmerCubeRespons(1, 0));
+                        if (Integer.valueOf(c.getPlayer().getOneInfo(GameConstants.台方塊, "c")) == line) {
+                            eq = (Equip) c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem(Short.valueOf(c.getPlayer().getOneInfo(GameConstants.台方塊, "p")));
+                            if (eq.getItemId() != Integer.valueOf(c.getPlayer().getOneInfo(GameConstants.台方塊, "i"))) {
+                                c.getSession().write(CField.getShimmerCubeRespons());
                                 c.getSession().write(CWvsContext.enableActions());
                                 return;
                             }
@@ -1780,7 +1802,7 @@ public class InventoryHandler {
                             }
                             boolean right = false;
                             for (int i = 0; i < pots.length; i++) {
-                                String[] ss = c.getPlayer().getOneInfo(GameConstants.TMS方塊, "o").split(",");
+                                String[] ss = c.getPlayer().getOneInfo(GameConstants.台方塊, "o").split(",");
                                 for (String s : ss) {
                                     if (Integer.valueOf(s) == pots[i]) {
                                         if (i == pots.length - 1) {
@@ -1791,7 +1813,7 @@ public class InventoryHandler {
                                 }
                             }
                             if (!right) {
-                                c.getSession().write(CField.getShimmerCubeRespons(1, 0));
+                                c.getSession().write(CField.getShimmerCubeRespons());
                                 c.getSession().write(CWvsContext.enableActions());
                                 return;
                             }
@@ -1800,7 +1822,7 @@ public class InventoryHandler {
                             }
                             c.getPlayer().forceReAddItem(eq, eq.getPosition() > 0 ? MapleInventoryType.EQUIP : MapleInventoryType.EQUIPPED);
                         }
-                        c.getSession().write(CField.getShimmerCubeRespons(1, 1));
+                        c.getSession().write(CField.getShimmerCubeRespons());
                         break;
                     }
                     default: {
@@ -1809,7 +1831,7 @@ public class InventoryHandler {
                         return;
                     }
                 }
-                c.getPlayer().clearInfoQuest(GameConstants.TMS方塊);
+                c.getPlayer().clearInfoQuest(GameConstants.台方塊);
                 if (eq != null) {
                     cubeMega(c, eq, cubeId);
                 }
@@ -1837,7 +1859,10 @@ public class InventoryHandler {
                 final short dst = slea.readShort();
                 final Item toUse = c.getPlayer().getInventory(MapleInventoryType.CASH).getItem(slot);
                 final Equip eq = (Equip) c.getPlayer().getInventory(dst > 0 ? MapleInventoryType.EQUIP : MapleInventoryType.EQUIPPED).getItem(dst);
-                if (toUse.getItemId() != 5062017 && toUse.getItemId() != 5062019 && toUse.getItemId() != 5062020 || eq == null) {//閃耀方塊 閃耀鏡射方塊 閃炫方塊
+                if (toUse.getItemId() != 5062017 && toUse.getItemId() != 5062019 && toUse.getItemId() != 5062020 && toUse.getItemId() != 5062021 || eq == null) {//閃耀方塊 閃耀鏡射方塊 閃炫方塊 新對等方塊
+                    if (c.getPlayer().isShowErr()) {
+                        c.getPlayer().showInfo("使用方塊", true, "此方塊未處理");
+                    }
                     c.getSession().write(CWvsContext.enableActions());
                     return;
                 }
@@ -1852,7 +1877,7 @@ public class InventoryHandler {
                 }
 
                 String pots = "";
-                c.getPlayer().clearInfoQuest(GameConstants.TMS方塊);
+                c.getPlayer().clearInfoQuest(GameConstants.台方塊);
                 if (c.getPlayer().useCube(toUse.getItemId(), eq)) {
                     InventoryHandler.magnifyEquip(c, null, eq, false);
                     switch (toUse.getItemId()) {
@@ -1864,12 +1889,12 @@ public class InventoryHandler {
                                 }
                             }
                             c.getPlayer().forceReAddItem(eq, eq.getPosition() > 0 ? MapleInventoryType.EQUIP : MapleInventoryType.EQUIPPED);
-                            c.getSession().write(CField.showFlashCubeEquip(0, eq));
+                            c.getSession().write(CField.showFlashCubeEquip(eq));
                             break;
                         case 5062019://閃耀鏡射方塊
                         case 5062021://新對等方塊
                             MapleInventoryManipulator.removeFromSlot(c.getPlayer().getClient(), MapleInventoryType.CASH, (short) slot, (short) 1, false, true);
-                            c.getSession().write(CField.getFlashCubeRespons(1, 0));
+                            c.getSession().write(CField.getFlashCubeRespons(toUse.getItemId(), 0));
                             cubeMega(c, eq, toUse.getItemId());
                             return;
                         case 5062020://閃炫方塊
@@ -1892,17 +1917,18 @@ public class InventoryHandler {
                                     pots += ",";
                                 }
                             }
-                            c.getSession().write(CField.getShimmerCubeRespons(7, 0, eq.getPotential(3, false) > 0 ? 3 : 2, newPots));
+                            c.getSession().write(CField.getShimmerCubeRespons(eq.getPotential(3, false) > 0 ? 3 : 2, newPots));
                             break;
                         default:
                             c.getPlayer().dropMessage(1, "此方塊未修復，請聯繫管理員。");
                             c.getSession().write(CWvsContext.enableActions());
                             return;
                     }
-                    c.getPlayer().updateOneInfo(GameConstants.TMS方塊, "c", "" + (1 + (eq.getPotential(2, false) > 0 ? 1 : 0) + (eq.getPotential(3, false) > 0 ? 1 : 0)));
-                    c.getPlayer().updateOneInfo(GameConstants.TMS方塊, "i", String.valueOf(eq.getItemId()));
-                    c.getPlayer().updateOneInfo(GameConstants.TMS方塊, "o", pots);
-                    c.getPlayer().updateOneInfo(GameConstants.TMS方塊, "p", String.valueOf(eq.getPosition()));
+                    c.getPlayer().updateOneInfo(GameConstants.台方塊, "c", "" + (1 + (eq.getPotential(2, false) > 0 ? 1 : 0) + (eq.getPotential(3, false) > 0 ? 1 : 0)));
+                    c.getPlayer().updateOneInfo(GameConstants.台方塊, "i", String.valueOf(eq.getItemId()));
+                    c.getPlayer().updateOneInfo(GameConstants.台方塊, "o", pots);
+                    c.getPlayer().updateOneInfo(GameConstants.台方塊, "p", String.valueOf(eq.getPosition()));
+                    c.getPlayer().updateOneInfo(GameConstants.台方塊, "u", String.valueOf(toUse.getItemId()));
                     MapleInventoryManipulator.removeFromSlot(c.getPlayer().getClient(), MapleInventoryType.CASH, (short) slot, (short) 1, false, true);
                 }
                 c.getSession().write(CWvsContext.enableActions());
@@ -1943,10 +1969,6 @@ public class InventoryHandler {
     }
 
     public static void cubeMega(MapleClient c, Equip eqq, int cubeId) {
-        if (c.getPlayer().isIntern()) {
-            return;
-        }
-
         int cubeType = ItemConstants.方塊.getCubeType(cubeId);
         boolean bonus = ItemConstants.方塊.CubeType.附加潛能.check(cubeType);
 
@@ -1986,7 +2008,12 @@ public class InventoryHandler {
             }
             msg.append("潛能.");
         }
-        World.Broadcast.broadcastSmega(CWvsContext.cubeMega(msg.toString(), eqq));
+        if (c.getPlayer().isIntern()) {
+            msg.append("（管理員此訊息僅自己可見）");
+            c.getSession().write(CWvsContext.cubeMega(msg.toString(), eqq));
+        } else {
+            World.Broadcast.broadcastSmega(CWvsContext.cubeMega(msg.toString(), eqq));
+        }
     }
 
     public static boolean showMapleCubeCost(MapleClient c, Equip eq) {
@@ -3182,7 +3209,7 @@ public class InventoryHandler {
         if (mountid > 0) {
             mountid = PlayerStats.getSkillByJob(mountid, c.getPlayer().getJob());
             final int fk = GameConstants.getMountItem(mountid, c.getPlayer());
-            if (fk > 0 && mountid < 80001000) { //TODO JUMP
+            if (fk > 0 && mountid < 80001000) {
                 for (int i = 80001001; i < 80001999; i++) {
                     final Skill skill = SkillFactory.getSkill(i);
                     if (skill != null && GameConstants.getMountItem(skill.getId(), c.getPlayer()) == fk) {

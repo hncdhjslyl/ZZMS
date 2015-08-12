@@ -18,8 +18,7 @@ public class MapleSlideMenu { // UI.wz\UIWindow2.img\SlideMenu\
         public static final int version = ServerConstants.MAPLE_VERSION; //Change as you wish
         public static final int above = 0xFF;
 
-        public static enum 異次元的門 { //Updated to V120 without quests
-            //TODO: Order by levels
+        public static enum 異次元的門 { //Updated to V182 without quests
 
             PQ0(0, "阿里安特競技場", 682020000, 3, 20, 30, 0, 0, false),
             PQ1(1, "武陵道場", 925020000, 4, 90, above, 0, 0, true),
@@ -79,6 +78,7 @@ public class MapleSlideMenu { // UI.wz\UIWindow2.img\SlideMenu\
             PQ807(807, "阿里山", 749080900, 0, 0, above, 0, 0, true),
             PQ808(808, "虛幻之森", 749081200, 0, 0, above, 0, 0, true),
             PQ908(908, "比叡山本堂", 811000999, 0, 0, above, 0, 0, true),
+            PQ992(992, "初音未來", 812000000, 0, 0, above, 0, 0, true),
             PQ993(993, "進擊的巨人", 814000000, 0, 0, above, 0, 0, true),
             DEFAULT(Integer.MAX_VALUE, "Default Map", 999999999, 0, 0, 0, 0, 0, false);
             private int id, map, portal, minLevel, maxLevel, requieredQuest, requieredQuestState;
@@ -288,12 +288,11 @@ public class MapleSlideMenu { // UI.wz\UIWindow2.img\SlideMenu\
             TOWN_17(17, "靈藥幻境", 251000000, 0),
             TOWN_18(18, "納希沙漠", 260000000, 0),
             TOWN_19(19, "瑪迦提亞城", 261000000, 0),
-            TOWN_20(20, "埃德爾斯坦", 310000000, 0),
-            TOWN_21(21, "六條岔道", 104020000, 2),
-            TOWN_22(22, "櫻花處", 101050000, 0),
+            TOWN_20(20, "六條岔道", 104020000, 2),
+            TOWN_21(21, "櫻花處", 101050000, 0),
+            TOWN_22(22, "萬神殿", 400000000, 0),
             //            TOWN_23(23, "未知", 0, 0),
-            TOWN_24(24, "萬神殿", 400000000, 0),
-            TOWN_25(25, "天堂", 31007000, 0);
+            TOWN_24(24, "天堂", 31007000, 0);
             private final int id, map, portal;
             private final String name;
 

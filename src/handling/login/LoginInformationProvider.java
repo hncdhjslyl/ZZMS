@@ -16,38 +16,37 @@ public class LoginInformationProvider {
 
     public enum JobType {
 
-        終極冒險家(-1, MapleJob.初心者.getId(), 100000000, false, false, false, false, true, false, false, false, false),
-        末日反抗軍(0, MapleJob.市民.getId(), 931000000, false, false, false, false, false, false, false, false, false),
-        冒險家(1, MapleJob.初心者.getId(), 4000000, false, false, false, false, false, false, false, false, false),
-        皇家騎士團(2, MapleJob.貴族.getId(), 130030000, false, false, false, false, false, true, false, false, false),
-        狂狼勇士(3, MapleJob.傳說.getId(), 914000000, false, false, false, false, true, false, false, false, false),
-        龍魔導士(4, MapleJob.龍魔導士.getId(), 900010000, false, false, false, false, true, false, false, false, false),//evan starter map - need to test tutorial
-        精靈遊俠(5, MapleJob.精靈遊俠.getId(), 910150000, false, false, false, false, false, false, false, false, false),//101050000 - 910150000
-        惡魔(6, MapleJob.惡魔殺手.getId(), 931050310, false, false, true, false, false, false, false, false, false),
-        幻影俠盜(7, MapleJob.幻影俠盜.getId(), 915000000, false, false, false, false, false, true, false, false, false),
-        影武者(8, MapleJob.初心者.getId(), 103050900, false, false, false, false, false, false, false, false, false),
-        米哈逸(9, MapleJob.米哈逸.getId(), 913070000, false, false, false, false, true, false, false, false, false),
-        夜光(10, MapleJob.夜光.getId(), 101000000, false, false, false, false, false, true, false, false, false),//Ellinia atm TODO tutorial
-        凱撒(11, MapleJob.凱撒.getId(), 400000000, false, false, false, false, false, false, false, false, false),
-        天使破壞者(12, MapleJob.天使破壞者.getId(), 940011000, false, false, false, false, false, false, false, false, false),//400000000 - 940011000 - town now TODO tutorial
-        重砲指揮官(13, MapleJob.初心者.getId(), 0, false, false, false, false, false, false, false, false, false),
-        傑諾(14, MapleJob.傑諾.getId(), 931050920, false, false, true, false, false, false, false, false, false),
-        神之子(15, MapleJob.神之子.getId(), 100000000, false, false, false, false, false, true, false, false, false),//321000000 = zero starter map
-        隱月(16, MapleJob.隱月.getId(), 910000000, false, false, false, false, true, true, false, false, false),
-        皮卡啾(17, MapleJob.皮卡啾.getId(), 100000000, false, false, false, false, false, false, false, false, false),
-        蒼龍俠客(18, MapleJob.初心者.getId(), 552000050, false, false, false, false, true, false, false, false, false),//End map for tutorial
-        劍豪(19, MapleJob.劍豪.getId(), 807100010, false, false, false, true, false, false, false, false, true),//half stater map TODO real tutorial
-        陰陽師(20, MapleJob.陰陽師.getId(), 807100110, false, false, false, true, false, false, false, false, true),
-        幻獸師(21, MapleJob.幻獸師.getId(), 866135000, false, false, true, false, false, false, true, true, false);//custom tutorial as original tut is borinq
+        終極冒險家(-1, MapleJob.初心者.getId(), 100000000, false, false, true, false, false, false, false),
+        末日反抗軍(0, MapleJob.市民.getId(), 931000000, false, false, false, false, false, false, false),
+        冒險家(1, MapleJob.初心者.getId(), 4000000, false, false, false, false, false, false, false),
+        皇家騎士團(2, MapleJob.貴族.getId(), 130030000, false, false, false, true, false, false, false),
+        狂狼勇士(3, MapleJob.傳說.getId(), 914000000, false, false, true, false, false, false, false),
+        龍魔導士(4, MapleJob.龍魔導士.getId(), 900010000, false, false, true, false, false, false, false),
+        精靈遊俠(5, MapleJob.精靈遊俠.getId(), 910150000, false, false, false, false, false, false, false),//TODO 出生劇情101050000 - 910150000
+        惡魔(6, MapleJob.惡魔殺手.getId(), 931050310, true, false, false, false, false, false, false),
+        幻影俠盜(7, MapleJob.幻影俠盜.getId(), 915000000, false, false, false, true, false, false, false),//TODO 出生劇情
+        影武者(8, MapleJob.初心者.getId(), 103050900, false, false, false, false, false, false, false),
+        米哈逸(9, MapleJob.米哈逸.getId(), 913070000, false, false, true, false, false, false, false),//TODO 出生劇情修正
+        夜光(10, MapleJob.夜光.getId(), 101000000, false, false, false, true, false, false, false),//TODO 出生劇情Ellinia atm
+        凱撒(11, MapleJob.凱撒.getId(), 400000000, false, false, false, false, false, false, false),//TODO 出生劇情
+        天使破壞者(12, MapleJob.天使破壞者.getId(), 940011000, false, false, false, false, false, false, false),//TODO 出生劇情400000000 - 940011000 - town now
+        重砲指揮官(13, MapleJob.初心者.getId(), 0, false, false, false, false, false, false, false),//TODO 出生劇情
+        傑諾(14, MapleJob.傑諾.getId(), 931050920, true, false, false, false, false, false, false),//TODO 出生劇情
+        神之子(15, MapleJob.神之子.getId(), 100000000, false, false, false, true, false, false, false),//TODO 出生劇情321000000 = zero starter map
+        隱月(16, MapleJob.隱月.getId(), 910000000, false, false, true, true, false, false, false),//TODO 出生劇情
+        皮卡啾(17, MapleJob.皮卡啾.getId(), 100000000, false, false, false, false, false, false, false),//TODO 出生劇情
+//        凱內西斯(17, MapleJob.凱內西斯.getId(), 100000000, false, false, false, false, false, false, false),//TODO 出生劇情
+        蒼龍俠客(18, MapleJob.初心者.getId(), 552000050, false, false, true, false, false, false, false),//TODO 出生劇情End map for tutorial
+        劍豪(19, MapleJob.劍豪.getId(), 807100010, false, true, false, false, false, false, true),
+        陰陽師(20, MapleJob.陰陽師.getId(), 807100110, false, true, false, false, false, false, true),//TODO 出生劇情
+        幻獸師(21, MapleJob.幻獸師.getId(), 866135000, true, false, false, false, true, true, false);
         public int type, id, map;
-        public boolean hairColor, skinColor, faceMark, hat, bottom, cape, ears, tail, glove;
+        public boolean faceMark, hat, bottom, cape, ears, tail, glove;
 
-        private JobType(int type, int id, int map, boolean hairColor, boolean skinColor, boolean faceMark, boolean hat, boolean bottom, boolean cape, boolean ears, boolean tail, boolean glove) {
+        private JobType(int type, int id, int map, boolean faceMark, boolean hat, boolean bottom, boolean cape, boolean ears, boolean tail, boolean glove) {
             this.type = type;
             this.id = id;
             this.map = map;
-            this.hairColor = hairColor;
-            this.skinColor = skinColor;
             this.faceMark = faceMark;
             this.hat = hat;
             this.bottom = bottom;

@@ -73,7 +73,7 @@ public class FamilyHandler {
                     success = false;
                 }
                 break;
-            case Summon: // TODO give a check to the player being forced somewhere else..
+            case Summon:
                 victim = c.getChannelServer().getPlayerStorage().getCharacterByName(slea.readMapleAsciiString());
                 if (FieldLimitType.VipRock.check(c.getPlayer().getMap().getFieldLimit()) || c.getPlayer().isInBlockedMap()) {
                     c.getPlayer().dropMessage(5, "Summons failed. Your current location or state does not allow a summons.");

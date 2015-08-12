@@ -83,10 +83,12 @@ public class ItemConstants {
 //            damageSkin.put(2433456, 21); //韓文的傷害字型
                 damageSkin.put(2433631, 22); //NENE雞的傷害字型
                 damageSkin.put(2433655, 22); //NENE雞的傷害字型
+                damageSkin.put(2433981, 28); //皮卡啾傷害字型
                 damageSkin.put(2432591, 1000); //櫻花浪漫字型傷害肌膚
                 damageSkin.put(2432803, 1004); //濃姬傷害字型(30日)
                 damageSkin.put(2432804, 1004); //濃姬傷害字型(無限期)
                 damageSkin.put(2432846, 1005); //傑特字型交換卷
+                damageSkin.put(2433049, 1009); //初音未來傷害字型
                 damageSkin.put(2433038, 1010); //皇家神獸學院字型
                 damageSkin.put(2433165, 1011); //俠客字型交換卷
                 damageSkin.put(2433197, 1012); //菲歐娜字型交換卷
@@ -97,6 +99,7 @@ public class ItemConstants {
                 //1018 - 跟1014一樣
                 damageSkin.put(2433775, 1032); //殺人鯨傷害字型
                 damageSkin.put(2433776, 1033); //史烏傷害字型
+                damageSkin.put(2434004, 1041); //小筱傷害字型
             }
             Map<Integer, Integer> value = new TreeMap<>((v1, v2) -> v1.compareTo(v2));
             value.putAll(damageSkin);
@@ -693,30 +696,21 @@ public class ItemConstants {
                         case "incDEXr":
                         case "incINTr":
                         case "incLUKr":
+                        case "incMHPr":
                         case "incPADr":
                         case "incMADr":
-                        case "incMHPr":
-                        case "incMMPr":
+                        case "incCriticaldamageMin":
+                        case "incCriticaldamageMax":
                         case "incDAMr":
                         case "incTerR":
                         case "incAsrR":
-                        case "incMaxDamage":
-                        case "level":
-                        case "prop":
-                        case "time":
                         case "ignoreTargetDEF":
-                        case "ignoreDAM":
-                        case "incAllskill":
-                        case "ignoreDAMr":
-                        case "RecoveryUP":
-                        case "incCriticaldamageMin":
-                        case "incCriticaldamageMax":
-                        case "DAMreflect":
-                        case "mpconReduce":
+                        case "incMaxDamage":
                         case "reduceCooltime":
+                        case "boss":
                         case "incMesoProp":
                         case "incRewardProp":
-                        case "boss":
+                        case "level":
                         case "attackType":
                             break;
                         default:
@@ -829,6 +823,10 @@ public class ItemConstants {
 
         public static boolean 幻獸棍棒(final int itemid) {
             return itemid / 10000 == 125;
+        }
+
+        public static boolean ESP限幅器(final int itemid) {
+            return itemid / 10000 == 126;
         }
 
         public static boolean 單手劍(final int itemid) {
@@ -1084,7 +1082,7 @@ public class ItemConstants {
         }
 
         public static boolean 魔法武器(int itemid) {
-            return 短杖(itemid) || 長杖(itemid) || 扇子(itemid) || 幻獸棍棒(itemid);
+            return 短杖(itemid) || 長杖(itemid) || 扇子(itemid) || 幻獸棍棒(itemid) || ESP限幅器(itemid);
         }
 
         public static boolean 騎寵道具(int itemid) {
@@ -1274,6 +1272,10 @@ public class ItemConstants {
 
         public static boolean 裝備強化卷軸(int itemid) {
             return itemid / 100 == 20493;
+        }
+
+        public static boolean 鐵鎚(int itemid) {
+            return itemid / 10000 == 247;
         }
 
         public static boolean 潛能卷軸(int itemid) {
