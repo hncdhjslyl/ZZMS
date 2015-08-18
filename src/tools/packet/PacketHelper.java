@@ -762,7 +762,7 @@ public class PacketHelper {
                 mplew.write(0);
                 final Equip equip = Equip.calculateEquipStats((Equip) item);
                 addEquipStats(mplew, equip);
-                addEquipBonusStats(mplew, equip, hasUniqueId);
+                addEquipBonusStats(mplew, equip);
             } else {
                 mplew.writeShort(item.getQuantity());
                 mplew.writeMapleAsciiString(item.getOwner());
@@ -931,7 +931,7 @@ public class PacketHelper {
         }
     }
 
-    public static void addEquipBonusStats(MaplePacketLittleEndianWriter mplew, Equip equip, boolean hasUniqueId) {
+    public static void addEquipBonusStats(MaplePacketLittleEndianWriter mplew, Equip equip) {
         mplew.writeMapleAsciiString(equip.getOwner());//擁有者名字
         mplew.write(equip.getState(true) > 0 && equip.getState(true) < 17 ? equip.getState(false) | 0x20 : equip.getState(false)); //潛能等級 17 = 特殊rare, 18 = 稀有epic, 19 = 罕見unique, 20 = 傳說legendary, potential flags. special grade is 14 but it crashes
         mplew.write(equip.getEnhance());//裝備星級
@@ -939,16 +939,15 @@ public class PacketHelper {
             mplew.writeShort(equip.getState(false) > 0 && equip.getState(false) < 17 ? 0 : equip.getPotential(i, false));
         }
         for (int i = 1; i <= 3; i++) {//附加潛能
-            mplew.writeShort(equip.getState(true) > 0 && equip.getState(true) < 17 ? i == 1 ?  equip.getState(true) : 0 : equip.getPotential(i, true));
+            mplew.writeShort(equip.getState(true) > 0 && equip.getState(true) < 17 ? i == 1 ? equip.getState(true) : 0 : equip.getPotential(i, true));
         }
         mplew.writeShort(equip.getFusionAnvil() % 10000);
         mplew.writeShort(equip.getSocketState());
         mplew.writeShort(equip.getSocket1() % 10000); // > 0 = mounted, 0 = empty, -1 = none.
         mplew.writeShort(equip.getSocket2() % 10000);
         mplew.writeShort(equip.getSocket3() % 10000);
-        if (!hasUniqueId) {
-            mplew.writeLong(equip.getInventoryId()); //some tracking ID
-        }
+
+        mplew.writeLong(/*equip.getInventoryId()*/1); //some tracking ID
         mplew.writeLong(getTime(-2));
         mplew.writeInt(-1);
         mplew.writeLong(0);
@@ -1426,7 +1425,7 @@ public class PacketHelper {
             mplew.writeMapleAsciiString("");
         }
     }
-    
+
     public static void UnkFunctin6(final MaplePacketLittleEndianWriter mplew) {
         int v7 = 2;
         do {
@@ -1434,9 +1433,10 @@ public class PacketHelper {
             while (true) {
                 int res = 255;
                 mplew.write(res);
-                if (res == 255)
+                if (res == 255) {
                     break;
-                mplew.writeInt(0);                
+                }
+                mplew.writeInt(0);
             }
             v7 += 36;
         } while (v7 < 74);
@@ -1797,6 +1797,115 @@ public class PacketHelper {
         mplew.write(parttime.getReward() > 0);
     }
 
+    public static void addSpawnPlayerBuffStat(MaplePacketLittleEndianWriter mplew, MapleCharacter chr) {
+        Map<MapleBuffStat, Object[]> statups = new LinkedHashMap();
+
+        // 鬥氣集中
+        if (chr.getBuffedValue(MapleBuffStat.COMBO) != null) {
+            statups.put(MapleBuffStat.COMBO,
+            new Object[]{
+                chr.getBuffedValue(MapleBuffStat.COMBO).byteValue()
+            });
+        }
+        // 預設Buff
+        statups.put(MapleBuffStat.CHAR_BUFF, new Object[]{-1});
+        // 預設Buff
+        statups.put(MapleBuffStat.MOUNT_MORPH, new Object[]{(byte) 0});
+        // 預設Buff
+        statups.put(MapleBuffStat.DIVINE_FORCE_AURA, new Object[]{(short) 0, 0});
+        // 預設Buff
+        statups.put(MapleBuffStat.DIVINE_SPEED_AURA, new Object[]{(short) 0, 0});
+        // 預設Buff
+        statups.put(MapleBuffStat.NEW_AURA, new Object[]{(short) 0, 0});
+        // 預設Buff
+        statups.put(MapleBuffStat.ENERGY_CHARGE, null);
+        // 預設Buff - 内容猜填
+        statups.put(MapleBuffStat.DEFAULTBUFF3, new Object[]{(short) 0, 0});
+        // 預設Buff - 内容猜填
+        statups.put(MapleBuffStat.DEFAULTBUFF4, new Object[]{(short) 0, 0});
+        // 預設Buff - 内容猜填
+        statups.put(MapleBuffStat.DEFAULTBUFF5, new Object[]{(short) 0, 0});
+        // 預設Buff
+        statups.put(MapleBuffStat.DASH_SPEED, null);
+        // 預設Buff
+        statups.put(MapleBuffStat.DASH_JUMP, null);
+        // 預設Buff
+        statups.put(MapleBuffStat.MONSTER_RIDING, null);
+        // 預設Buff
+        statups.put(MapleBuffStat.SPEED_INFUSION, null);
+        // 預設Buff
+        statups.put(MapleBuffStat.HOMING_BEACON, null);
+        // 預設Buff
+        statups.put(MapleBuffStat.DEFAULTBUFF1, null);
+        // 預設Buff
+        statups.put(MapleBuffStat.DEFAULTBUFF2, null);
+        // 抵禦致命異常狀態(如 元素適應(火、毒), 元素適應(雷、冰), 聖靈守護)
+        if (chr.getBuffedValue(MapleBuffStat.ABNORMAL_BUFF_RESISTANCES) != null) {
+            statups.put(MapleBuffStat.ABNORMAL_BUFF_RESISTANCES,
+            new Object[]{
+                chr.getBuffedValue(MapleBuffStat.ABNORMAL_BUFF_RESISTANCES).shortValue(),
+                chr.getTrueBuffSource(MapleBuffStat.ABNORMAL_BUFF_RESISTANCES)
+            });
+        }
+        // 飛天騎乘
+        if (chr.getBuffedValue(MapleBuffStat.SOARING) != null) {
+            statups.put(MapleBuffStat.SOARING,
+            new Object[]{
+                chr.getBuffedValue(MapleBuffStat.SOARING).shortValue(),
+                chr.getTrueBuffSource(MapleBuffStat.SOARING)
+            });
+        }
+
+        // ---------寫入玩家身上剩餘未處理的的Buff
+//        chr.getAllBuffs().forEach((mbsvh) -> {
+//            for (MapleBuffStat mb : mbsvh.statup.keySet()) {
+//                if (!statups.containsKey(mb)) {
+//                    statups.put(mb, null);
+//                }
+//            }
+//        });
+
+        writeBuffMask(mplew, statups);
+
+        statups.values().stream().filter((value) -> !(value == null || value.length == 0)).forEach((value) -> {
+            for (Object i : value) {
+                if (i instanceof Byte) {
+                    mplew.write((Byte) i);
+                } else if (i instanceof Short) {
+                    mplew.writeShort((Short) i);
+                } else if (i instanceof Integer) {
+                    mplew.writeInt((Integer) i);
+                } else if (i instanceof Long) {
+                    mplew.writeLong((Long) i);
+                }
+            }
+        });
+
+        mplew.write(0); // unk
+        mplew.write(0); // unk
+        mplew.write(0); // unk
+
+        statups.keySet().forEach((stat) -> {
+            switch (stat) {
+                case DIVINE_FORCE_AURA:
+                case DIVINE_SPEED_AURA:
+                case NEW_AURA:
+                case ABNORMAL_BUFF_RESISTANCES:
+                case DEFAULTBUFF3: //猜測
+                case DEFAULTBUFF4: //猜測
+                case DEFAULTBUFF5: //猜測
+                    mplew.write(0);
+            }
+        });
+
+        mplew.writeInt(0);
+        mplew.writeInt(0);
+        mplew.writeInt(0);
+        mplew.writeInt(0); // for
+
+        mplew.writeInt(0);
+    }
+
     public static <E extends Buffstat> void writeSingleMask(MaplePacketLittleEndianWriter mplew, E statup) {
         writeSingleMask(mplew, statup, GameConstants.MAX_BUFFSTAT);
     }
@@ -1839,7 +1948,7 @@ public class PacketHelper {
         }
     }
 
-    public static <E extends Buffstat> void writeBuffMask(MaplePacketLittleEndianWriter mplew, Map<E, Integer> statups) {
+    public static <E extends Buffstat, F extends Object> void writeBuffMask(MaplePacketLittleEndianWriter mplew, Map<E, F> statups) {
         int[] mask = new int[GameConstants.MAX_BUFFSTAT];
         for (Buffstat statup : statups.keySet()) {
             mask[(statup.getPosition())] |= statup.getValue();

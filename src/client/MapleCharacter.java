@@ -62,6 +62,7 @@ import tools.packet.JobPacket.AvengerPacket;
 import tools.packet.JobPacket.LuminousPacket;
 import tools.packet.JobPacket.PhantomPacket;
 import tools.packet.JobPacket.XenonPacket;
+import tools.packet.provider.SpecialEffectType;
 
 public class MapleCharacter extends AnimatedMapleMapObject implements Serializable, MapleCharacterLook {
 
@@ -75,7 +76,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     private short level, job, mulung_energy, combo, force, availableCP, fatigue, totalCP, hpApUsed, scrolledPosition,
             kaiserCombo, xenonSurplus, exceed, exceedAttack = 0, soulcount = 0;
     private int accountid, id, hair, face, secondHair, secondFace, faceMarking, ears, tail, elf, mapid, fame, pvpExp, pvpPoints, totalWins, totalLosses,
-            guildid = 0, fallcounter, maplepoints, acash, nxcredit, chair, itemEffect, titleEffect, points, vpoints, dpoints, epoints,
+            guildid = 0, fallcounter, maplepoints, acash, nxcredit, chair, itemEffect, points, vpoints, dpoints, epoints,
             rank = 1, rankMove = 0, jobRank = 1, jobRankMove = 0, marriageId, marriageItemId, dotHP,
             currentrep, totalrep, coconutteam, followid, battleshipHP, gachexp, challenge, guildContribution = 0,
             remainingAp, honourExp, honorLevel, runningLight, runningLightSlot, runningDark, runningDarkSlot, luminousState, touchedrune, weaponPoint;
@@ -2069,8 +2070,8 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
         } else {
             addHP(-bloodEffect.getX());
-            client.getSession().write(EffectPacket.showBuffEffect(bloodEffect.getSourceId(), 7, getLevel(), bloodEffect.getLevel()));
-            map.broadcastMessage(MapleCharacter.this, EffectPacket.showBuffeffect(getId(), bloodEffect.getSourceId(), 7, getLevel(), bloodEffect.getLevel()), false);
+            client.getSession().write(EffectPacket.showBuffEffect(bloodEffect.getSourceId(), SpecialEffectType.ITEM_OPERATION, getLevel(), bloodEffect.getLevel()));
+            map.broadcastMessage(MapleCharacter.this, EffectPacket.showBuffeffect(getId(), bloodEffect.getSourceId(), SpecialEffectType.ITEM_OPERATION, getLevel(), bloodEffect.getLevel()), false);
         }
     }
 
@@ -2427,6 +2428,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         if (!overwrite) {
             if (effect.isHide() && client.getChannelServer().getPlayerStorage().getCharacterById(this.getId()) != null) { //Wow this is so fking hacky...
                 map.broadcastMessage(this, CField.spawnPlayerMapobject(this), false);
+                map.broadcastMessage(this, CField.getEffectSwitch(getId(), getEffectSwitch()), true);
 
                 for (final MaplePet pet : pets) {
                     if (pet.getSummoned()) {
@@ -2436,6 +2438,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                 for (final WeakReference<MapleCharacter> chr : clones) {
                     if (chr.get() != null) {
                         map.broadcastMessage(chr.get(), CField.spawnPlayerMapobject(chr.get()), false);
+                        map.broadcastMessage(this, CField.getEffectSwitch(getId(), getEffectSwitch()), true);
                     }
                 }
             }
@@ -2660,8 +2663,8 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                         if (energyLevel < 10000) {
                             energyLevel = energyLevel + echeff.getX() * targets;
 
-                            this.client.getSession().write(CField.EffectPacket.showBuffEffect(skillid, 2, getLevel(), skilllevel));
-                            this.map.broadcastMessage(this, CField.EffectPacket.showBuffeffect(this.id, skillid, 2, getLevel(), skilllevel), false);
+                            this.client.getSession().write(CField.EffectPacket.showBuffEffect(skillid, SpecialEffectType.REMOTE_SKILL, getLevel(), skilllevel));
+                            this.map.broadcastMessage(this, CField.EffectPacket.showBuffeffect(this.id, skillid, SpecialEffectType.REMOTE_SKILL, getLevel(), skilllevel), false);
 
                             if (energyLevel >= 10000) {
                                 energyLevel = 10000;
@@ -3248,7 +3251,8 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             }
             if (shouldChange) {
                 map = to;
-                setPosition(pos);
+                setStance(0);
+                setPosition(new Point(pos.x, pos.y -50));
                 to.addPlayer(this);
                 stats.relocHeal(this);
                 if (shouldState) {
@@ -4187,7 +4191,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         }
     }
 
-    public void gainExpMonster(int gain, final boolean show, final boolean white, byte pty, final byte Class_Bonus_EXP_PERCENT, final byte Premium_Bonus_EXP_PERCENT, MapleMonster mob) {
+    public void gainExpMonster(int gain, final boolean show, final boolean white, byte pty, final byte Class_Bonus_EXP, final byte Premium_Bonus_EXP_PERCENT, MapleMonster mob) {
         if (!isAlive()) {
             return;
         }
@@ -4206,27 +4210,15 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         }
 
         //組隊經驗值 處理
-        MapleParty party = getParty();
-        if (party != null) {
-            int minlevel = 250;
-            int maxlevel = 0;
-            for (MaplePartyCharacter mpc : party.getMembers()) {
-                if (mpc.getLevel() < minlevel) {
-                    minlevel = mpc.getLevel();
-                }
-                if (mpc.getLevel() > maxlevel) {
-                    maxlevel = mpc.getLevel();
-                }
-            }
-            if (maxlevel - minlevel > 40) {
-                pty = 0;
-            }
-        }
         int Party_Bonus_EXP = 0;
         long prevexp = getExp();
         if (pty > 1) {
-            final double rate = (mob.getStats().getPartyBonusRate() > 0 ? (mob.getStats().getPartyBonusRate() / 100.0) : (map == null || !mob.getStats().isPartyBonus() || map.getPartyBonusRate() <= 0 ? 0.05 : (map.getPartyBonusRate() / 100.0)));
-            Party_Bonus_EXP = (int) (((float) (gain * rate)) * (pty + (rate > 0.05 ? -1 : 1)));
+            Party_Bonus_EXP = gain;
+            Party_Bonus_EXP *= (5 * pty) / 100.0;
+            if (map != null && mob.getStats().isPartyBonus() && map.getPartyBonusRate() > 0 && mob.getStats().getPartyBonusRate() > 0) {
+                Party_Bonus_EXP *= 1 + (mob.getStats().getPartyBonusRate() * Math.min(4, pty) / 100.0);
+            }
+            Party_Bonus_EXP *= 1 + (Premium_Bonus_EXP_PERCENT / 100.0);
         }
 
         //結婚紅利經驗值 處理
@@ -4250,7 +4242,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             Internet_Cafe_Bonus_EXP = (int) (gain / 100.0D * 25.0D);
         }
 
-        //(null)額外經驗值 處理
+        //神使 神之子，精靈的祝福 額外經驗值 處理
         int Skill_Bonus_EXP = 0;
         if ((getSkillLevel(20021110) > 0 && (getJob() == 2002 || (getJob() >= 2300 && getJob() <= 2312))) || getSkillLevel(80001040) > 0) {
             Skill_Bonus_EXP += (int) (gain / 100.0D * 10.0D);
@@ -4275,18 +4267,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
         Additional_Bonus_EXP -= gain;
 
-        //
-        int Class_Bonus_EXP = 0;
-        if (Class_Bonus_EXP_PERCENT > 0) {
-            Class_Bonus_EXP = (int) ((gain / 100.0) * Class_Bonus_EXP_PERCENT);
-        }
-
-        //召回戒指经验
-        int Premium_Bonus_EXP = 0;
-        if (Premium_Bonus_EXP_PERCENT > 0) {
-            Premium_Bonus_EXP = (int) ((gain / 100.0) * Premium_Bonus_EXP_PERCENT);
-        }
-
         //monsterCombo處理
         long MonsterCombo_EXP = 0;
         if (killMonsterExps.isEmpty()) {
@@ -4301,7 +4281,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         }
 
         //總經驗
-        long total = gain + Party_Bonus_EXP + Wedding_Bonus_EXP + Equipment_Bonus_EXP + Internet_Cafe_Bonus_EXP + Skill_Bonus_EXP + Additional_Bonus_EXP + Class_Bonus_EXP + Premium_Bonus_EXP + MonsterCombo_EXP;
+        long total = gain + Party_Bonus_EXP + Wedding_Bonus_EXP + Equipment_Bonus_EXP + Internet_Cafe_Bonus_EXP + Skill_Bonus_EXP + Additional_Bonus_EXP + Class_Bonus_EXP + MonsterCombo_EXP;
 
         //處理給角色加經驗并升級
         if (gain > 0 && total < gain) { //just in case
@@ -4349,13 +4329,52 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             }
             updateSingleStat(MapleStat.EXP, getExp());
             if (show) { // still show the expgain even if it's not there
-                final ArrayList<Pair<ExpMasks, Integer>> expmasks = new ArrayList<>();
-                expmasks.add(new Pair<>(ExpMasks.PARTY_BONUS, Party_Bonus_EXP));
-                expmasks.add(new Pair<>(ExpMasks.WEDDING_BONUS, Wedding_Bonus_EXP));
-                expmasks.add(new Pair<>(ExpMasks.EQUIP_BONUS, Equipment_Bonus_EXP));
-                expmasks.add(new Pair<>(ExpMasks.INTERNET_CAFE_BONUS, Internet_Cafe_Bonus_EXP));
-                expmasks.add(new Pair<>(ExpMasks.SKILL_BONUS, Skill_Bonus_EXP));
-                expmasks.add(new Pair<>(ExpMasks.ADDITIONAL_BONUS, Additional_Bonus_EXP));
+                final ArrayList<Pair<ExpMasks, Object[]>> expmasks = new ArrayList<>();
+                // 活動獎勵經驗值
+                expmasks.add(new Pair<>(ExpMasks.EVENT_BONUS, new Object[]{0}));
+                // 怪物額外經驗值
+                expmasks.add(new Pair<>(ExpMasks.MONSTER_PERCENT, new Object[]{(byte) 0}));
+                // 活動組隊經驗值
+                expmasks.add(new Pair<>(ExpMasks.EVENT_PARTY_BONUS, new Object[]{(byte) Class_Bonus_EXP}));
+                // 組隊經驗值
+                expmasks.add(new Pair<>(ExpMasks.PARTY_BONUS, new Object[]{Party_Bonus_EXP}));
+                // 結婚紅利經驗值
+                expmasks.add(new Pair<>(ExpMasks.WEDDING_BONUS, new Object[]{Wedding_Bonus_EXP}));
+                // 道具裝備紅利經驗值
+                expmasks.add(new Pair<>(ExpMasks.EQUIP_BONUS, new Object[]{Equipment_Bonus_EXP}));
+                // 高級服務贈送經驗值
+                expmasks.add(new Pair<>(ExpMasks.INTERNET_CAFE_BONUS, new Object[]{Internet_Cafe_Bonus_EXP}));
+                // 彩虹週獎勵經驗值
+                expmasks.add(new Pair<>(ExpMasks.RAINBOW_WEEK_BONUS, new Object[]{0}));
+                // 爆發獎勵經驗值
+                expmasks.add(new Pair<>(ExpMasks.BOOM_UP_BONUS, new Object[]{0}));
+                // 秘藥額外經驗值
+                expmasks.add(new Pair<>(ExpMasks.ELIXIR_BONUS, new Object[]{0}));
+                // 神使 神之子，精靈的祝福 額外經驗值
+                expmasks.add(new Pair<>(ExpMasks.SKILL_BONUS, new Object[]{Skill_Bonus_EXP}));
+                // 加持獎勵經驗值
+                expmasks.add(new Pair<>(ExpMasks.BUFF_BONUS, new Object[]{0}));
+                // 休息獎勵經驗值
+                expmasks.add(new Pair<>(ExpMasks.REST_BONUS, new Object[]{0}));
+                // 道具獎勵經驗值
+                expmasks.add(new Pair<>(ExpMasks.ITEM_BONUS, new Object[]{0}));
+                // 阿斯旺勝利者獎勵經驗值
+                expmasks.add(new Pair<>(ExpMasks.ASWAN_WINNER_BONUS, new Object[]{0}));
+                // 依道具%增加經驗值
+                expmasks.add(new Pair<>(ExpMasks.ITEM_PERCENT_BONUS, new Object[]{0}));
+                // 超值包獎勵經驗值
+                expmasks.add(new Pair<>(ExpMasks.VALUE_PACK_BONUS, new Object[]{0}));
+                // 依道具的組隊任務%增加經驗值
+                expmasks.add(new Pair<>(ExpMasks.ITEM_PARTYQUEST_PERCENT_BONUS, new Object[]{0}));
+                // 獲得追加經驗值
+                expmasks.add(new Pair<>(ExpMasks.ADDITIONAL_BONUS, new Object[]{Additional_Bonus_EXP}));
+                // 家族經驗值獎勵
+                expmasks.add(new Pair<>(ExpMasks.BLOOD_ALLIANCE_BONUS, new Object[]{0}));
+                // 冷凍勇士經驗值獎勵
+                expmasks.add(new Pair<>(ExpMasks.FROZEN_WARRIOR_BONUS, new Object[]{0}));
+                // 燃燒場地獎勵經驗 x%
+                expmasks.add(new Pair<>(ExpMasks.BURNING_FIELD_BONUS, new Object[]{0, 0}));
+
                 client.getSession().write(InfoPacket.GainEXP_Monster(gain, false, white, expmasks));
                 if (killMonsterExps.isEmpty() && monsterCombo > 1) {
                     client.getSession().write(InfoPacket.GainEXP_MonsterCombo(MonsterCombo_EXP, monsterCombo, mob.getObjectId()));
@@ -5433,6 +5452,27 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                     changeJob((short) MapleJob.幻獸師4轉.getId());
                     break;
             }
+        } else if (MapleJob.is皮卡啾(job)) {
+            switch (getLevel()) {
+                case 10:
+                    changeJob((short) MapleJob.皮卡啾1轉.getId());
+                    break;
+            }
+        } else if (MapleJob.is凱內西斯(job)) {
+            switch (getLevel()) {
+                case 10:
+                    changeJob((short) MapleJob.凱內西斯1轉.getId());
+                    break;
+                case 30:
+                    changeJob((short) MapleJob.凱內西斯2轉.getId());
+                    break;
+                case 60:
+                    changeJob((short) MapleJob.凱內西斯3轉.getId());
+                    break;
+                case 100:
+                    changeJob((short) MapleJob.凱內西斯4轉.getId());
+                    break;
+            }
         }
     }
 
@@ -5820,6 +5860,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         if (client.getPlayer().allowedToTarget(this)) {
             //if (client.getPlayer() != this)
             client.getSession().write(CField.spawnPlayerMapobject(this));
+            client.getSession().write(CField.getEffectSwitch(getId(), getEffectSwitch()));
             if (getParty() != null && !isClone()) {
                 updatePartyMemberHP();
                 receivePartyMemberHP();
@@ -6173,7 +6214,13 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     }
 
     public int getTitleEffect() {
-        return this.titleEffect;
+        String info = getInfoQuest(GameConstants.稱號);
+        return info == null || info.isEmpty() ? 0 : Integer.parseInt(info);
+    }
+
+    public int getDamageSkin() {
+        String info = getInfoQuest(GameConstants.傷害字型);
+        return info == null || info.isEmpty() ? 0 : Integer.parseInt(info);
     }
 
     public void setChair(int chair) {
@@ -6186,7 +6233,29 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     }
 
     public void setTitleEffect(int titleEffect) {
-        this.titleEffect = titleEffect;
+        MapleQuestStatus queststatus;
+        if (titleEffect == 0) {
+            queststatus = getQuestRemove(MapleQuest.getInstance(GameConstants.稱號));
+        } else {
+            queststatus = getQuestNAdd(MapleQuest.getInstance(GameConstants.稱號));
+            queststatus.setCustomData(String.valueOf(titleEffect));
+        }
+        if (queststatus != null) {
+            updateQuest(queststatus);
+        }
+    }
+
+    public void setDamageSkin(int damageSkin) {
+        MapleQuestStatus queststatus;
+        if (damageSkin == 0) {
+            queststatus = getQuestRemove(MapleQuest.getInstance(GameConstants.傷害字型));
+        } else {
+            queststatus = getQuestNAdd(MapleQuest.getInstance(GameConstants.傷害字型));
+            queststatus.setCustomData(String.valueOf(damageSkin));
+        }
+        if (queststatus != null) {
+            updateQuest(queststatus);
+        }
     }
 
     @Override
@@ -6770,8 +6839,8 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             lastBerserkTime = System.currentTimeMillis();
             final MapleStatEffect ampStat = BerserkX.getEffect(skilllevel);
             stats.Berserk = stats.getHp() * 100 / stats.getCurrentMaxHp() >= ampStat.getX();
-            client.getSession().write(EffectPacket.showBuffEffect(1320006, 1, getLevel(), skilllevel, (byte) (stats.Berserk ? 1 : 0)));
-            map.broadcastMessage(this, EffectPacket.showBuffeffect(getId(), 1320006, 1, getLevel(), skilllevel, (byte) (stats.Berserk ? 1 : 0)), false);
+            client.getSession().write(EffectPacket.showBuffEffect(1320006, SpecialEffectType.LOCAL_SKILL, getLevel(), skilllevel, (byte) (stats.Berserk ? 1 : 0)));
+            map.broadcastMessage(this, EffectPacket.showBuffeffect(getId(), 1320006, SpecialEffectType.LOCAL_SKILL, getLevel(), skilllevel, (byte) (stats.Berserk ? 1 : 0)), false);
         } else {
             lastBerserkTime = -1; // somebody thre? O_O
         }
@@ -7274,7 +7343,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     }
 
     public int getFH() {
-        MapleFoothold fh = getMap().getFootholds().findBelow(getTruePosition());
+        MapleFoothold fh = getMap().getFootholds().findBelow(getTruePosition(), true);
         if (fh != null) {
             return fh.getId();
         }
@@ -7421,7 +7490,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                         final Point pos = getPosition();
                         pet.setPos(pos);
                         try {
-                            pet.setFh(getMap().getFootholds().findBelow(pos).getId());
+                            pet.setFh(getMap().getFootholds().findBelow(pos, true).getId());
                         } catch (NullPointerException e) {
                             pet.setFh(0); //lol, it can be fixed by movement
                         }

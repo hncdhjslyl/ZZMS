@@ -534,18 +534,21 @@ public class Equip extends Item implements Serializable {
                 } else {
                     potential1 = en;
                 }
+                break;
             case 2:
                 if (isBonus) {
                     bonuspotential2 = en;
                 } else {
                     potential2 = en;
                 }
+                break;
             case 3:
                 if (isBonus) {
                     bonuspotential3 = en;
                 } else {
                     potential3 = en;
                 }
+                break;
         }
     }
 

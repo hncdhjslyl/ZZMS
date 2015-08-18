@@ -1285,7 +1285,8 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
     // 0x2AF
     // 0x2B0
     // 0x2B1
-    // 0x2B2
+    //死亡視窗
+    DEATH_TIP((short) 0x2B2),
     // 0x2B3
     // 0x2B4
     // 0x2B5
@@ -2667,11 +2668,11 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
 
     public static boolean isRecordHeader(SendPacketOpcode opcode) {
         switch (opcode.name()) {
-            case "WARP_TO_MAP":
+//            case "WARP_TO_MAP":
 //            case "GUILD_OPERATION":
 //            case "PARTY_OPERATION":
 //            case "GIVE_BUFF":
-            case "SPAWN_PLAYER":
+//            case "SPAWN_PLAYER":
 //            case "DROP_ITEM_FROM_MAPOBJECT":
 //            case "INVENTORY_OPERATION":
 //            case "SPAWN_MONSTER":

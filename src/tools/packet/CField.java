@@ -31,28 +31,6 @@ import tools.packet.provider.SpecialEffectType;
 
 public class CField {
 
-    public static int[] SecondaryStatRemote = new int[GameConstants.MAX_BUFFSTAT];
-
-    static {
-        //
-        SecondaryStatRemote[MapleBuffStat.CHAR_BUFF.getPosition()] |= MapleBuffStat.CHAR_BUFF.getValue();
-        SecondaryStatRemote[MapleBuffStat.MOUNT_MORPH.getPosition()] |= MapleBuffStat.MOUNT_MORPH.getValue();
-        //
-        SecondaryStatRemote[MapleBuffStat.DIVINE_FORCE_AURA.getPosition()] |= MapleBuffStat.DIVINE_FORCE_AURA.getValue();
-        SecondaryStatRemote[MapleBuffStat.DIVINE_SPEED_AURA.getPosition()] |= MapleBuffStat.DIVINE_SPEED_AURA.getValue();
-        //
-        SecondaryStatRemote[MapleBuffStat.NEW_AURA.getPosition()] |= MapleBuffStat.NEW_AURA.getValue();
-        //
-        SecondaryStatRemote[MapleBuffStat.ENERGY_CHARGE.getPosition()] |= MapleBuffStat.ENERGY_CHARGE.getValue();
-        SecondaryStatRemote[MapleBuffStat.DASH_SPEED.getPosition()] |= MapleBuffStat.DASH_SPEED.getValue();
-        SecondaryStatRemote[MapleBuffStat.DASH_JUMP.getPosition()] |= MapleBuffStat.DASH_JUMP.getValue();
-        SecondaryStatRemote[MapleBuffStat.MONSTER_RIDING.getPosition()] |= MapleBuffStat.MONSTER_RIDING.getValue();
-        SecondaryStatRemote[MapleBuffStat.SPEED_INFUSION.getPosition()] |= MapleBuffStat.SPEED_INFUSION.getValue();
-        SecondaryStatRemote[MapleBuffStat.HOMING_BEACON.getPosition()] |= MapleBuffStat.HOMING_BEACON.getValue();
-        SecondaryStatRemote[MapleBuffStat.DEFAULTBUFF1.getPosition()] |= MapleBuffStat.DEFAULTBUFF1.getValue();
-        SecondaryStatRemote[MapleBuffStat.DEFAULTBUFF2.getPosition()] |= MapleBuffStat.DEFAULTBUFF2.getValue();
-    }
-
     public static byte[] getPacketFromHexString(String hex) {
         return HexTool.getByteArrayFromHexString(hex);
     }
@@ -1138,55 +1116,8 @@ public class CField {
         mplew.writeInt(0);//179Change
 
         /////////////////////// for BuffStat
-        int[] mask = SecondaryStatRemote.clone(); // 預設Buff
 
-        /* ---------寫入玩家身上現有的Buff
-         Map<MapleBuffStat, Integer> statups = new HashMap<>();
-         for (PlayerBuffValueHolder mbsvh : chr.getAllBuffs()) {
-         for (Entry<MapleBuffStat, Integer> mb :mbsvh.statup.entrySet()) {
-         statups.put(mb.getKey(), mb.getValue());
-         }
-         }        
-         for (MapleBuffStat mb : statups.keySet()) {
-         mask[(mb.getPosition())] |= mb.getValue();
-         }
-         */
-        for (int i = 0; i < mask.length; i++) {
-            mplew.writeInt(mask[i]);
-        }
-
-        // IDA裡面用大量的IF寫...，所以還沒想到要怎麼寫...
-        // CHAR_BUFF
-        mplew.writeInt(-1);
-        //MOUNT_MORPH
-        mplew.write(0);
-        // DIVINE_FORCE_AURA
-        mplew.writeShort(0);
-        mplew.writeInt(0);
-        // DIVINE_SPEED_AURA
-        mplew.writeShort(0);
-        mplew.writeInt(0);
-        // NEW_AURA
-        mplew.writeShort(0);
-        mplew.writeInt(0);
-
-        mplew.write(0); // unk
-        mplew.write(0); // unk
-        mplew.write(0); // unk
-
-        // DIVINE_FORCE_AURA
-        mplew.write(0);
-        // DIVINE_SPEED_AURA
-        mplew.write(0);
-        // NEW_AURA
-        mplew.write(0);
-
-        mplew.writeInt(0);
-        mplew.writeInt(0);
-        mplew.writeInt(0);
-        mplew.writeInt(0); // for
-
-        mplew.writeInt(0);
+        PacketHelper.addSpawnPlayerBuffStat(mplew, chr);
 
         int CHAR_MAGIC_SPAWN = Randomizer.nextInt();
 
@@ -1223,7 +1154,7 @@ public class CField {
         mplew.writeLong(0L);
         mplew.write(1);
         mplew.writeInt(CHAR_MAGIC_SPAWN);//5
-        mplew.write(1);//177Change
+        mplew.write(0);//177Change
         mplew.writeInt(Randomizer.nextInt());
         mplew.writeZeroBytes(10);
         mplew.write(1);
@@ -1238,7 +1169,7 @@ public class CField {
         ///////////////////////// End for BuffStat
         mplew.writeShort(chr.getJob());
         mplew.writeShort(chr.getSubcategory());
-        mplew.writeInt(0);//176+?
+        mplew.writeInt(0);//[33 01 00 00]
         PacketHelper.addCharLook(mplew, chr, true, false);
         if (MapleJob.is神之子(chr.getJob())) {
             PacketHelper.addCharLook(mplew, chr, true, false);
@@ -1264,13 +1195,12 @@ public class CField {
             }
         }
 
+        mplew.writeInt(chr.getItemEffect());//[76 72 4C 00] - 撥水柱特效
         mplew.writeInt(Math.min(250, chr.getInventory(MapleInventoryType.CASH).countById(5110000))); //Valentine Effect
-        mplew.writeInt(chr.getItemEffect());
+        mplew.writeInt(chr.getTitleEffect());//[51 75 38 00] - 與風暴同在
+        mplew.writeInt(chr.getDamageSkin());//數據1：[0C 00 00 00] 數據2：[09 04 00 00]傷害字型
         mplew.writeInt(0);
-        mplew.writeInt(chr.getTitleEffect());
-        MapleQuestStatus stat = chr.getQuestNoAdd(MapleQuest.getInstance(chr.getTitleEffect()/*124000*/));
-        mplew.writeInt(stat != null && stat.getCustomData() != null ? Integer.parseInt(stat.getCustomData()) : 0); //title
-        mplew.writeInt(chr.getItemEffect());//AD 72 4C 00
+        mplew.writeInt(0);
         mplew.writeInt(0);
         mplew.writeInt(0);
         mplew.writeInt(0);
@@ -1394,6 +1324,7 @@ public class CField {
         mplew.writeInt(0); // for
 
         mplew.write(0);
+        mplew.writeInt(0);
         mplew.writeInt(0);
 
         mplew.writeInt(0);
@@ -3595,6 +3526,27 @@ public class CField {
         return mplew.getPacket();
     }
 
+    public static byte[] getDeathTip(int op) {
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+
+        mplew.writeShort(SendPacketOpcode.DEATH_TIP.getValue());
+
+        mplew.writeInt(op);
+        boolean v41 = false;
+        mplew.write(v41);
+        int v15 = 0;
+        if ((op & 1) == 1) {
+            mplew.writeInt(v15);
+        }
+        if (((op >> 1) & 1) == 1) {
+            if (v15 != 9) {
+                mplew.writeInt(0);
+            }
+        }
+
+        return mplew.getPacket();
+    }
+
     public static class InteractionPacket {
 
         public static byte[] getTradeInvite(MapleCharacter c) {
@@ -4522,7 +4474,7 @@ public class CField {
             mplew.writePos(summon.getPosition());
             mplew.write((summon.getSkill() == 32111006) || (summon.getSkill() == 33101005) ? 5 : 4);// Summon Reaper Buff - Call of the Wild
             if ((summon.getSkill() == 35121003) && (summon.getOwner().getMap() != null)) {//Giant Robot SG-88
-                mplew.writeShort(summon.getOwner().getMap().getFootholds().findBelow(summon.getPosition()).getId());
+                mplew.writeShort(summon.getOwner().getMap().getFootholds().findBelow(summon.getPosition(), true).getId());
             } else {
                 mplew.writeShort(0);
             }
@@ -5666,19 +5618,19 @@ public class CField {
             return showEffect(chr, SpecialEffectType.FIRE, null, null, null);
         }
 
-        public static byte[] showBuffEffect(int skillid, int effectid, int playerLevel, int skillLevel) {
-            return showBuffeffect(-1, skillid, effectid, playerLevel, skillLevel, (byte) 3);
+        public static byte[] showBuffEffect(int skillid, SpecialEffectType effect, int playerLevel, int skillLevel) {
+            return showBuffeffect(-1, skillid, effect, playerLevel, skillLevel, (byte) 3);
         }
 
-        public static byte[] showBuffEffect(int skillid, int effectid, int playerLevel, int skillLevel, byte direction) {
-            return showBuffeffect(-1, skillid, effectid, playerLevel, skillLevel, direction);
+        public static byte[] showBuffEffect(int skillid, SpecialEffectType effect, int playerLevel, int skillLevel, byte direction) {
+            return showBuffeffect(-1, skillid, effect, playerLevel, skillLevel, direction);
         }
 
-        public static byte[] showBuffeffect(int cid, int skillid, int effectid, int playerLevel, int skillLevel) {
-            return showBuffeffect(cid, skillid, effectid, playerLevel, skillLevel, (byte) 3);
+        public static byte[] showBuffeffect(int cid, int skillid, SpecialEffectType effect, int playerLevel, int skillLevel) {
+            return showBuffeffect(cid, skillid, effect, playerLevel, skillLevel, (byte) 3);
         }
 
-        public static byte[] showBuffeffect(int cid, int skillid, int effectid, int playerLevel, int skillLevel, byte direction) {
+        public static byte[] showBuffeffect(int cid, int skillid, SpecialEffectType effect, int playerLevel, int skillLevel, byte direction) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
             if (cid == -1) {
@@ -5687,7 +5639,7 @@ public class CField {
                 mplew.writeShort(SendPacketOpcode.SHOW_FOREIGN_EFFECT.getValue());
                 mplew.writeInt(cid);
             }
-            mplew.write(effectid);
+            mplew.write(effect.getValue());
             mplew.writeShort(0);
             mplew.writeInt(skillid);
             mplew.write(0);

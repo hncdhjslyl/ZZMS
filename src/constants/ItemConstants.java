@@ -474,7 +474,9 @@ public class ItemConstants {
             對等(0x80),
             去掉無用潛能(0x100),
             前兩條相同(0x200),
-            附加潛能(0x400);
+            附加潛能(0x400),
+            點商光環(0x800),
+            ;
             private final int value;
 
             private CubeType(int value) {
@@ -546,6 +548,9 @@ public class ItemConstants {
                 default:
                     break;
             }
+            if (MapleItemInformationProvider.getInstance().isCash(itemId)) {
+                type |= CubeType.點商光環.getValue();
+            }
             return type;
         }
 
@@ -554,13 +559,13 @@ public class ItemConstants {
             //but, sometimes it is possible to get second/third line as well
             //may seem like big chance, but it's not as it grabs random potential ID anyway
             if (newstate == 20) {
-                return (i == 0 || Randomizer.nextInt(20) == 0 ? potentialID >= 40000 : potentialID >= 30000 && potentialID < 60004); // xml say so
+                return (i == 1 || Randomizer.nextInt(20) == 0 ? potentialID >= 40000 : potentialID >= 30000 && potentialID < 60004); // xml say so
             } else if (newstate == 19) {
-                return (i == 0 || Randomizer.nextInt(20) == 0 ? potentialID >= 30000 && potentialID < 40000 : potentialID >= 20000 && potentialID < 30000);
+                return (i == 1 || Randomizer.nextInt(20) == 0 ? potentialID >= 30000 && potentialID < 40000 : potentialID >= 20000 && potentialID < 30000);
             } else if (newstate == 18) {
-                return (i == 0 || Randomizer.nextInt(20) == 0 ? potentialID >= 20000 && potentialID < 30000 : potentialID >= 10000 && potentialID < 20000);
+                return (i == 1 || Randomizer.nextInt(20) == 0 ? potentialID >= 20000 && potentialID < 30000 : potentialID >= 10000 && potentialID < 20000);
             } else if (newstate == 17) {
-                return (i == 0 || Randomizer.nextInt(20) == 0 ? potentialID >= 10000 && potentialID < 20000 : potentialID < 10000);
+                return (i == 1 || Randomizer.nextInt(20) == 0 ? potentialID >= 10000 && potentialID < 20000 : potentialID < 10000);
             } else {
                 return false;
             }
@@ -591,21 +596,20 @@ public class ItemConstants {
             }
         }
 
-        public static boolean isAllowedPotentialStat(Equip eqp, int opID, boolean bonus) { //For now
+        public static boolean isAllowedPotentialStat(Equip eqp, int opID, boolean bonus, boolean cash) { //For now
             MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-            boolean superPot = ZZMSConfig.superiorPotential && ii.isSuperiorEquip(eqp.getItemId());
+            boolean superPot = ZZMSConfig.superiorPotential && ii.isSuperiorEquip(eqp.getItemId()) && Randomizer.nextInt(100) < 15;
             //判斷潛能是主潛還是附潛
             int type = opID / 1000 % 10;
             if ((bonus && ((!superPot && type != 2) || (superPot && type >= 1))) || (!bonus && type == 2)) {
                 return false;
             }
-            //清除罕見以上潛能的非常的垃圾潛能
-            int state = opID / 10000;
-            if (opID % 1000 <= 14 && state > 2 && state < 5 && opID < 60000 && Randomizer.nextInt(10) <= 9) {
+            //點商光環清除罕見以上潛能的非常的垃圾純數字潛能
+            if ((opID % 1000 <= 14 || opID % 1000 == 81) && opID < 60000 && cash) {
                 return false;
             }
 
-            state = opID % 1000;
+            int state = opID % 1000;
             return superPot && !bonus ? (state != 4 && state != 9 && state != 24 && (state < 13 || state > 18)) : opID < 60000;
         }
 

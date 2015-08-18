@@ -20,4 +20,6 @@ public class ZZMSConfig {
     public static boolean maxSkillLevel = true; //默認滿技能等級上限
 
     public static boolean superiorPotential = true; //尊貴裝允許出尊貴潛能
+
+    public static boolean classBonusEXP = false; //職業隊伍經驗獎勵
 }

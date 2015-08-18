@@ -113,8 +113,10 @@ public class CWvsContext {
         if ((updateMask == 0L) && (!itemReaction)) {
             mplew.write(1);
         }
+
         mplew.write(0);
         mplew.write(0);
+
         return mplew.getPacket();
     }
 
@@ -3533,7 +3535,7 @@ public class CWvsContext {
             return mplew.getPacket();
         }
 
-        public static byte[] GainEXP_Monster(int gain, boolean inChat, boolean white, List<Pair<ExpMasks, Integer>> masks) {
+        public static byte[] GainEXP_Monster(int gain, boolean inChat, boolean white, List<Pair<ExpMasks, Object[]>> masks) {
             if (ServerConfig.LOG_PACKETS) {
                 System.out.println("調用位置: " + new java.lang.Throwable().getStackTrace()[0]);
             }
@@ -3545,20 +3547,18 @@ public class CWvsContext {
             mplew.writeInt(gain);
             mplew.write(inChat ? 1 : 0);
             int expMask = 0;
-            for (final Pair<ExpMasks, Integer> maskupdate : masks) {
-                if (maskupdate.getRight() > 0) {
+            for (final Pair<ExpMasks, Object[]> maskupdate : masks) {
+                Object i = maskupdate.getRight()[0];
+                if ((i instanceof Byte && (Byte) i > 0) || (i instanceof Short && (Short) i > 0) || (i instanceof Integer && (Integer) i > 0) || (i instanceof Long && (Long) i > 0)) {
                     expMask |= maskupdate.getLeft().getValue();
                 }
             }
-            List<Pair<ExpMasks, Integer>> newmasks = masks;
+            List<Pair<ExpMasks, Object[]>> newmasks = masks;
             if (newmasks.size() > 1) {
-                Collections.sort(newmasks, new Comparator<Pair<ExpMasks, Integer>>() {
-                    @Override
-                    public int compare(final Pair<ExpMasks, Integer> o1, final Pair<ExpMasks, Integer> o2) {
-                        long val1 = o1.getLeft().getValue();
-                        long val2 = o2.getLeft().getValue();
-                        return (val1 < val2 ? -1 : (val1 == val2 ? 0 : 1));
-                    }
+                Collections.sort(newmasks, (final Pair<ExpMasks, Object[]> o1, final Pair<ExpMasks, Object[]> o2) -> {
+                    long val1 = o1.getLeft().getValue();
+                    long val2 = o2.getLeft().getValue();
+                    return (val1 < val2 ? -1 : (val1 == val2 ? 0 : 1));
                 });
             }
             mplew.writeLong(expMask);
@@ -3566,9 +3566,28 @@ public class CWvsContext {
             if (inChat) {
                 mplew.write(0);
             }
-            for (Pair<ExpMasks, Integer> mask : newmasks) {
-                if (mask.getRight() > 0) {
-                    mplew.writeInt(mask.getRight());
+            for (Pair<ExpMasks, Object[]> mask : newmasks) {
+                if (mask.getRight() == null) {
+                    continue;
+                }
+                for (Object i : mask.getRight()) {
+                    if (i instanceof Byte) {
+                        if ((byte) i > 0) {
+                            mplew.write((Byte) i);
+                        }
+                    } else if (i instanceof Short) {
+                        if ((Short) i > 0) {
+                            mplew.writeShort((Short) i);
+                        }
+                    } else if (i instanceof Integer) {
+                        if ((Integer) i > 0) {
+                            mplew.writeInt((Integer) i);
+                        }
+                    } else if (i instanceof Long) {
+                        if ((Long) i > 0) {
+                            mplew.writeLong((Long) i);
+                        }
+                    }
                 }
             }
             mplew.writeInt(0); // 道具裝備紅利經驗值(+%d)

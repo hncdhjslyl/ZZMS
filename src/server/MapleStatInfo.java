@@ -90,6 +90,7 @@ public enum MapleStatInfo {
     indiePdd(0),// ??
     indieMdd(0),//MDEF?
     indieTerR(0),
+    indieBDR(0),
     indieAsrR(0),
     indieMhpR(0), //Max HP Increase %
     indieMmp(0), //Max MP Increase +

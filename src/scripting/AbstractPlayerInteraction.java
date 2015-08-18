@@ -55,6 +55,7 @@ import tools.packet.CField.UIPacket;
 import tools.packet.CWvsContext;
 import tools.packet.CWvsContext.InfoPacket;
 import tools.packet.PetPacket;
+import tools.packet.provider.SpecialEffectType;
 
 public abstract class AbstractPlayerInteraction {
 
@@ -219,7 +220,7 @@ public abstract class AbstractPlayerInteraction {
     }
 
     public final void playPortalSE() {
-        c.getSession().write(EffectPacket.showBuffEffect(0, 0x47, 1, 0));
+        c.getSession().write(EffectPacket.showBuffEffect(0, SpecialEffectType.UNK_47, 1, 0));
     }
 
     private MapleMap getWarpMap(final int map) {
@@ -1435,7 +1436,7 @@ public abstract class AbstractPlayerInteraction {
             npc.setRx0(x - 50);
             npc.setRx1(x + 50);
             npc.setF(f);
-            npc.setFh(c.getPlayer().getMap().getFootholds().findBelow(new Point(x, y)).getId());
+            npc.setFh(c.getPlayer().getMap().getFootholds().findBelow(new Point(x, y), false).getId());
             npc.setCustom(true);
             npc.setObjectId(npcid);
         }

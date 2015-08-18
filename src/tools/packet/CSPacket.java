@@ -997,14 +997,13 @@ public class CSPacket {
          */
         return mplew.getPacket();
     }
-    
-    public static byte[] PlatinumHammer(byte mode, int success) {
+
+    public static byte[] PlatinumHammer(int op) {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.PLATINUM_HAMMER.getValue());
-        mplew.write(mode);
-        mplew.writeInt(success);
-        mplew.writeZeroBytes(50);
+        mplew.write(op);
+        mplew.write(0);
 
         return mplew.getPacket();
     }

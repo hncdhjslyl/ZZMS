@@ -71,6 +71,9 @@ public class AttackInfo {
                     if(MapleJob.is幻獸師(skill_.getId() / 11000)) {
                         return skillLink.getEffect(skillLevel);
                     }
+                    if(MapleJob.is皮卡啾(skill_.getId() / 10000)) {
+                        return skillLink.getEffect(skillLevel);
+                    }
                     return null;
                 }
             }

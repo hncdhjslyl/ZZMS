@@ -72,7 +72,7 @@ public class MapleStatEffect implements Serializable {
     private List<Triple<Integer, Integer, Integer>> rewardItem;
     private byte expR, familiarTarget, recipeUseCount, recipeValidDay, reqSkillLevel, slotCount, effectedOnAlly, effectedOnEnemy, type, preventslip, immortal, bs;
     private short ignoreMob, mesoR, thaw, fatigueChange, lifeId, imhp, immp, inflation, useLevel, indiePdd, indieMdd, incPVPdamage, mobSkill, mobSkillLevel;
-    private double hpR, mpR;
+    public double hpR, mpR;
     private int sourceid, recipe, moveTo, moneyCon, morphId = 0, expinc, exp, consumeOnPickup, charColor, interval, rewardMeso, totalprob, cosmetic;
     private int weapon = 0;
     private int expBuff, itemup, mesoup, cashup, berserk, illusion, booster, berserk2, cp, nuffSkill, combo;
@@ -397,13 +397,9 @@ public class MapleStatEffect implements Serializable {
                 boolean handle = BuffClassFetcher.getHandleMethod(ret, sourceid);
                 if (!handle) {
                     switch (sourceid) {
-                        case 2001002: // 魔心防禦
                         case 12001001:
                         case 22111001:
                             ret.statups.put(MapleBuffStat.MAGIC_GUARD, ret.info.get(MapleStatInfo.x));
-                            break;
-                        case 2301003: // 神聖之光invicible
-                            ret.statups.put(MapleBuffStat.INVICIBLE, ret.info.get(MapleStatInfo.x));
                             break;
                         case 13101006: // Wind Walk
                             ret.statups.put(MapleBuffStat.WIND_WALK, ret.info.get(MapleStatInfo.x));
@@ -475,8 +471,6 @@ public class MapleStatEffect implements Serializable {
 //                        ret.statups.put(MapleBuffStat.CRITICAL_RATE_BUFF, ret.info.get(MapleStatInfo.criticaldamageMin.x));
 //                        ret.statups.put(MapleBuffStat.CRITICAL_RATE_BUFF, ret.info.get(MapleStatInfo.criticaldamageMax.x));
 //                        break;
-                        case 2111008:
-                        case 2211008:
                         case 12101005:
                         case 22121001: // Elemental Reset
                             ret.statups.put(MapleBuffStat.ELEMENT_RESET, ret.info.get(MapleStatInfo.x));
@@ -605,26 +599,6 @@ public class MapleStatEffect implements Serializable {
                             break;
                         case 1311008: // dragon blood
                             ret.statups.put(MapleBuffStat.DRAGONBLOOD, ret.info.get(MapleStatInfo.x));
-                            break;
-                        case 5321005:
-                        case 1121000: // maple warrior, all classes
-                        case 1221000:
-                        case 1321000:
-                        case 2121000:
-                        case 2221000:
-                        case 2321000:
-                        case 3121000:
-                        case 3221000:
-                        case 4121000:
-                        case 4221000:
-                        case 5121000:
-                        case 5221000:
-                        case 21121000: // Aran - Maple Warrior                        
-                        case 23121005:
-                        case 24121008: // phantom
-                        case 100001268: // Zero
-                            // case 51121005: //Mihile's Maple Warrior
-                            ret.statups.put(MapleBuffStat.MAPLE_WARRIOR, ret.info.get(MapleStatInfo.x));
                             break;
                         case 15111006: //spark
                             ret.statups.put(MapleBuffStat.SPARK, ret.info.get(MapleStatInfo.x));
@@ -807,9 +781,6 @@ public class MapleStatEffect implements Serializable {
                             break;
                         case 5011002:
                             ret.monsterStatus.put(MonsterStatus.SPEED, ret.info.get(MapleStatInfo.z));
-                            break;
-                        case 1121010: //enrage
-                            ret.statups.put(MapleBuffStat.ENRAGE, ret.info.get(MapleStatInfo.x) * 100 + ret.info.get(MapleStatInfo.mobCount));
                             break;
                         case 23111002:
                         case 22161002: //phantom imprint
@@ -1179,8 +1150,8 @@ public class MapleStatEffect implements Serializable {
                         if (absorbMp > 0) {
                             mob.setMp(mob.getMp() - absorbMp);
                             applyto.getStat().setMp(applyto.getStat().getMp() + absorbMp, applyto);
-                            applyto.getClient().getSession().write(EffectPacket.showBuffEffect(sourceid, 1, applyto.getLevel(), level));
-                            applyto.getMap().broadcastMessage(applyto, EffectPacket.showBuffeffect(applyto.getId(), sourceid, 1, applyto.getLevel(), level), false);
+                            applyto.getClient().getSession().write(EffectPacket.showBuffEffect(sourceid, SpecialEffectType.LOCAL_SKILL, applyto.getLevel(), level));
+                            applyto.getMap().broadcastMessage(applyto, EffectPacket.showBuffeffect(applyto.getId(), sourceid, SpecialEffectType.LOCAL_SKILL, applyto.getLevel(), level), false);
                         }
                     }
                     break;
@@ -1440,8 +1411,8 @@ public class MapleStatEffect implements Serializable {
                 }
             } else {
                 if (sourceid == 2910000 || sourceid == 2910001) { //red flag
-                    applyto.getClient().getSession().write(EffectPacket.showBuffEffect(sourceid, 13, applyto.getLevel(), level));
-                    applyto.getMap().broadcastMessage(applyto, EffectPacket.showBuffeffect(applyto.getId(), sourceid, 13, applyto.getLevel(), level), false);
+                    applyto.getClient().getSession().write(EffectPacket.showBuffEffect(sourceid, SpecialEffectType.MULUNG_DOJO_UP, applyto.getLevel(), level));
+                    applyto.getMap().broadcastMessage(applyto, EffectPacket.showBuffeffect(applyto.getId(), sourceid, SpecialEffectType.MULUNG_DOJO_UP, applyto.getLevel(), level), false);
 
                     applyto.getClient().getSession().write(EffectPacket.showCraftingEffect("UI/UIWindow2.img/CTF/Effect", (byte) applyto.getDirection(), 0, 0));
                     applyto.getMap().broadcastMessage(applyto, EffectPacket.showCraftingEffect(applyto, "UI/UIWindow2.img/CTF/Effect", (byte) applyto.getDirection(), 0, 0), false);
@@ -1710,8 +1681,8 @@ public class MapleStatEffect implements Serializable {
                 }
                 for (MapleCharacter chr : awarded) {
                     applyTo(applyfrom, chr, false, null, newDuration);
-                    chr.getClient().getSession().write(EffectPacket.showBuffEffect(sourceid, 2, applyfrom.getLevel(), level));
-                    chr.getMap().broadcastMessage(chr, EffectPacket.showBuffeffect(chr.getId(), sourceid, 2, applyfrom.getLevel(), level), false);
+                    chr.getClient().getSession().write(EffectPacket.showBuffEffect(sourceid, SpecialEffectType.REMOTE_SKILL, applyfrom.getLevel(), level));
+                    chr.getMap().broadcastMessage(chr, EffectPacket.showBuffeffect(chr.getId(), sourceid, SpecialEffectType.REMOTE_SKILL, applyfrom.getLevel(), level), false);
                 }
             }
         } else if (isPartyBuff() && (applyfrom.getParty() != null || isGmBuff() || applyfrom.inPVP())) {
@@ -1724,8 +1695,8 @@ public class MapleStatEffect implements Serializable {
                 if (affected.getId() != applyfrom.getId() && (isGmBuff() || (applyfrom.inPVP() && affected.getTeam() == applyfrom.getTeam() && Integer.parseInt(applyfrom.getEventInstance().getProperty("type")) != 0) || (applyfrom.getParty() != null && affected.getParty() != null && applyfrom.getParty().getId() == affected.getParty().getId()))) {
                     if ((isResurrection() && !affected.isAlive()) || (!isResurrection() && affected.isAlive())) {
                         applyTo(applyfrom, affected, false, null, newDuration);
-                        affected.getClient().getSession().write(EffectPacket.showBuffEffect(sourceid, 2, applyfrom.getLevel(), level));
-                        affected.getMap().broadcastMessage(affected, EffectPacket.showBuffeffect(affected.getId(), sourceid, 2, applyfrom.getLevel(), level), false);
+                        affected.getClient().getSession().write(EffectPacket.showBuffEffect(sourceid, SpecialEffectType.REMOTE_SKILL, applyfrom.getLevel(), level));
+                        affected.getMap().broadcastMessage(affected, EffectPacket.showBuffeffect(affected.getId(), sourceid, SpecialEffectType.REMOTE_SKILL, applyfrom.getLevel(), level), false);
                     }
                     if (isTimeLeap()) {
                         for (MapleCoolDownValueHolder i : affected.getCooldowns()) {
@@ -2586,10 +2557,10 @@ public class MapleStatEffect implements Serializable {
                 break;
         }
         if (showEffect && !applyto.isHidden()) {
-            applyto.getMap().broadcastMessage(applyto, EffectPacket.showBuffeffect(applyto.getId(), sourceid, 1, applyto.getLevel(), level), false);
+            applyto.getMap().broadcastMessage(applyto, EffectPacket.showBuffeffect(applyto.getId(), sourceid, SpecialEffectType.LOCAL_SKILL, applyto.getLevel(), level), false);
         }
         if (isMechPassive()) {
-            applyto.getClient().getSession().write(EffectPacket.showBuffEffect(sourceid - 1000, 1, applyto.getLevel(), level, (byte) 1));
+            applyto.getClient().getSession().write(EffectPacket.showBuffEffect(sourceid - 1000, SpecialEffectType.LOCAL_SKILL, applyto.getLevel(), level, (byte) 1));
         }
         if (!isMonsterRiding() && !isMechDoor() && getSummonMovementType() == null) {
             applyto.cancelEffect(this, true, -1, localstatups);

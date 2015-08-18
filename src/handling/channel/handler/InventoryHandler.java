@@ -619,15 +619,15 @@ public class InventoryHandler {
             if (Randomizer.nextInt(100) <= success) {
                 equip.setUpgradeSlots((byte) (equip.getUpgradeSlots() + 1));
                 equip.setPlatinumHammer((byte) (equip.getPlatinumHammer() + 1));
-                c.getSession().write(CSPacket.PlatinumHammer((byte) 0, 1)); //TODO 成功提示失敗
+                c.getSession().write(CSPacket.PlatinumHammer(2));
             } else {
-                c.getSession().write(CSPacket.PlatinumHammer((byte) 0, 1));
+                c.getSession().write(CSPacket.PlatinumHammer(3));
             }            
             c.getPlayer().forceReAddItem(equip, equip.getPosition() > 0 ? MapleInventoryType.EQUIP : MapleInventoryType.EQUIPPED);
             MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, true);
         } else {
             c.getPlayer().dropMessage(5, "無法使用白金鎚子提煉的道具。");
-            c.getSession().write(CSPacket.PlatinumHammer((byte) 0, 1));
+            c.getSession().write(CSPacket.PlatinumHammer(3));
         }
     }
 
@@ -821,22 +821,21 @@ public class InventoryHandler {
             eqq.setPotential(0, 3, isBonus);
             boolean twins = ItemConstants.方塊.CubeType.前兩條相同.check(cubeType);
             //31001 = haste, 31002 = door, 31003 = se, 31004 = hb, 41005 = combat orders, 41006 = advanced blessing, 41007 = speed infusion
-            for (int i = 0; i < lines; i++) { // minimum 2 lines, max 5
-                if (i + 1 == lockedLine) {
+            for (int i = 1; i <= lines; i++) { // minimum 2 lines, max 5
+                if (i == lockedLine) {
                     eqq.setPotential(locked, lockedLine, isBonus);
                     continue;
                 }
-                boolean rewarded = false;
-                while (!rewarded) {
+                while (true) {
                     StructItemOption pot = pots.get(Randomizer.nextInt(pots.size())).get(reqLevel);
-                    if (pot != null && pot.reqLevel / 10 <= reqLevel && ItemConstants.方塊.optionTypeFits(pot.optionType, eqq.getItemId()) && ItemConstants.方塊.potentialIDFits(pot.opID, new_state, ItemConstants.方塊.CubeType.對等.check(cubeType) ? 0 : i) && ItemConstants.方塊.isAllowedPotentialStat(eqq, pot.opID, isBonus) && (!ItemConstants.方塊.CubeType.去掉無用潛能.check(cubeType) || (ItemConstants.方塊.CubeType.去掉無用潛能.check(cubeType) && !ItemConstants.方塊.isUselessPotential(pot)))) { //optionType
-                        if (i != 1 || !twins) {
-                            eqq.setPotential(pot.opID, i + 1, isBonus);
-                        }
-                        if (i == 0 && twins) {
+                    if (pot != null && pot.reqLevel / 10 <= reqLevel && ItemConstants.方塊.optionTypeFits(pot.optionType, eqq.getItemId()) && ItemConstants.方塊.potentialIDFits(pot.opID, new_state, ItemConstants.方塊.CubeType.對等.check(cubeType) ? 1 : i) && ItemConstants.方塊.isAllowedPotentialStat(eqq, pot.opID, isBonus, ItemConstants.方塊.CubeType.點商光環.check(cubeType)) && (!ItemConstants.方塊.CubeType.去掉無用潛能.check(cubeType) || (ItemConstants.方塊.CubeType.去掉無用潛能.check(cubeType) && !ItemConstants.方塊.isUselessPotential(pot)))) { //optionType
+                        if (i == 1 && twins) {
                             eqq.setPotential(pot.opID, 2, isBonus);
                         }
-                        rewarded = true;
+                        if (i != 2 || !twins) {
+                            eqq.setPotential(pot.opID, i, isBonus);
+                        }
+                        break;
                     }
                 }
             }
@@ -1623,7 +1622,7 @@ public class InventoryHandler {
             while (!rewarded) {
                 StructItemOption pot = pots.get(Randomizer.nextInt(pots.size())).get(reqLevel);
                 if (pot != null && pot.reqLevel / 10 <= reqLevel && ItemConstants.方塊.optionTypeFits(pot.optionType, eq.getItemId()) && ItemConstants.方塊.potentialIDFits(pot.opID, new_state, 1)) { //optionType
-                    if (ItemConstants.方塊.isAllowedPotentialStat(eq, pot.opID, false)) {
+                    if (ItemConstants.方塊.isAllowedPotentialStat(eq, pot.opID, false, false)) {
                         eq.setPotential(pot.opID, 3, false);
                         rewarded = true;
                     }
@@ -1690,7 +1689,7 @@ public class InventoryHandler {
             while (!rewarded) {
                 StructItemOption pot = pots.get(Randomizer.nextInt(pots.size())).get(reqLevel);
                 if (pot != null && pot.reqLevel / 10 <= reqLevel && ItemConstants.方塊.optionTypeFits(pot.optionType, eq.getItemId()) && ItemConstants.方塊.potentialIDFits(pot.opID, new_state, 1)) { //optionType
-                    if (ItemConstants.方塊.isAllowedPotentialStat(eq, pot.opID, true)) {
+                    if (ItemConstants.方塊.isAllowedPotentialStat(eq, pot.opID, true, false)) {
                         eq.setPotential(pot.opID, 3, true);
                         rewarded = true;
                     }
@@ -1989,20 +1988,28 @@ public class InventoryHandler {
             msg.append("等級提升為傳說.");
         } else {
             int trueStat = 0;
-            if (eqq.getPotential(1, bonus) >= 40000) {
-                trueStat++;
+            int superStat = 0;
+            Map<Integer, List<StructItemOption>> pots = ii.getAllPotentialInfo();
+            for (int i = 1; i <= 3; i++) {
+                boolean notuseless = false;
+                if (eqq.getPotential(i, bonus) >= 60000) {
+                    superStat ++;
+                } else if (ItemConstants.類型.武器(eqq.getItemId()) || eqq.getPotential(i, bonus) >= 40000) {
+                    for (StructItemOption pot : pots.get(eqq.getPotential(i, bonus))) {
+                        notuseless = !ItemConstants.方塊.isUselessPotential(pot) || notuseless;
+                    }
+                    if (notuseless) {
+                        trueStat++;
+                    }
+                }
             }
-            if (eqq.getPotential(2, bonus) >= 40000) {
-                trueStat++;
-            }
-            if ( eqq.getPotential(3, bonus) >= 40000) {
-                trueStat++;
-            }
-            if (trueStat < 2) {
+            if (trueStat + superStat < 3) {
                 return;
             }
-            //TODO 對強大潛能的判定
             msg.append("在").append(eqName).append("上設定了強大的");
+            if (superStat > 0) {
+                msg.append("尊貴");
+            }
             if (bonus) {
                 msg.append("附加");
             }
@@ -3184,16 +3191,12 @@ public class InventoryHandler {
                     if (ItemConstants.傷害字型.isDamageSkin(toUse.getItemId())) {
                         if (!MapleJob.is神之子(chr.getJob())) {
                             int sitemid = toUse.getItemId();
-                            MapleQuest quest = MapleQuest.getInstance(GameConstants.傷害字型);
-                            MapleQuestStatus queststatus = new MapleQuestStatus(quest, (byte) 1);
                             int skinnum = ItemConstants.傷害字型.getDamageSkinNumberByItem(sitemid);
                             if (skinnum == -1) {
                                 chr.dropMessage(-9, "出現未知錯誤");
                                 break;
                             }
-                            String skinString = String.valueOf(skinnum);
-                            queststatus.setCustomData(skinString == null ? "0" : skinString);
-                            c.getPlayer().updateQuest(queststatus);
+                            c.getPlayer().setDamageSkin(sitemid);
                             chr.dropMessage(-9, "傷害字型已更變。");
                             chr.getMap().broadcastMessage(chr, CField.showForeignDamageSkin(chr, skinnum), false);
                             MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (byte) 1, false);

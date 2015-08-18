@@ -908,9 +908,7 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     VICIOUS_HAMMER(true, (short) 0x3D3),
     
     // 使用白金鎚子[完成-181]
-    USE_PLATINUM_HAMMER(true, (short) 0x3D5),
-    // 使用白金鎚子[完成-181]
-    PLATINUM_HAMMER(true, (short) 0x3D6),
+    PLATINUM_HAMMER(true, (short) 0x3D5),
     
     // 獲得獎勵[完成-181]
     REWARD(true, (short) 0x3AE),

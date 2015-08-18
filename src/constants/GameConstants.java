@@ -234,11 +234,13 @@ public class GameConstants {
     }
 
     public static int maxViewRangeSq() {
-        return 1366 * 768 * 2;//1000000; // 1024 * 768
+//        return 1366 * 768 * 2;//1000000; // 1024 * 768
+        return Integer.MAX_VALUE;
     }
 
     public static int maxViewRangeSq_Half() {
-        return 1366 * 768;//500000; // 800 * 800
+//        return 1366 * 768;//500000; // 800 * 800
+        return Integer.MAX_VALUE;
     }
 
     public static boolean isExceedAttack(int id) {
@@ -501,6 +503,11 @@ public class GameConstants {
             case 112120002:
             case 112120003:
                 return 112120000;
+            case 131001001:
+            case 131001002:
+            case 131001003:
+            case 131001013:
+                return 131001000;
         }
         return id;
     }
@@ -1009,6 +1016,7 @@ public class GameConstants {
         }
         return 330; // Default usually
     }
+
     public final static int[] goldrewards = {
         2049400, 1,
         2049401, 2,
@@ -4080,7 +4088,7 @@ public class GameConstants {
     public static final int 組隊請求 = 122900;
     public static final int 組隊邀請 = 122901;
     public static final int QUICK_SLOT = 123000;
-    public static final int ITEM_TITLE = 124000;//稱號
+    public static final int 稱號 = 124000;
     public static final int BOSS_PQ = 150001;
     public static final int CUSTOM_BANK = 150002;
     public static final int DOJO = 150100;

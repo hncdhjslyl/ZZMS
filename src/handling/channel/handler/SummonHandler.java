@@ -59,6 +59,7 @@ import tools.Pair;
 import tools.packet.CField.EffectPacket;
 import tools.packet.CField;
 import tools.packet.CField.SummonPacket;
+import tools.packet.provider.SpecialEffectType;
 
 public class SummonHandler {
 
@@ -302,8 +303,8 @@ public class SummonHandler {
                     return;
                 }
                 chr.addHP((int) (chr.getStat().getCurrentMaxHp() * SkillFactory.getSkill(sum.getSkill()).getEffect(sum.getSkillLevel()).getHp() / 100.0));
-                chr.getClient().getSession().write(EffectPacket.showBuffEffect(sum.getSkill(), 2, chr.getLevel(), sum.getSkillLevel()));
-                chr.getMap().broadcastMessage(chr, EffectPacket.showBuffeffect(chr.getId(), sum.getSkill(), 2, chr.getLevel(), sum.getSkillLevel()), false);
+                chr.getClient().getSession().write(EffectPacket.showBuffEffect(sum.getSkill(), SpecialEffectType.REMOTE_SKILL, chr.getLevel(), sum.getSkillLevel()));
+                chr.getMap().broadcastMessage(chr, EffectPacket.showBuffeffect(chr.getId(), sum.getSkill(), SpecialEffectType.REMOTE_SKILL, chr.getLevel(), sum.getSkillLevel()), false);
                 break;
             case 1321007: //beholder
                 Skill bHealing = SkillFactory.getSkill(slea.readInt());
@@ -320,9 +321,9 @@ public class SummonHandler {
                     }
                     chr.addHP(healEffect.getHp());
                 }
-                chr.getClient().getSession().write(EffectPacket.showBuffEffect(sum.getSkill(), 2, chr.getLevel(), bHealingLvl));
+                chr.getClient().getSession().write(EffectPacket.showBuffEffect(sum.getSkill(), SpecialEffectType.REMOTE_SKILL, chr.getLevel(), bHealingLvl));
                 chr.getMap().broadcastMessage(SummonPacket.summonSkill(chr.getId(), sum.getSkill(), bHealing.getId() == 1320008 ? 5 : (Randomizer.nextInt(3) + 6)));
-                chr.getMap().broadcastMessage(chr, EffectPacket.showBuffeffect(chr.getId(), sum.getSkill(), 2, chr.getLevel(), bHealingLvl), false);
+                chr.getMap().broadcastMessage(chr, EffectPacket.showBuffeffect(chr.getId(), sum.getSkill(), SpecialEffectType.REMOTE_SKILL, chr.getLevel(), bHealingLvl), false);
                 break;
         }
         if (GameConstants.isAngel(sum.getSkill())) {
@@ -333,8 +334,8 @@ public class SummonHandler {
             } else {
                 MapleItemInformationProvider.getInstance().getItemEffect(2022746).applyTo(chr);
             }
-            chr.getClient().getSession().write(EffectPacket.showBuffEffect(sum.getSkill(), 2, 2, 1));
-            chr.getMap().broadcastMessage(chr, EffectPacket.showBuffeffect(chr.getId(), sum.getSkill(), 2, 2, 1), false);
+            chr.getClient().getSession().write(EffectPacket.showBuffEffect(sum.getSkill(), SpecialEffectType.REMOTE_SKILL, 2, 1));
+            chr.getMap().broadcastMessage(chr, EffectPacket.showBuffeffect(chr.getId(), sum.getSkill(), SpecialEffectType.REMOTE_SKILL, 2, 1), false);
         }
     }
 

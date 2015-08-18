@@ -30,6 +30,7 @@ import server.life.Element;
 import tools.Pair;
 import tools.Triple;
 import tools.data.MaplePacketLittleEndianWriter;
+import tools.packet.CField;
 import tools.packet.CField.EffectPacket;
 import tools.packet.CWvsContext.InventoryPacket;
 import tools.packet.JobPacket;
@@ -3662,11 +3663,8 @@ public class PlayerStats implements Serializable {
         this.hp = thp;
 
         if (chra != null) {
-            if (!silent) {
-                chra.checkBerserk();
-                chra.updatePartyMemberHP();
-            }
-            if ((oldHp > this.hp) && (!chra.isAlive())) {
+            if (oldHp > hp && !chra.isAlive()) {
+                // 技能免死在這
                 if (chra.getBuffedValue(MapleBuffStat.FINAL_FEINT) != null) {
                     int percentage = chra.getBuffedValue(MapleBuffStat.FINAL_FEINT);
                     this.hp = ((int) (this.localmaxhp * (percentage / 100.0D)));
@@ -3679,11 +3677,14 @@ public class PlayerStats implements Serializable {
                     chra.dropMessage(6, "以消耗掉幸運幻影的效果替代死亡，並回復最大值" + percentage + "%的HP。");
                     chra.cancelEffectFromBuffStat(MapleBuffStat.FINAL_FEINT, -1);
                 } else {
+                    // 戰鬥機器人效果添加的地方
+                    chra.getClient().getSession().write(CField.getDeathTip(1));
                     chra.playerDead();
                 }
             }
-            if (oldHp > hp && !chra.isAlive()) {
-                chra.playerDead();
+            if (!silent) {
+                chra.checkBerserk();
+                chra.updatePartyMemberHP();
             }
         }
         if (MapleJob.is惡魔復仇者(chra.getJob())) {

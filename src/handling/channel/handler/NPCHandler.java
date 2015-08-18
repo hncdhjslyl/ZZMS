@@ -692,6 +692,10 @@ public class NPCHandler {
             return;
         }
         final MapleNPC npc = MapleLifeFactory.getNPC(npcId);
+        if (npc == null) {
+            System.err.println("未找到QuickMove的NPC:" + npcId);
+            return;
+        }
         if (npc.hasShop()) {
             c.getPlayer().setConversation(1);
             npc.sendShop(c);

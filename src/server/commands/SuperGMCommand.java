@@ -995,7 +995,7 @@ public class SuperGMCommand {
                 npc.setCy(c.getPlayer().getPosition().y);
                 npc.setRx0(c.getPlayer().getPosition().x + 50);
                 npc.setRx1(c.getPlayer().getPosition().x - 50);
-                npc.setFh(c.getPlayer().getMap().getFootholds().findBelow(c.getPlayer().getPosition()).getId());
+                npc.setFh(c.getPlayer().getMap().getFootholds().findBelow(c.getPlayer().getPosition(), false).getId());
                 npc.setCustom(true);
                 c.getPlayer().getMap().addMapObject(npc);
                 c.getPlayer().getMap().broadcastMessage(NPCPacket.spawnNPC(npc, true));
@@ -1020,7 +1020,7 @@ public class SuperGMCommand {
             if (npc != null && !npc.getName().equals("MISSINGNO")) {
                 final int xpos = c.getPlayer().getPosition().x;
                 final int ypos = c.getPlayer().getPosition().y;
-                final int fh = c.getPlayer().getMap().getFootholds().findBelow(c.getPlayer().getPosition()).getId();
+                final int fh = c.getPlayer().getMap().getFootholds().findBelow(c.getPlayer().getPosition(), false).getId();
                 npc.setPosition(c.getPlayer().getPosition());
                 npc.setCy(ypos);
                 npc.setRx0(xpos);
@@ -1077,7 +1077,7 @@ public class SuperGMCommand {
             if (npc != null) {
                 final int xpos = c.getPlayer().getPosition().x;
                 final int ypos = c.getPlayer().getPosition().y;
-                final int fh = c.getPlayer().getMap().getFootholds().findBelow(c.getPlayer().getPosition()).getId();
+                final int fh = c.getPlayer().getMap().getFootholds().findBelow(c.getPlayer().getPosition(), false).getId();
                 npc.setPosition(c.getPlayer().getPosition());
                 npc.setCy(ypos);
                 npc.setRx0(xpos);

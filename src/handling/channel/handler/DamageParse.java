@@ -32,7 +32,6 @@ import tools.AttackPair;
 import tools.Pair;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
-import static tools.packet.CField.gainForce;
 import tools.packet.CWvsContext;
 
 public class DamageParse {
@@ -268,7 +267,7 @@ public class DamageParse {
                     }
                     if (MapleJob.is破風使者(player.getJob())) {
                         int rdz = server.Randomizer.nextInt(100);
-                        int g_rate = 20, a_rate = 5;                        
+                        int g_rate = 20, a_rate = 5;
                         if (player.getTotalSkillLevel(13100022) > 0) {
                             g_rate = 20;
                             a_rate = 5;
@@ -286,7 +285,7 @@ public class DamageParse {
                         }
                         if (player.getBuffedValue(MapleBuffStat.STORM_BRINGER) != null && rdz <= 30) {
                             player.handleTriflingWhim(monster.getObjectId(), (rdz <= a_rate), true);
-                        } 
+                        }
                     }
                     if (attack.skill != 1221011) {
                         monster.damage(player, totDamageToOneMonster, true, attack.skill);
@@ -455,9 +454,6 @@ public class DamageParse {
         }
         if ((attack.real) && (GameConstants.getAttackDelay(attack.skill, theSkill) >= 100)) {
             player.getCheatTracker().checkAttack(attack.skill, attack.lastAttackTickCount);
-            System.out.println("Return 8");
-            System.out.println("Return 8 with skill " + attack.skill);
-            //return;
         }
 
         if (effect.getBulletCount() > 1) {
@@ -799,23 +795,19 @@ public class DamageParse {
                 int chargeSkillId = player.getBuffSource(MapleBuffStat.WK_CHARGE);
 
                 switch (chargeSkillId) {
-                    case 1211003:
-                    case 1211004:
+                    case 1201011: //烈焰之劍Flame Charge
                         elements.add(Element.FIRE);
                         break;
-                    case 1211005:
-                    case 1211006:
-                    case 21111005:
+                    case 1201012: //寒冰之劍Blizzard Charge
+                    case 1211006: //寒冰之劍
                         elements.add(Element.ICE);
                         break;
-                    case 1211007:
-                    case 1211008:
-                    case 15101006:
+                    case 1211008: //雷鳴之劍Lightning Charge
+                    case 15101006: //雷鳴
                         elements.add(Element.LIGHTING);
                         break;
-                    case 1221003:
-                    case 1221004:
-                    case 11111007:
+                    case 1221004: //聖靈之劍Holy Charge
+                    case 11111007: //閃耀激發
                         elements.add(Element.HOLY);
                         break;
                     case 12101005:
@@ -1084,10 +1076,10 @@ public class DamageParse {
         if (MapleJob.is神之子(chr.getJob()) && ret.skill != 0) {
             lea.skip(1); //zero has byte
         }
-        if (ret.skill == 2221012 
-                || ret.skill == 36101008 
-                || ret.skill == 36101001 
-                || ret.skill == 36111009                 
+        if (ret.skill == 2221012
+                || ret.skill == 36101008
+                || ret.skill == 36101001
+                || ret.skill == 36111009
                 || ret.skill == 42120003) {
             lea.skip(1);
         }

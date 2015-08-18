@@ -806,12 +806,8 @@ public class MapleServerHandler extends IoHandlerAdapter {
                 slea.skip(4);
                 c.getSession().write(CSPacket.GoldenHammer((byte) 2, slea.readInt()));
                 break;
-            case USE_PLATINUM_HAMMER:
-                InventoryHandler.UsePlatinumHammer(slea, c);
-                break;
             case PLATINUM_HAMMER:
-                slea.skip(4);
-                c.getSession().write(CSPacket.PlatinumHammer((byte) 2, slea.readInt()));
+                InventoryHandler.UsePlatinumHammer(slea, c);
                 break;
             case USE_NEBULITE_FUSION:
                 InventoryHandler.UseNebuliteFusion(slea, c);

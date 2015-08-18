@@ -104,6 +104,7 @@ import tools.packet.PetPacket;
 import tools.packet.CWvsContext;
 import tools.packet.CWvsContext.PartyPacket;
 import tools.packet.JobPacket.PhantomPacket;
+import tools.packet.provider.SpecialEffectType;
 
 public final class MapleMap {
 
@@ -422,7 +423,7 @@ public final class MapleMap {
     }
 
     public final Point calcPointBelow(final Point initial) {
-        final MapleFoothold fh = footholds.findBelow(initial);
+        final MapleFoothold fh = footholds.findBelow(initial, false);
         if (fh == null) {
             return null;
         }
@@ -638,7 +639,7 @@ public final class MapleMap {
             }
         }
         if (dropOwner != -1) {
-            monster.killGainExp(lastSkill);
+            monster.killGainExp(chr, lastSkill);
         }
 
         if (monster.getBuffToGive() > -1) {
@@ -655,8 +656,8 @@ public final class MapleMap {
                             case 8810018:
                             case 8810122:
                             case 8820001:
-                                mc.getClient().getSession().write(EffectPacket.showBuffEffect(buffid, 13, mc.getLevel(), 1)); // HT nine spirit
-                                broadcastMessage(mc, EffectPacket.showBuffeffect(mc.getId(), buffid, 13, mc.getLevel(), 1), false); // HT nine spirit
+                                mc.getClient().getSession().write(EffectPacket.showBuffEffect(buffid, SpecialEffectType.MULUNG_DOJO_UP, mc.getLevel(), 1)); // HT nine spirit
+                                broadcastMessage(mc, EffectPacket.showBuffeffect(mc.getId(), buffid, SpecialEffectType.MULUNG_DOJO_UP, mc.getLevel(), 1), false); // HT nine spirit
                                 break;
                         }
                     }
@@ -1407,7 +1408,7 @@ public final class MapleMap {
         npc.setCy(pos.y);
         npc.setRx0(pos.x + 50);
         npc.setRx1(pos.x - 50);
-        npc.setFh(getFootholds().findBelow(pos).getId());
+        npc.setFh(getFootholds().findBelow(pos, false).getId());
         npc.setCustom(true);
         addMapObject(npc);
         broadcastMessage(NPCPacket.spawnNPC(npc, true));
@@ -1419,7 +1420,7 @@ public final class MapleMap {
         npc.setCy(pos.y);
         npc.setRx0(pos.x + 50);
         npc.setRx1(pos.x - 50);
-        npc.setFh(getFootholds().findBelow(pos).getId());
+        npc.setFh(getFootholds().findBelow(pos, false).getId());
         npc.setCustom(true);
         addMapObject(npc);
         c.getSession().write(NPCPacket.spawnNPC(npc, true));
@@ -2153,10 +2154,10 @@ public final class MapleMap {
                 endSpeedRun();
                 broadcastMessage(CWvsContext.broadcastMsg(5, "The speed run has ended."));
             }
-            broadcastMessage(chr, CField.getEffectSwitch(chr.getId(), chr.getEffectSwitch()), false);
+            broadcastMessage(chr, CField.getEffectSwitch(chr.getId(), chr.getEffectSwitch()), true);
         } else {
             broadcastGMMessage(chr, packet, false);
-            broadcastGMMessage(chr, CField.getEffectSwitch(chr.getId(), chr.getEffectSwitch()), false);
+            broadcastGMMessage(chr, CField.getEffectSwitch(chr.getId(), chr.getEffectSwitch()), true);
         }
 
         if (!chr.isClone()) {
